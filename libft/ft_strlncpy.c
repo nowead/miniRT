@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_strlncpy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonseo <seonseo@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 21:30:29 by seonseo           #+#    #+#             */
-/*   Updated: 2024/07/06 20:19:50 by seonseo          ###   ########.fr       */
+/*   Created: 2023/10/16 15:31:57 by seonseo           #+#    #+#             */
+/*   Updated: 2024/04/21 22:33:49 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strrchr(const char *s, int c)
+size_t	ft_strlncpy(char *dst, const char *src, size_t dstsize, size_t n)
 {
 	size_t	i;
-	char	*lastchr;
 
-	lastchr = NULL;
+	if (0 == dstsize)
+		return (0);
 	i = 0;
-	while (s[i])
+	while (src[i] && i + 1 < dstsize && i < n)
 	{
-		if (s[i] == (char)c)
-			lastchr = (char *)s + i;
+		dst[i] = src[i];
 		i++;
 	}
-	if ('\0' == (char)c)
-		return ((char *)s + i);
-	return (lastchr);
+	dst[i] = '\0';
+	while (src[i] && i < n)
+		i++;
+	return (i);
 }

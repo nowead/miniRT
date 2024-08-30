@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/20 14:39:03 by damin             #+#    #+#             */
-/*   Updated: 2023/10/26 14:49:54 by damin            ###   ########.fr       */
+/*   Created: 2023/11/01 12:12:17 by seonseo           #+#    #+#             */
+/*   Updated: 2024/07/08 16:05:48 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,24 @@
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	size_t	len;
-	size_t	i;
-	char	*str;
+	unsigned int	i;
+	unsigned int	slen;
+	char			*s1;
 
-	len = ft_strlen(s);
-	str = (char *)malloc((len + 1) * sizeof(char));
-	if (!str)
+	if (s == NULL)
+		return (ft_strdup(""));
+	if (f == NULL)
+		return (ft_strdup(s));
+	slen = ft_strlen(s);
+	s1 = (char *)malloc(sizeof(char) * (slen + 1));
+	if (s1 == NULL)
 		return (NULL);
 	i = 0;
-	while (s[i])
+	while (i < slen)
 	{
-		str[i] = f(i, s[i]);
-		++i;
+		s1[i] = f(i, s[i]);
+		i++;
 	}
-	str[i] = '\0';
-	return (str);
+	s1[i] = '\0';
+	return (s1);
 }

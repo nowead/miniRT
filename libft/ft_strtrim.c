@@ -3,51 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 16:07:21 by damin             #+#    #+#             */
-/*   Updated: 2023/10/26 14:43:06 by damin            ###   ########.fr       */
+/*   Created: 2023/10/27 11:28:43 by seonseo           #+#    #+#             */
+/*   Updated: 2024/07/06 20:19:57 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*handle_excep(void)
+static int	ft_is_set(char const *set, char c)
 {
-	char	*tmp;
-
-	tmp = (char *)malloc(sizeof(char));
-	if (!tmp)
-		return (NULL);
-	tmp[0] = '\0';
-	return (tmp);
+	if (set == NULL)
+		return (0);
+	while (*set)
+		if (*set++ == c)
+			return (1);
+	return (0);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	char		*tmp;
-	size_t		front;
-	size_t		rear;
+	char	*branch;
+	size_t	s1_len;
+	size_t	i;
+	size_t	j;
+	size_t	branch_size;
 
-	front = 0;
-	rear = ft_strlen(s1);
-	if (!s1)
+	s1_len = ft_strlen(s1);
+	i = 0;
+	while (s1[i] && ft_is_set(set, s1[i]))
+		i++;
+	if (s1[i] == '\0')
+		branch_size = s1_len + 1;
+	else
 	{
-		tmp = handle_excep();
-		return (tmp);
+		j = s1_len - 1;
+		while (j >= 0 && ft_is_set(set, s1[j]))
+			j--;
+		branch_size = j - i + 2;
 	}
-	while (s1[front] && ft_strchr(set, s1[front]))
-		++front;
-	while (rear >= 1 && ft_strchr(set, s1[rear - 1]))
-		--rear;
-	if (front >= rear)
-	{
-		tmp = handle_excep();
-		return (tmp);
-	}
-	tmp = (char *)malloc((rear - front + 1) * sizeof(char));
-	if (!tmp)
+	branch = (char *)malloc(sizeof(char) * branch_size);
+	if (branch == NULL)
 		return (NULL);
-	ft_strlcpy(tmp, s1 + front, rear - front + 1);
-	return (tmp);
+	ft_strlcpy(branch, &s1[i], branch_size);
+	return (branch);
 }

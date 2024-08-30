@@ -3,35 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/20 19:46:19 by damin             #+#    #+#             */
-/*   Updated: 2023/10/26 16:21:10 by damin            ###   ########.fr       */
+/*   Created: 2023/11/02 09:03:15 by seonseo           #+#    #+#             */
+/*   Updated: 2024/07/06 20:21:40 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <unistd.h>
-
-static void	write_nbr(int n, int fd)
-{
-	if (n < 0)
-	{
-		n *= -1;
-		ft_putchar_fd('-', fd);
-	}
-	if (n == 0)
-		return ;
-	write_nbr(n / 10, fd);
-	ft_putchar_fd(((n % 10) + '0'), fd);
-}
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	if (n == -2147483648)
-		write (fd, "-2147483648", 11);
-	else if (n == 0)
-		ft_putchar_fd('0', fd);
-	else
-		write_nbr(n, fd);
+	if (n == -INT_MAX -1)
+	{
+		write(fd, "-2147483648", 11);
+		return ;
+	}
+	if (n < 0)
+	{
+		write(fd, "-", 1);
+		n *= -1;
+	}
+	if (n == 0)
+	{
+		write(fd, "0", 1);
+		return ;
+	}
+	if (n < 10)
+	{
+		write(fd, &"0123456789"[n % 10], 1);
+		return ;
+	}
+	ft_putnbr_fd(n / 10, fd);
+	write(fd, &"0123456789"[n % 10], 1);
 }

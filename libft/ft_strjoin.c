@@ -3,37 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 15:49:53 by damin             #+#    #+#             */
-/*   Updated: 2023/10/25 14:34:49 by damin            ###   ########.fr       */
+/*   Created: 2023/10/27 08:42:23 by seonseo           #+#    #+#             */
+/*   Updated: 2024/07/06 20:19:19 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "libft.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*tmp;
-	size_t	i;
-	size_t	j;
+	char	*str;
+	size_t	size;
 
-	tmp = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (!tmp)
+	if (s1 == NULL && s2 == NULL)
+		return (ft_strdup(""));
+	if (s1 == NULL)
+		return (ft_strdup(s2));
+	if (s2 == NULL)
+		return (ft_strdup(s1));
+	size = ft_strlen(s1) + ft_strlen(s2) + 1;
+	str = (char *)malloc(sizeof(char) * size);
+	if (str == NULL)
 		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		tmp[i] = s1[i];
-		++i;
-	}
-	j = 0;
-	while (s2[j])
-	{
-		tmp[i] = s2[j];
-		++i;
-		++j;
-	}
-	tmp[i] = '\0';
-	return (tmp);
+	ft_strlcpy(str, s1, size);
+	ft_strlcat(str, s2, size);
+	return (str);
 }

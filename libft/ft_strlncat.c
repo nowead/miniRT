@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_strlncat.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonseo <seonseo@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 21:30:29 by seonseo           #+#    #+#             */
-/*   Updated: 2024/07/06 20:19:50 by seonseo          ###   ########.fr       */
+/*   Created: 2023/10/16 15:31:57 by seonseo           #+#    #+#             */
+/*   Updated: 2024/04/22 13:40:59 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strrchr(const char *s, int c)
+size_t	ft_strlncat(char *dst, const char *src, size_t dstsize, size_t n)
 {
 	size_t	i;
-	char	*lastchr;
+	size_t	j;
 
-	lastchr = NULL;
 	i = 0;
-	while (s[i])
+	while (dst[i] && i + 1 < dstsize)
 	{
-		if (s[i] == (char)c)
-			lastchr = (char *)s + i;
 		i++;
 	}
-	if ('\0' == (char)c)
-		return ((char *)s + i);
-	return (lastchr);
+	j = 0;
+	while (src[j] && i + 1 < dstsize && j < n)
+	{
+		dst[i] = src[j];
+		i++;
+		j++;
+	}
+	dst[i] = '\0';
+	while (src[j] && j < n)
+		j++;
+	return (j);
 }

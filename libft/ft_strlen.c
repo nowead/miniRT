@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/06 18:39:44 by damin             #+#    #+#             */
-/*   Updated: 2023/10/30 15:11:56 by damin            ###   ########.fr       */
+/*   Created: 2023/10/13 21:00:44 by seonseo           #+#    #+#             */
+/*   Updated: 2024/02/18 20:39:01 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(char *s)
-{
-	int	count;
+#include "libft.h"
 
-	count = 0;
-	while (s[count])
-		++count;
-	return (count);
+size_t	ft_strlen(const char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }

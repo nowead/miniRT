@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 15:09:33 by damin             #+#    #+#             */
-/*   Updated: 2023/10/30 15:13:46 by damin            ###   ########.fr       */
+/*   Created: 2023/10/24 17:12:14 by seonseo           #+#    #+#             */
+/*   Updated: 2024/07/06 20:20:01 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,20 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char			*tmp;
-	unsigned int	i;
-	size_t			s_len;
+	char	*substr;
+	size_t	size;
 
-	s_len = ft_strlen(s);
-	if (s_len > start && start + len >= s_len)
-		tmp = (char *)malloc((s_len - start + 1) * sizeof(char));
-	else if (s_len > start && start + len < s_len)
-		tmp = (char *)malloc((len + 1) * sizeof(char));
+	if (s == NULL || start >= ft_strlen(s))
+		return (ft_strdup(""));
 	else
-		tmp = (char *)malloc(sizeof(char));
-	if (!tmp)
-		return (NULL);
-	i = 0;
-	while (i < len && s_len > start)
 	{
-		tmp[i] = s[start];
-		++start;
-		++i;
-		if (s[start] == '\0')
-			break ;
+		size = ft_strlen(s + start) + 1;
+		if (size - 1 > len)
+			size = len + 1;
 	}
-	tmp[i] = '\0';
-	return (tmp);
+	substr = (char *)malloc(sizeof(char) * size);
+	if (substr == NULL)
+		return (NULL);
+	ft_strlcpy(substr, &s[start], size);
+	return (substr);
 }

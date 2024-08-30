@@ -1,45 +1,47 @@
+NAME = libft.a
+
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-NAME = libft.a
-SRCS = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c\
-	   ft_isprint.c ft_itoa.c ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memmove.c ft_memset.c\
-	   ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c ft_split.c ft_strchr.c\
-	   ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c ft_strlen.c ft_strmapi.c\
-	   ft_strncmp.c ft_strnstr.c ft_strrchr.c ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c
-BONUS_SRC = ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c ft_lstdelone.c ft_lstiter.c\
-			ft_lstlast.c ft_lstmap.c ft_lstnew.c ft_lstsize.c
-OBJS = $(SRCS:.c=.o)
-BONUS_OBJS = $(BONUS_SRC:.c=.o)
-ifdef WITH_BONUS
-	OBJECTS = $(OBJS) $(BONUS_OBJS)
-else
-	OBJECTS = $(OBJS)
-endif
-HEADERS = libft.h
-AR = ar
-ARFLAGS = rcs
-RM = rm -f
+
+HEADER = libft.h
+PRINTF_HEADER = ft_printf.h
+GNL_HEADER = get_next_line.h
+
+SRCS =\
+ft_isalpha.c    ft_memchr.c     ft_putchar_fd.c ft_strchr.c     ft_strlcpy.c    ft_strrchr.c	ft_atoi.c\
+ft_atol.c		ft_isascii.c    ft_isspace.c	ft_memcmp.c     ft_putendl_fd.c ft_strdup.c     ft_strlen.c\
+ft_strtrim.c	ft_bzero.c      ft_isdigit.c    ft_memcpy.c     ft_putnbr_fd.c  ft_striteri.c   ft_strmapi.c\
+ft_substr.c		ft_calloc.c     ft_isprint.c    ft_memmove.c    ft_putstr_fd.c  ft_strjoin.c    ft_strncmp.c\
+ft_tolower.c	ft_isalnum.c    ft_itoa.c       ft_memset.c     ft_split.c      ft_strlcat.c    ft_strnstr.c\
+ft_toupper.c	ft_strlncpy.c	ft_strlncat.c	ft_strtol.c		ft_strtol1.c\
+get_next_line.c					get_next_line_utils.c
+OBJS = $(patsubst %.c, %.o, $(SRCS))
+
 
 all: $(NAME)
 
-bonus:
-	make WITH_BONUS=1 all
+$(NAME): $(OBJS)
+	@ar rc $@ $^
+	@ranlib $@
 
-$(NAME): $(OBJECTS)
-	@$(AR) $(ARFLAGS) $@ $^
-	@echo "\033[0;32mlibft\033[0m compiled."
+%.o: %.c $(HEADER)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
-%.o: %.c $(HEADERS)
-	@$(CC) $(CFLAGS) -c $<
+ft_%printf%.o: ft_%printf%.c $(PRINTF_HEADER)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+get_next_line%.o: get_next_line%.c $(GNL_HEADER)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+error_functions%.o: error_functions%.c $(ERROR_FUNCTIONS_HEADER)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS) $(BONUS_OBJS)
+	@rm -f $(OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
+	@rm -f $(NAME)
 
-re: 
-	make fclean
-	make all
+re: fclean all
 
-.PHONY: all bonus clean fclean re 
+.PHONY: all clean fclean re

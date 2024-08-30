@@ -3,75 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/20 14:00:37 by damin             #+#    #+#             */
-/*   Updated: 2023/10/29 19:54:55 by damin            ###   ########.fr       */
+/*   Created: 2023/10/31 17:33:39 by seonseo           #+#    #+#             */
+/*   Updated: 2024/07/06 20:20:39 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	numlen(int n)
+static void	ft_fillnbr(char *nbr_str, int nbrlen, long long n)
+{
+	nbr_str[nbrlen] = '\0';
+	nbrlen--;
+	if (n == 0)
+	{
+		nbr_str[0] = '0';
+		return ;
+	}
+	if (n < 0)
+	{
+		nbr_str[0] = '-';
+		n *= -1;
+	}
+	while (n > 0)
+	{
+		nbr_str[nbrlen] = n % 10 + '0';
+		n /= 10;
+		nbrlen--;
+	}
+}
+
+static int	ft_nbrlen(int n)
 {
 	int	len;
 
-	len = 2;
 	if (n == -2147483648)
-		return (12);
+		return (11);
+	len = 1;
 	if (n < 0)
 	{
 		n *= -1;
-		++len;
+		len++;
 	}
 	while (n >= 10)
 	{
 		n /= 10;
-		++len;
+		len++;
 	}
 	return (len);
 }
 
-static void	make_abs(int *n, char *num)
-{
-	if (*n < 0)
-	{
-		num[0] = '-';
-		*n *= -1;
-	}
-}
-
-static void	make_num(int n, char *num, int len)
-{
-	while (n)
-	{
-		num[--len] = (n % 10) + '0';
-		n /= 10;
-	}
-}
-
 char	*ft_itoa(int n)
 {
-	char	*num;
-	int		len;
+	char	*nbr_str;
+	int		nbrlen;
 
-	len = numlen(n);
-	num = (char *)malloc(len * sizeof(char));
-	if (!num)
+	nbrlen = ft_nbrlen(n);
+	nbr_str = (char *)malloc(sizeof(char) * (nbrlen + 1));
+	if (nbr_str == NULL)
 		return (NULL);
-	num[--len] = '\0';
-	if (n == 0)
-	{
-		num[0] = '0';
-		return (num);
-	}
-	else if (n == -2147483648)
-	{
-		num[10] = '8';
-		n /= 10;
-		--len;
-	}
-	make_abs(&n, num);
-	make_num(n, num, len);
-	return (num);
+	ft_fillnbr(nbr_str, nbrlen, n);
+	return (nbr_str);
 }

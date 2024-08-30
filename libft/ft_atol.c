@@ -1,31 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonseo <seonseo@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 21:30:29 by seonseo           #+#    #+#             */
-/*   Updated: 2024/07/06 20:19:50 by seonseo          ###   ########.fr       */
+/*   Created: 2023/10/22 16:18:05 by seonseo           #+#    #+#             */
+/*   Updated: 2024/04/30 19:55:02 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strrchr(const char *s, int c)
+long	ft_atol(const char *str)
 {
 	size_t	i;
-	char	*lastchr;
+	int		sign;
+	long	number;
 
-	lastchr = NULL;
+	number = 0;
+	sign = 1;
 	i = 0;
-	while (s[i])
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i] == '+' || str[i] == '-')
 	{
-		if (s[i] == (char)c)
-			lastchr = (char *)s + i;
+		if (str[i] == '-')
+			sign *= -1;
 		i++;
 	}
-	if ('\0' == (char)c)
-		return ((char *)s + i);
-	return (lastchr);
+	while (ft_isdigit(str[i]))
+	{
+		if ((number > LONG_MAX / 10) || \
+		(number == LONG_MAX / 10 && str[i] > (char)(LONG_MAX % 10)))
+			return (-(sign == 1));
+		number = number * 10 + str[i] - '0';
+		i++;
+	}
+	return (number * sign);
 }
