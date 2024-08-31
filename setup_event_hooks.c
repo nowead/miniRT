@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 21:22:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/08/31 21:24:38 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/08/31 21:43:05 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ int	key_hook(int keycode, void *param)
 
 	vars = (t_vars *)param;
 	if (ESC_KEY == keycode)
-		exit(0);
+		exit(EXIT_SUCCESS);
 	return (0);
 }
 
 int	exit_no_error(void)
 {
-	exit(0);
+	exit(EXIT_SUCCESS);
 }
