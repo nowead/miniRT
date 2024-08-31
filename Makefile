@@ -2,9 +2,9 @@ NAME			=	minirt
 HEADER			=	minirt.h
 
 CC				=	cc
-CFLAGS			=	-Wall -Wextra -Werror
+CFLAGS			=	-Wall -Wextra -Werror -g
 
-SRC				=	minirt.c
+SRC				=	minirt.c	my_mlx_pixel_put.c	render_scene.c	setup_event_hooks.c
 OBJ				=	$(patsubst %.c, %.o, $(SRC))
 
 MLX				=	libmlx.dylib
