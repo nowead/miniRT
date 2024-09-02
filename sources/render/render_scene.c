@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/02 21:21:42 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/03 00:06:12 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,38 @@ t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2)
 float	dot(t_vector3d v1, t_vector3d v2)
 {
 	return ((v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z));
+}
+
+float	compute_lighting(t_point3d p, t_vector3d n, t_scene *scene)
+{
+	float		intensity;
+	t_vector3d	l;
+	float		n_dot_l;
+
+    intensity = 0.0;
+    for (light in scene.lights)
+    {
+        if (light.type == ambient) 
+        {
+        	intensity += light.intensity;
+        } 
+        else 
+        {
+            if (light.type == point) 
+            {
+                l = light.position - p;
+            } 
+            else 
+            {
+                l = light.direction;
+            }
+        }
+
+        n_dot_l = dot(n, l);
+        if (n_dot_l > 0) 
+        {
+            intensity += light.intensity * n_dot_l / (length(n) * length(l));
+        }
+    }
+    return (intensity);
 }
