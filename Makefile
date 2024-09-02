@@ -1,10 +1,11 @@
-NAME			=	minirt
-HEADER			=	minirt.h
+NAME			=	miniRT
 
 CC				=	cc
 CFLAGS			=	-Wall -Wextra -Werror -g
+RM = rm -f
 
-SRC				=	minirt.c	my_mlx_pixel_put.c	render_scene.c	setup_event_hooks.c
+INCLDS			=	$(addprefix includes/, minirt.h)
+SRC				=	$(addprefix sources/, minirt.c	my_mlx_pixel_put.c	render_scene.c	setup_event_hooks.c)
 OBJ				=	$(patsubst %.c, %.o, $(SRC))
 
 MLX				=	libmlx.dylib
@@ -30,7 +31,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(MLX)
 	@$(CC) $(OBJ) $(LIBFT_FLAGS) $(MLX_FLAGS) -o $(NAME)
-	@echo "\033[0;33mminirt\033[0m compiled."
+	@echo "Linked into executable \033[0;32mminiRT\033[0m."
 
 $(MLX): $(MLX_DIR)$(MLX)
 	@cp $(MLX_DIR)$(MLX) .
@@ -41,22 +42,28 @@ $(MLX_DIR)$(MLX):
 $(LIBFT): $(LIBFT_SRC) $(LIBFT_HEADER)
 	@make -C $(LIBFT_DIR)
 
-%.o: %.c $(HEADER) $(MLX_HEADER) $(LIBFT_HEADER)
-	@$(CC) $(CFLAGS) -Imlx -Ilibft -c $< -o $@
+%.o: %.c $(INCLDS) $(MLX_HEADER) $(LIBFT_HEADER)
+	@$(CC) $(CFLAGS) -Imlx -Ilibft -Iincludes -c $< -o $@
 
 clean:
-	@rm -f $(OBJ)
-	@make -C $(LIBFT_DIR) fclean
+	@$(RM) $(OBJ)
+	@echo "remove \033[0;31mobject files\033[0m"
+	@make -C $(LIBFT_DIR) clean
+	@echo "\033[0;31mlibft\033[0m clean."
 	@make -C $(MLX_DIR) clean
+	@echo "\033[0;31mmlx\033[0m clean."
 
 fclean: clean
-	@rm -f $(NAME)
-	@rm -f $(MLX)
+	@$(RM) $(LIBFT)
+	@echo "remove \033[0;31mlibft.a\033[0m."
+	@$(RM) libmlx.dylib
+	@echo "remove \033[0;31mlibmlx.dylib\033[0m."
+	@$(RM) $(NAME)
+	@echo "remove \033[0;31mexecutable\033[0m."
 
 re: fclean all
 
 .PHONY: all clean fclean re
-
 
 
 # CC = clang
