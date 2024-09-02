@@ -27,7 +27,7 @@ ft_substr.c		ft_calloc.c     ft_isprint.c    ft_memmove.c    ft_putstr_fd.c  ft_
 ft_tolower.c	ft_isalnum.c    ft_itoa.c       ft_memset.c     ft_split.c      ft_strlcat.c    ft_strnstr.c\
 ft_toupper.c	ft_strlncpy.c	ft_strlncat.c	ft_strtol.c		ft_strtol1.c\
 get_next_line.c					get_next_line_utils.c)
-LIBFT_OBJ		=	$(patsubst %.c, %.o, $(LIBFT_SRC))
+LIBFt_scene		=	$(patsubst %.c, %.o, $(LIBFT_SRC))
 LIBFT_HEADER	=	$(addprefix $(LIBFT_DIR), libft.h get_next_line.h)
 LIBFT_FLAGS		=	-Llibft -lft
 
