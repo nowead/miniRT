@@ -5,7 +5,11 @@ CFLAGS			=	-Wall -Wextra -Werror -g
 RM = rm -f
 
 INCLDS			=	$(addprefix includes/, minirt.h)
-SRC				=	$(addprefix sources/, minirt.c	my_mlx_pixel_put.c	render_scene.c	setup_event_hooks.c)
+PARSE_DIR		=	parse/
+RENDER_DIR		=	render/
+SRC				=	$(addprefix sources/, minirt.c\
+$(addprefix $(PARSE_DIR), parse_argv.c)\
+$(addprefix $(RENDER_DIR), my_mlx_pixel_put.c	render_scene.c	setup_event_hooks.c))
 OBJ				=	$(patsubst %.c, %.o, $(SRC))
 
 MLX				=	libmlx.dylib
