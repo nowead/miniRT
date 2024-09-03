@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/02 22:03:35 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/03 21:26:13 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 # define ESC_KEY 53
 
 # define BACKGROUND_COLOR 0xFFFFFF
+# define RED 0xFF0000
+# define GREEN 0x00FF00
+# define BLUE 0x0000FF
 
 # define FLT_MAX 3.402823466e+38F
 
@@ -66,25 +69,21 @@ typedef struct	s_camera
 	int			fov;
 }	t_camera;
 
-typedef struct	s_amb_light
+typedef enum e_light_type
 {
-	float	intens;
-	int		color;
-}	t_amb_light;
+	AMBIENT_LIGHT,
+	POINT_LIGHT,
+	DIRECTIONAL_LIGHT
+}	t_light_type;
 
-typedef struct	s_dir_light
+typedef struct	s_light
 {
-	t_vector3d	dir;
-	float		intens;
-	int			color;
-}	t_dir_light;
-
-typedef struct	s_point_light
-{
-	t_point3d	pos;
-	float		intens;
-	int			color;
-}	t_point_light;
+	t_light_type	type;
+	float			intens;
+	int				color;
+	t_vector3d		dir;
+	t_point3d		pos;
+}	t_light;
 
 typedef struct	s_plane
 {
@@ -111,14 +110,13 @@ typedef struct	s_sphere
 
 typedef struct s_scene
 {
-	t_camera		camera;
-	t_dir_light		dir_light;
-	t_point_light	point_light;
-	t_amb_light		amb_light;
-	t_sphere		*spheres;
-	int				num_of_spheres;
-	t_cylinder		cylinder;
-	t_plane			plane;
+	t_camera	camera;
+	t_light		*lights;
+	int			num_of_lights;
+	t_sphere	*spheres;
+	int			num_of_spheres;
+	t_cylinder	cylinder;
+	t_plane		plane;
 }	t_scene;
 
 typedef struct s_win
@@ -156,10 +154,13 @@ void		init_scene(t_scene *scene);
 void		render_scene(t_vars *vars);
 t_vector3d	canvas_to_viewport(int x, int y, t_img *img);
 int			trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max);
+
+// intersect_ray_sphere.c
 t_ray_hit	intersect_ray_sphere(t_point3d O, t_vector3d D, \
 t_sphere *sphere);
-t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2);
-float		dot(t_vector3d v1, t_vector3d v2);
+
+// compute_lighting.c
+float		compute_lighting(t_point3d p, t_vector3d n, t_scene *scene);
 
 // my_mlx_pixel_put.c
 void		my_mlx_pixel_put(int x, int y, int color, t_img *img);
@@ -168,5 +169,12 @@ void		my_mlx_pixel_put(int x, int y, int color, t_img *img);
 void		setup_event_hooks(t_vars *vars);
 int			key_hook(int keycode, void *param);
 int			exit_no_error(void);
+
+// vector_operations.c
+t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2);
+float		dot(t_vector3d v1, t_vector3d v2);
+t_vector3d	scale_vector(t_vector3d v, float s);
+t_point3d	add_vector_to_point(t_point3d p, t_vector3d v);
+float		length(t_vector3d v);
 
 #endif

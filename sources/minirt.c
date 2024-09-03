@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/02 21:21:42 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/03 21:59:42 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,35 @@ void	init_vars(t_vars *vars)
 void	init_scene(t_scene *scene)
 {
 	scene->camera.pos = (t_point3d){0, 0, 0};
+
+	scene->num_of_lights = 3;
+	scene->lights = (t_light *)malloc(sizeof(t_light) * scene->num_of_lights);
+	if (!scene->lights)
+		error_exit("malloc lights error", PERROR_ON);
+	scene->lights[0].type = AMBIENT_LIGHT;
+	scene->lights[0].intens = 0.2;
+	
+	scene->lights[1].type = POINT_LIGHT;
+	scene->lights[1].pos = (t_point3d){2, 1, 0};
+	scene->lights[1].intens = 0.6;
+	
+	scene->lights[2].type = DIRECTIONAL_LIGHT;
+	scene->lights[2].dir = (t_vector3d){1, 4, 4};
+	scene->lights[2].intens = 0.2;
+
 	scene->num_of_spheres = 3;
 	scene->spheres = (t_sphere *)malloc(sizeof(t_sphere) * scene->num_of_spheres);
 	if (!scene->spheres)
 		error_exit("malloc spheres error", PERROR_ON);
-	scene->spheres[0].center = (t_point3d){-5, 0, 15};
-	scene->spheres[0].radius = 3;
-	scene->spheres[0].color = 0x00FF00;
+	scene->spheres[0].center = (t_point3d){-2, 0, 4};
+	scene->spheres[0].radius = 1;
+	scene->spheres[0].color = GREEN;
 	
-	scene->spheres[1].center = (t_point3d){0, -3, 10};
-	scene->spheres[1].radius = 3;
-	scene->spheres[1].color = 0xFF0000;
+	scene->spheres[1].center = (t_point3d){0, -1, 3};
+	scene->spheres[1].radius = 1;
+	scene->spheres[1].color = RED;
 	
-	scene->spheres[2].center = (t_point3d){5, 0, 15};
-	scene->spheres[2].radius = 3;
-	scene->spheres[2].color = 0x0000FF;
+	scene->spheres[2].center = (t_point3d){2, 0, 4};
+	scene->spheres[2].radius = 1;
+	scene->spheres[2].color = BLUE;
 }

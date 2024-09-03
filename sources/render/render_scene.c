@@ -6,11 +6,13 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/03 00:06:12 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/03 22:04:19 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+int apply_lighting(int color, float lighting);
 
 void	render_scene(t_vars *vars)
 {
@@ -45,6 +47,8 @@ int	trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max)
 	t_sphere	*closest_sphere;
 	int			i;
 	t_ray_hit	hit;
+	t_point3d	p;
+	t_vector3d	n;
 
 	closest_t = t_max;
     closest_sphere = NULL;
@@ -66,79 +70,31 @@ int	trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max)
 	}
     if (closest_sphere == NULL)
         return (BACKGROUND_COLOR);
-    return (closest_sphere->color);
+	p = add_vector_to_point(scene->camera.pos, scale_vector(D, closest_t));
+	n = subtract_3dpoints(p , closest_sphere->center);
+	n = scale_vector(n, 1 / length(n));
+    return (apply_lighting(closest_sphere->color, compute_lighting(p, n, scene)));
 }
 
-t_ray_hit	intersect_ray_sphere(t_point3d O, t_vector3d D, \
-t_sphere *sphere)
+int apply_lighting(int color, float lighting)
 {
-	float		r;
-	float		t1;
-	float		t2;
-	float		discriminant;
-	t_vector3d	CO;
-	float		a;
-	float		b;
-	float		c;
-	
-	
-    r = sphere->radius;
-    CO = subtract_3dpoints(O, sphere->center);
-    a = dot(D, D);
-    b = 2 * dot(CO, D);
-    c = dot(CO, CO) - (r * r);
+    int r, g, b;
 
-    discriminant = b * b - 4 * a * c;
+    // Extract RGB components
+    r = (color >> 16) & 0xFF;
+    g = (color >> 8) & 0xFF;
+    b = color & 0xFF;
 
-    if (discriminant < 0)
-        return ((t_ray_hit){FLT_MAX, FLT_MAX});
+    // Apply lighting
+    r = (int)(r * lighting);
+    g = (int)(g * lighting);
+    b = (int)(b * lighting);
 
-    t1 = (-b + sqrt(discriminant)) / (2 * a);
-    t2 = (-b - sqrt(discriminant)) / (2 * a);
-    
-    return ((t_ray_hit){t1, t2});
-}
+    // Clamp the values to the [0, 255] range
+    r = r > 255 ? 255 : r;
+    g = g > 255 ? 255 : g;
+    b = b > 255 ? 255 : b;
 
-t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2)
-{
-	return ((t_vector3d){p1.x - p2.x, p1.y - p2.y, p1.z - p2.z});
-}
-
-float	dot(t_vector3d v1, t_vector3d v2)
-{
-	return ((v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z));
-}
-
-float	compute_lighting(t_point3d p, t_vector3d n, t_scene *scene)
-{
-	float		intensity;
-	t_vector3d	l;
-	float		n_dot_l;
-
-    intensity = 0.0;
-    for (light in scene.lights)
-    {
-        if (light.type == ambient) 
-        {
-        	intensity += light.intensity;
-        } 
-        else 
-        {
-            if (light.type == point) 
-            {
-                l = light.position - p;
-            } 
-            else 
-            {
-                l = light.direction;
-            }
-        }
-
-        n_dot_l = dot(n, l);
-        if (n_dot_l > 0) 
-        {
-            intensity += light.intensity * n_dot_l / (length(n) * length(l));
-        }
-    }
-    return (intensity);
+    // Reassemble the color
+    return (r << 16) | (g << 8) | b;
 }
