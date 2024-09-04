@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/08/31 21:22:10 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/02 16:26:08 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,7 @@ int main(int argc, char **argv)
 {
     t_vars  vars;
 
-	(void)argc;
-	(void)argv;
-    // if (2 != argc)
-	// 	exit_error("Usage: ./minirt [file.rt]", PERROR_OFF);
+	parse(argc, argv);
     init_vars(&vars);
 	init_objects(&vars.obj);
 	render_scene(&vars);

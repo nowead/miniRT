@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/08/31 21:31:20 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/04 13:40:20 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,63 @@ typedef struct	s_hit
 	float	t1;
 	float	t2;
 }	t_hit;
+typedef struct	s_amb_light
+{
+	float	ratio;
+	int		color;
+}	t_amb_light;
+
+typedef struct	s_camera
+{
+	t_point3d	coord;
+	t_vector3d	vector;
+	float		fov;
+}	t_camera;
+
+typedef struct	s_light
+{
+	t_point3d	coord;
+	float	ratio;
+	int		color;
+}	t_light;
+
+typedef struct	s_plane
+{
+	t_point3d	coord;
+	t_vector3d	vector;
+	int			color;
+	t_plane		next;
+}	t_plane;
 
 typedef struct	s_sphere
 {
 	t_point3d	center;
 	float		radius;
 	int			color;
+	t_sphere	next;
 }	t_sphere;
+
+typedef struct	s_cylinder
+{
+	t_point3d	center;
+	t_vector3d	vector;
+	float		diameter;
+	float		height;
+	int			color;
+	t_cylinder	next;
+}	t_cylinder;
 
 typedef struct s_obj
 {
-	t_point3d	camera;
+	t_amb_light	amb_light;
+	t_camera	camera;
+	t_light		light;
+	t_plane		*planes;
 	t_sphere	*spheres;
+	t_cylinder	*cylinders;
 	int			num_of_spheres;
+	int			num_of_planes;
+	int			num_of_cylinders;
 }	t_obj;
 
 typedef struct s_win
