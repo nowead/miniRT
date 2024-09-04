@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/04 17:06:32 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/04 19:22:57 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	parse_cylinders(char **line, t_vars *vars)
 	t_cylinder	*curr;
 	t_cylinder	*cylinders;
 	
-	vars->obj.num_of_cylinders++;
-	cylinders = vars->obj.cylinders;
+	vars->scene.num_of_cylinders++;
+	cylinders = vars->scene.cylinders;
 	if (cylinders == NULL)
 	{
 		if (init_cylinders(cylinders, line))

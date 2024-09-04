@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:00:38 by damin             #+#    #+#             */
-/*   Updated: 2024/09/04 17:09:00 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/04 19:22:46 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	set_plane(char **line, t_plane *planes)
 {
 	char	**coord;
 	char	**vector;
+	char	**color;
 
 	coord = ft_split(line[1], ",");
 	if (!coord)
@@ -33,8 +34,15 @@ int	set_plane(char **line, t_plane *planes)
 	planes->coord = (t_point3d){ft_atoi(coord[0]), ft_atoi(coord[1]), ft_atoi(coord[2])};
 	free(coord);
 	vector = ft_split(line[2], ",");
+	if (!vector)
+		return (1);
 	planes->vector = (t_vector3d){ft_atoi(vector[0]), ft_atoi(vector[1]), ft_atoi(vector[2])};
 	free(vector);
+	color = ft_split(line[3], ",");
+	planes->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+	if (planes->color == -1)
+		return (1);
+	return (0);
 }
 
 int	parse_plane(char **line, t_vars *vars)
@@ -42,8 +50,8 @@ int	parse_plane(char **line, t_vars *vars)
 	t_plane *planes;
 	t_plane	*curr;
 
-	vars->obj.num_of_planes++;
-	planes = vars->obj.planes;
+	vars->scene.num_of_planes++;
+	planes = vars->scene.planes;
 	if (planes == NULL)
 	{
 		if (init_planes(planes, line))
