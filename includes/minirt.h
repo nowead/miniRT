@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/03 21:26:13 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/05 21:32:51 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define RED 0xFF0000
 # define GREEN 0x00FF00
 # define BLUE 0x0000FF
+# define YELLOW 0xFFFF00
 
 # define FLT_MAX 3.402823466e+38F
 
@@ -106,6 +107,7 @@ typedef struct	s_sphere
 	t_point3d	center;
 	float		radius;
 	int			color;
+	int			specular;
 }	t_sphere;
 
 typedef struct s_scene
@@ -160,7 +162,7 @@ t_ray_hit	intersect_ray_sphere(t_point3d O, t_vector3d D, \
 t_sphere *sphere);
 
 // compute_lighting.c
-float		compute_lighting(t_point3d p, t_vector3d n, t_scene *scene);
+float		compute_lighting(t_point3d p, t_vector3d v, t_sphere *sphere, t_scene *scene);
 
 // my_mlx_pixel_put.c
 void		my_mlx_pixel_put(int x, int y, int color, t_img *img);
@@ -176,5 +178,6 @@ float		dot(t_vector3d v1, t_vector3d v2);
 t_vector3d	scale_vector(t_vector3d v, float s);
 t_point3d	add_vector_to_point(t_point3d p, t_vector3d v);
 float		length(t_vector3d v);
+t_vector3d	subtract_3dvectors(t_vector3d v1, t_vector3d v2);
 
 #endif

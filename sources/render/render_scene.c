@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/03 22:04:19 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/05 21:38:51 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max)
 	int			i;
 	t_ray_hit	hit;
 	t_point3d	p;
-	t_vector3d	n;
 
 	closest_t = t_max;
     closest_sphere = NULL;
@@ -71,30 +70,26 @@ int	trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max)
     if (closest_sphere == NULL)
         return (BACKGROUND_COLOR);
 	p = add_vector_to_point(scene->camera.pos, scale_vector(D, closest_t));
-	n = subtract_3dpoints(p , closest_sphere->center);
-	n = scale_vector(n, 1 / length(n));
-    return (apply_lighting(closest_sphere->color, compute_lighting(p, n, scene)));
+    return (apply_lighting(closest_sphere->color, compute_lighting(p, scale_vector(D, -1), closest_sphere, scene)));
 }
 
 int apply_lighting(int color, float lighting)
 {
-    int r, g, b;
+    int r;
+	int	g;
+	int	b;
 
-    // Extract RGB components
     r = (color >> 16) & 0xFF;
     g = (color >> 8) & 0xFF;
     b = color & 0xFF;
-
-    // Apply lighting
     r = (int)(r * lighting);
     g = (int)(g * lighting);
     b = (int)(b * lighting);
-
-    // Clamp the values to the [0, 255] range
-    r = r > 255 ? 255 : r;
-    g = g > 255 ? 255 : g;
-    b = b > 255 ? 255 : b;
-
-    // Reassemble the color
-    return (r << 16) | (g << 8) | b;
+	if (r > 255)
+    	r = 255;
+	if (g > 255)
+		g = 255;
+	if (b > 255)
+		b = 255;
+    return ((r << 16) | (g << 8) | b);
 }
