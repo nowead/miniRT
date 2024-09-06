@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/05 21:32:51 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/06 21:51:55 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,12 @@ typedef struct	s_ray_hit
 	float	t1;
 	float	t2;
 }	t_ray_hit;
+
+typedef struct	s_float_range
+{
+	float	min;
+	float	max;
+}	t_float_range;
 
 typedef struct	s_camera
 {
@@ -121,6 +127,12 @@ typedef struct s_scene
 	t_plane		plane;
 }	t_scene;
 
+typedef	struct	s_inter
+{
+	t_sphere	*closest_sphere;
+	float		closest_t;
+}	t_inter;
+
 typedef struct s_win
 {
 	void	*ptr;
@@ -156,6 +168,8 @@ void		init_scene(t_scene *scene);
 void		render_scene(t_vars *vars);
 t_vector3d	canvas_to_viewport(int x, int y, t_img *img);
 int			trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max);
+t_inter		closest_intersection(t_point3d O, t_vector3d D, t_float_range t_range, t_scene *scene);
+int			apply_lighting(int color, float lighting);
 
 // intersect_ray_sphere.c
 t_ray_hit	intersect_ray_sphere(t_point3d O, t_vector3d D, \

@@ -6,13 +6,11 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/05 21:38:51 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/06 22:06:59 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-int apply_lighting(int color, float lighting);
 
 void	render_scene(t_vars *vars)
 {
@@ -43,34 +41,42 @@ t_vector3d	canvas_to_viewport(int x, int y, t_img *img)
 
 int	trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max)
 {
-    float		closest_t;
-	t_sphere	*closest_sphere;
-	int			i;
-	t_ray_hit	hit;
 	t_point3d	p;
+	t_inter		inter;
 
-	closest_t = t_max;
+	inter = closest_intersection(scene->camera.pos, D, (t_float_range){t_min, t_max}, scene);
+    if (!inter.closest_sphere)
+        return (BACKGROUND_COLOR);
+	p = add_vector_to_point(scene->camera.pos, scale_vector(D, inter.closest_t));
+    return (apply_lighting(inter.closest_sphere->color, compute_lighting(p, scale_vector(D, -1), inter.closest_sphere, scene)));
+}
+
+t_inter	closest_intersection(t_point3d O, t_vector3d D, t_float_range t_range, t_scene *scene)
+{
+	float		closest_t;
+	t_sphere	*closest_sphere;
+	t_ray_hit	hit;
+	int			i;
+
+	closest_t = t_range.max;
     closest_sphere = NULL;
 	i = 0;
     while (i < scene->num_of_spheres)
     {
-        hit = intersect_ray_sphere(scene->camera.pos, D, &(scene->spheres)[i]);
-        if ((t_min < hit.t1 && hit.t1 < t_max) && hit.t1 < closest_t)
+        hit = intersect_ray_sphere(O, D, &(scene->spheres)[i]);
+        if ((t_range.min < hit.t1 && hit.t1 < t_range.max) && hit.t1 < closest_t)
         {
             closest_t = hit.t1;
             closest_sphere = &scene->spheres[i];
         }
-		if ((t_min < hit.t2 && hit.t2 < t_max) && hit.t2 < closest_t)
+		if ((t_range.min < hit.t2 && hit.t2 < t_range.max) && hit.t2 < closest_t)
         {
             closest_t = hit.t2;
             closest_sphere = &scene->spheres[i];
         }
 		i++;
 	}
-    if (closest_sphere == NULL)
-        return (BACKGROUND_COLOR);
-	p = add_vector_to_point(scene->camera.pos, scale_vector(D, closest_t));
-    return (apply_lighting(closest_sphere->color, compute_lighting(p, scale_vector(D, -1), closest_sphere, scene)));
+	return ((t_inter){closest_sphere, closest_t});
 }
 
 int apply_lighting(int color, float lighting)
@@ -86,7 +92,7 @@ int apply_lighting(int color, float lighting)
     g = (int)(g * lighting);
     b = (int)(b * lighting);
 	if (r > 255)
-    	r = 255;
+		r = 255;
 	if (g > 255)
 		g = 255;
 	if (b > 255)
