@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/04 19:22:27 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/06 14:38:00 by mindaewon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ typedef struct s_scene
 	t_plane		*planes;
 	t_sphere	*spheres;
 	t_cylinder	*cylinders;
+	int			num_of_ligts;
 	int			num_of_spheres;
 	int			num_of_planes;
 	int			num_of_cylinders;
@@ -146,15 +147,50 @@ typedef struct s_vars
 	t_scene		scene;
 }	t_vars;
 
+//parse.c
+int			parse_argv(int argc, char **argv);
+int			parse_rt(char *argv, t_vars *vars);
+int			parse_line(char **line, t_vars *vars, int *parse_err_flag);
+void		parse(int argc, char **argv, t_vars *vars);
+
+// parse_mesh_plane.c
+int			parse_plane(char **line, t_vars *vars);
+int			set_plane(char **line, t_plane *planes);
+int			init_planes(t_plane *planes, char **line);
+
+// parse_mesh_sphere.c
+int			parse_spheres(char **line, t_vars *vars);
+int			set_sphere(char **line, t_sphere *spheres);
+int			init_spheres(t_sphere *spheres, char **line);
+
+// parse_mesh_cylinder.c
+int			parse_cylinders(char **line, t_vars *vars);
+int			set_cylinder(char **line, t_cylinder *cylinders);
+int			init_cylinders(t_cylinder *cylinders, char **line);
+
+//parse_utils.c
+int			get_color(int r, int g, int b);
+void		free_lists(char **lists);
+float		ft_atof(char *str);
+
+//parse_check.c
+int			check_vector_range(t_vector3d vec);
+int			check_color_string(char **color);
+int			check_color_range(int r, int g, int b);
+int			check_num_string(char *str);
+int			check_float_string(char *str);
+
+
+
 // minirt.c
 void		error_exit(char *err_msg, int perror_flag);
 void		init_vars(t_vars *vars);
-void		init_objects(t_obj *obj);
+void		init_objects(t_scene *scene);
 
 // render_scene.c
 void		render_scene(t_vars *vars);
 t_vector3d	canvas_to_viewport(int x, int y, t_img *img);
-int			trace_ray(t_obj *obj, t_vector3d D, float t_min, float t_max);
+int			trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max);
 t_hit		intersect_ray_sphere(t_point3d O, t_vector3d D, \
 t_sphere *sphere);
 t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2);

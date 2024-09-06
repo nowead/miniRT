@@ -3,37 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:50:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/04 19:42:43 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/06 14:33:29 by mindaewon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-int check_vector_range(t_vector3d vec)
-{
-	return (0);
-}
-
-int check_color_string(char **color)
-{
-	int	i;
-	int j;
-	
-	i = 0;
-	while (i < 3)
-	{
-		j = 0;
-		while (ft_isdigit(color[i][j]))
-			j++;
-		if (j == 0 || color[i][j] != '\0')
-			return (1);
-		i++;
-	}
-	reutrn (0);
-}
 
 int get_color(int r, int g, int b)
 {
@@ -42,7 +19,40 @@ int get_color(int r, int g, int b)
 	return (r << 16 | g << 8 | b);
 }
 
-int	is_num()
+float ft_atof(char *str)
 {
-	
+	float res;
+	float sign;
+	float dec;
+	int i;
+
+	res = 0;
+	sign = 1;
+	dec = 0;
+	i = -1;
+	if (str[++i] == '-')
+		sign = -1;
+	while (ft_isdigit(str[i]))
+		res = res * 10 + str[i++] - '0';
+	if (str[i] == '.')
+		i++;
+	while (ft_isdigit(str[i]))
+	{
+		res = res * 10 + str[i++] - '0';
+		dec++;
+	}
+	while (dec--)
+		res /= 10;
+	return (res * sign);
+}
+
+void free_lists(char **lists)
+{
+    char **temp = lists;
+
+    if (lists == NULL)
+        return;
+    while (*temp)
+        free(*temp++);
+    free(lists);
 }
