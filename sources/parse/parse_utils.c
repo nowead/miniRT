@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:50:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/07 15:46:43 by mindaewon        ###   ########.fr       */
+/*   Updated: 2024/09/08 21:45:55 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@ float ft_atof(char *str)
 	res = 0;
 	sign = 1;
 	dec = 0;
-	i = -1;
-	if (str[++i] == '-')
+	i = 0;
+	if (str[i] == '-')
+	{
 		sign = -1;
+		i++;
+	}
 	while (ft_isdigit(str[i]))
 		res = res * 10 + str[i++] - '0';
 	if (str[i] == '.')

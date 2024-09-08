@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/08 16:32:42 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/08 21:34:06 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,57 +23,25 @@ int parse_argv(int argc, char **argv)
 	return (1);
 }
 
-int	parse_rt(char *argv, t_vars *vars)
+void	print_parsed_vars(t_vars *vars)
 {
-	char	*file;
-	int		fd;
-	char 	**line;
-	int		parse_err_flag;
+	t_light *lights;
+	t_camera *camera;
 
-	parse_err_flag = 0;
-	file = ft_strjoin("scenes/", argv);
-	if (!file)
-		error_exit("malloc failed", PERROR_ON);
-	fd = open(file, O_RDWR);;
-	if (fd == -1)
-		error_exit("open failed", PERROR_ON);
-	while (!parse_err_flag)
+	lights = vars->scene.lights;
+	camera = &vars->scene.camera;
+	printf("\n");
+	printf("camera pos: %f %f %f\n", camera->pos.x, camera->pos.y, camera->pos.z);
+	printf("camera dir: %f %f %f\n", camera->dir.x, camera->dir.y, camera->dir.z);
+	printf("camera fov: %f\n", camera->fov);
+	while (lights)
 	{
-		line = ft_split(get_next_line(fd), ' ');
-		if (!line)
-			break ;
-		parse_line(line, vars, &parse_err_flag);
-		free_lists(line);
+		printf("num_of_lights: %d\n", vars->scene.num_of_lights);
+		printf("type of light: %d\n", lights->type);
+		printf("light intens: %f\n", lights->intens);
+		printf("light color: %d %d %d\n", (lights->color >> 16) & 0xFF, (lights->color >> 8) & 0xFF, lights->color & 0xFF);
+		lights = lights->next;
 	}
-	free(file);
-	if (close(fd))
-		error_exit("close failed", PERROR_ON);
-	return (0);
-}
-
-int	parse_line(char **line, t_vars *vars, int *parse_err_flag)
-{	
-	if (ft_strncmp(line[0], "A", 2) == 0)
-		*parse_err_flag = parse_amb_light(line, vars);
-	else if (ft_strncmp(line[0], "C", 2) == 0)
-		*parse_err_flag = parse_camera(line ,vars);
-	else if (ft_strncmp(line[0], "L", 2) == 0)
-		*parse_err_flag = parse_point_light(line, vars);
-	else if (ft_strncmp(line[0], "pl", 3) == 0)
-		*parse_err_flag = parse_plane(line, vars);
-	else if (ft_strncmp(line[0], "sp", 3) == 0)
-		*parse_err_flag = parse_spheres(line, vars);
-	else if (ft_strncmp(line[0], "cy", 3) == 0)
-		*parse_err_flag = parse_cylinders(line, vars);
-	else
-	{
-		ft_putstr_fd("Error: No such identifier",STDERR_FILENO);
-		ft_putendl_fd(line[0], 2);
-		*parse_err_flag = 1;
-	}
-	if (*parse_err_flag)
-		return (1);
-	return (0);
 }
 
 void	parse(int argc, char **argv, t_vars *vars)
@@ -82,4 +50,5 @@ void	parse(int argc, char **argv, t_vars *vars)
 		error_exit("Usage: ./minirt [file.rt]", PERROR_OFF);
 	if (parse_rt(argv[1], vars))
 		error_exit("Error", PERROR_OFF);
+	print_parsed_vars(vars);
 }

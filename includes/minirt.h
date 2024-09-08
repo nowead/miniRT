@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 16:55:37 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/08 20:52:17 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,9 +167,16 @@ typedef struct s_vars
 
 //parse.c
 int			parse_argv(int argc, char **argv);
-int			parse_rt(char *argv, t_vars *vars);
-int			parse_line(char **line, t_vars *vars, int *parse_err_flag);
 void		parse(int argc, char **argv, t_vars *vars);
+
+
+//parse_rt.c
+char		*truncate_end_nl(char *str);
+int			parse_line(char **line, t_vars *vars, int *parse_err_flag);
+void		get_line(int fd, t_vars *vars);
+int			parse_rt(char *argv, t_vars *vars);
+
+
 
 //parse_object_camera.c
 int			parse_camera(char **line, t_vars *vars);
