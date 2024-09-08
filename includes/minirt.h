@@ -6,7 +6,7 @@
 /*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/06 14:38:00 by mindaewon        ###   ########.fr       */
+/*   Updated: 2024/09/07 15:28:51 by mindaewon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct  s_light
     int             color;
     t_vector3d      dir;
     t_point3d       pos;
+	struct s_light	*next;
 }   t_light;
 
 typedef struct	s_plane
@@ -115,7 +116,7 @@ typedef struct s_scene
 	t_plane		*planes;
 	t_sphere	*spheres;
 	t_cylinder	*cylinders;
-	int			num_of_ligts;
+	int			num_of_lights;
 	int			num_of_spheres;
 	int			num_of_planes;
 	int			num_of_cylinders;
@@ -153,6 +154,19 @@ int			parse_rt(char *argv, t_vars *vars);
 int			parse_line(char **line, t_vars *vars, int *parse_err_flag);
 void		parse(int argc, char **argv, t_vars *vars);
 
+//parse_object_camera.c
+int			parse_camera(char **line, t_vars *vars);
+
+//parse_object_amb_light.c
+int			init_amb_light(t_light *lights, char **line);
+int			set_amb_light(char **line, t_light *lights);
+int			parse_amb_light(char **line, t_vars *vars);
+
+//parse_object_point_light.c
+int			init_point_light(t_light *lights, char **line);
+int			set_point_light(char **line, t_light *lights);
+int			parse_point_light(char **line, t_vars *vars);
+
 // parse_mesh_plane.c
 int			parse_plane(char **line, t_vars *vars);
 int			set_plane(char **line, t_plane *planes);
@@ -174,18 +188,16 @@ void		free_lists(char **lists);
 float		ft_atof(char *str);
 
 //parse_check.c
-int			check_vector_range(t_vector3d vec);
-int			check_color_string(char **color);
-int			check_color_range(int r, int g, int b);
+int			check_coord(char **coord);
+int			check_vector(char **vector);
+int			check_color(char **color);
 int			check_num_string(char *str);
 int			check_float_string(char *str);
-
-
 
 // minirt.c
 void		error_exit(char *err_msg, int perror_flag);
 void		init_vars(t_vars *vars);
-void		init_objects(t_scene *scene);
+void		init_scene(t_scene *scene);
 
 // render_scene.c
 void		render_scene(t_vars *vars);

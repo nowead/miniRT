@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/02 16:26:08 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/06 17:30:04 by mindaewon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int main(int argc, char **argv)
 {
     t_vars  vars;
 
-	parse(argc, argv);
+	parse(argc, argv, &vars);
     init_vars(&vars);
-	init_objects(&vars.obj);
+	init_scene(&vars.scene);
 	render_scene(&vars);
 	mlx_put_image_to_window(vars.mlx, vars.win.ptr, vars.img.ptr, 0, 0);
 	setup_event_hooks(&vars);
@@ -57,22 +57,22 @@ void	init_vars(t_vars *vars)
         error_exit("mlx_get_data_addr error", PERROR_OFF);
 }
 
-void	init_objects(t_obj *obj)
+void	init_scene(t_scene *scene)
 {
-	obj->camera = (t_point3d){0, 0, 0};
-	obj->num_of_spheres = 3;
-	obj->spheres = (t_sphere *)malloc(sizeof(t_sphere) * obj->num_of_spheres);
-	if (!obj->spheres)
+	scene->camera.coord = (t_point3d){0, 0, 0};
+	scene->num_of_spheres = 3;
+	scene->spheres = (t_sphere *)malloc(sizeof(t_sphere) * scene->num_of_spheres);
+	if (!scene->spheres)
 		error_exit("malloc spheres error", PERROR_ON);
-	obj->spheres[0].center = (t_point3d){-5, 0, 15};
-	obj->spheres[0].radius = 3;
-	obj->spheres[0].color = 0x00FF00;
+	scene->spheres[0].center = (t_point3d){-5, 0, 15};
+	scene->spheres[0].radius = 3;
+	scene->spheres[0].color = 0x00FF00;
 	
-	obj->spheres[1].center = (t_point3d){0, -3, 10};
-	obj->spheres[1].radius = 3;
-	obj->spheres[1].color = 0xFF0000;
+	scene->spheres[1].center = (t_point3d){0, -3, 10};
+	scene->spheres[1].radius = 3;
+	scene->spheres[1].color = 0xFF0000;
 	
-	obj->spheres[2].center = (t_point3d){5, 0, 15};
-	obj->spheres[2].radius = 3;
-	obj->spheres[2].color = 0x0000FF;
+	scene->spheres[2].center = (t_point3d){5, 0, 15};
+	scene->spheres[2].radius = 3;
+	scene->spheres[2].color = 0x0000FF;
 }

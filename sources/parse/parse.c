@@ -6,7 +6,7 @@
 /*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/06 14:37:12 by mindaewon        ###   ########.fr       */
+/*   Updated: 2024/09/07 13:22:27 by mindaewon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	parse_line(char **line, t_vars *vars, int *parse_err_flag)
 	else if (ft_strncmp(line[0], "C", 2) == 0)
 		*parse_err_flag = parse_camera(line ,vars);
 	else if (ft_strncmp(line[0], "L", 2) == 0)
-		*parse_err_flag = parse_light(line, vars);
+		*parse_err_flag = parse_point_light(line, vars);
 	else if (ft_strncmp(line[0], "pl", 3) == 0)
 		*parse_err_flag = parse_plane(line, vars);
 	else if (ft_strncmp(line[0], "sp", 3) == 0)
@@ -78,5 +78,5 @@ void	parse(int argc, char **argv, t_vars *vars)
 	if (parse_argv(argc, argv))
 		exit_error("Usage: ./minirt [file.rt]", PERROR_OFF);
 	if (parse_rt(argv[1], vars))
-		exit_err("Error");
+		exit_error("Error");
 }

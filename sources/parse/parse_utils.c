@@ -6,7 +6,7 @@
 /*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:50:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/06 14:33:29 by mindaewon        ###   ########.fr       */
+/*   Updated: 2024/09/07 15:46:43 by mindaewon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,16 @@ float ft_atof(char *str)
 	while (dec--)
 		res /= 10;
 	return (res * sign);
+}
+
+int	ft_strslen(char **strs)
+{
+	int i;
+
+	i = 0;
+	while (strs[i])
+		i++;
+	return (i);
 }
 
 void free_lists(char **lists)
