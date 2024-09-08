@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 21:00:15 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/08 21:35:26 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ t_closest_hit	closest_intersection(t_point3d O, t_vector3d D, t_float_range t_ra
 	float		closest_t;
 	t_sphere	*closest_sphere;
 	t_ray_hit	hit;
+	float		t;
 	int			i;
 
 	closest_t = t_range.max;
@@ -107,6 +108,12 @@ t_closest_hit	closest_intersection(t_point3d O, t_vector3d D, t_float_range t_ra
             closest_sphere = &scene->spheres[i];
         }
 		i++;
+	}
+	t = intersect_ray_plane(O, D, &scene->plane);
+	if ((t_range.min < t && t < t_range.max) && t < closest_t)
+	{
+		closest_t = t;
+		closest_sphere = &scene->spheres[i];
 	}
 	return ((t_closest_hit){closest_sphere, closest_t});
 }

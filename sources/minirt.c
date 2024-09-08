@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 21:03:22 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/08 21:33:14 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	error_exit(char *err_msg, int perror_flag)
 
 void	init_vars(t_vars *vars)
 {
+	*vars = (t_vars){};
 	vars->mlx = mlx_init();
     if (!vars->mlx)
         error_exit("mlx_init error", PERROR_OFF);
@@ -64,7 +65,7 @@ void	init_scene(t_scene *scene)
 {
 	scene->camera.pos = (t_point3d){0, 0, 0};
 	scene->camera.dir = (t_vector3d){0, 0, 1};
-	scene->camera.fov = 120;
+	scene->camera.fov = 53;
 
 	scene->num_of_lights = 3;
 	scene->lights = (t_light *)malloc(sizeof(t_light) * scene->num_of_lights);
@@ -81,7 +82,13 @@ void	init_scene(t_scene *scene)
 	scene->lights[2].dir = (t_vector3d){1, 4, 4};
 	scene->lights[2].intens = 0.2;
 
-	scene->num_of_spheres = 4;
+	scene->plane = (t_plane *)malloc(sizeof(t_plane));
+	scene->plane->pos = (t_point3d){0, -1, 0};
+	scene->plane->color = YELLOW;
+	scene->plane->normal = (t_vector3d){0, 1, 0};
+	scene->plane->specular = 1000;
+
+	scene->num_of_spheres = 3;
 	scene->spheres = (t_sphere *)malloc(sizeof(t_sphere) * scene->num_of_spheres);
 	if (!scene->spheres)
 		error_exit("malloc spheres error", PERROR_ON);
@@ -100,8 +107,8 @@ void	init_scene(t_scene *scene)
 	scene->spheres[2].color = BLUE;
 	scene->spheres[2].specular = 500;
 
-	scene->spheres[3].center = (t_point3d){0, -5001, 0};
-	scene->spheres[3].radius = 5000;
-	scene->spheres[3].color = YELLOW;
-	scene->spheres[3].specular = 1000;
+	// scene->spheres[3].center = (t_point3d){0, -5001, 0};
+	// scene->spheres[3].radius = 5000;
+	// scene->spheres[3].color = YELLOW;
+	// scene->spheres[3].specular = 1000;
 }

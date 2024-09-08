@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 20:54:39 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/08 21:50:29 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,9 @@ typedef struct	s_light
 typedef struct	s_plane
 {
 	t_point3d	pos;
-	t_vector3d	dir;
+	t_vector3d	normal;
 	int			color;
+	int			specular;
 }	t_plane;
 
 typedef struct s_cylinder
@@ -106,6 +107,7 @@ typedef struct s_cylinder
 	float		diameter;
 	float		height;
 	int			color;
+	int			specular;
 }	t_cylinder;
 
 typedef struct	s_sphere
@@ -116,15 +118,33 @@ typedef struct	s_sphere
 	int			specular;
 }	t_sphere;
 
+typedef enum e_obj_type
+{
+	SPHERE,
+	PLANE,
+	CYLINDER
+}	t_obj_type;
+
+typedef union u_obj_data
+{
+    t_sphere   sphere;
+    t_plane    plane;
+    t_cylinder cylinder;
+} t_obj_data;
+
+typedef struct s_obj
+{
+	t_obj_type	type;
+	t_obj_data	data;	
+}	t_obj;
+
 typedef struct s_scene
 {
 	t_camera	camera;
 	t_light		*lights;
 	int			num_of_lights;
-	t_sphere	*spheres;
-	int			num_of_spheres;
-	t_cylinder	cylinder;
-	t_plane		plane;
+	t_obj		*obj;
+	int			num_of_obj;
 }	t_scene;
 
 typedef	struct	s_closest_hit
