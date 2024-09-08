@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/07 13:22:27 by mindaewon        ###   ########.fr       */
+/*   Updated: 2024/09/08 16:32:42 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ int	parse_rt(char *argv, t_vars *vars)
 		error_exit("open failed", PERROR_ON);
 	while (!parse_err_flag)
 	{
-		line = ft_split(get_next_line(fd), " ");
+		line = ft_split(get_next_line(fd), ' ');
 		if (!line)
 			break ;
-		parse_identifier(line, vars, &parse_err_flag);
+		parse_line(line, vars, &parse_err_flag);
 		free_lists(line);
 	}
 	free(file);
 	if (close(fd))
-		err_exit("close failed", PERROR_ON);
+		error_exit("close failed", PERROR_ON);
 	return (0);
 }
 
@@ -71,12 +71,15 @@ int	parse_line(char **line, t_vars *vars, int *parse_err_flag)
 		ft_putendl_fd(line[0], 2);
 		*parse_err_flag = 1;
 	}
+	if (*parse_err_flag)
+		return (1);
+	return (0);
 }
 
 void	parse(int argc, char **argv, t_vars *vars)
 {
 	if (parse_argv(argc, argv))
-		exit_error("Usage: ./minirt [file.rt]", PERROR_OFF);
+		error_exit("Usage: ./minirt [file.rt]", PERROR_OFF);
 	if (parse_rt(argv[1], vars))
-		exit_error("Error");
+		error_exit("Error", PERROR_OFF);
 }

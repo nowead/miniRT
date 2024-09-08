@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:00:38 by damin             #+#    #+#             */
-/*   Updated: 2024/09/04 19:22:46 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/08 16:36:04 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,21 @@ int	set_plane(char **line, t_plane *planes)
 	char	**vector;
 	char	**color;
 
-	coord = ft_split(line[1], ",");
-	if (!coord)
+	coord = ft_split(line[1], ',');
+	if (check_coord(coord))
 		return (1);
 	planes->coord = (t_point3d){ft_atoi(coord[0]), ft_atoi(coord[1]), ft_atoi(coord[2])};
 	free(coord);
-	vector = ft_split(line[2], ",");
-	if (!vector)
+	vector = ft_split(line[2], ',');
+	if (check_vector(vector))
 		return (1);
-	planes->vector = (t_vector3d){ft_atoi(vector[0]), ft_atoi(vector[1]), ft_atoi(vector[2])};
+	planes->vector = (t_vector3d){ft_atof(vector[0]), ft_atof(vector[1]), ft_atof(vector[2])};
 	free(vector);
-	color = ft_split(line[3], ",");
-	planes->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
-	if (planes->color == -1)
+	color = ft_split(line[3], ',');
+	if (check_color(color))
 		return (1);
+	planes->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+	free(color);
 	return (0);
 }
 

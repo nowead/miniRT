@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/04 19:22:57 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/08 16:35:47 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,28 @@ int     set_cylinder(char **line, t_cylinder *cylinders)
 {
     char    **coord;
     char    **vector;
+	char	**color;
 
-    coord = ft_split(line[1], ",");
-    if (!coord)
-        return (1);
+    coord = ft_split(line[1], ',');
+	if (check_coord(coord))
+		return (1);
     cylinders->center = (t_point3d){ft_atoi(coord[0]), ft_atoi(coord[1]), ft_atoi(coord[2])};
     free(coord);
-    vector = ft_split(line[2], ",");
-    if (!vector)
-        return (1);
+    vector = ft_split(line[2], ',');
+	if (check_vector(vector))
+		return (1);
     cylinders->vector = (t_vector3d){ft_atoi(vector[0]), ft_atoi(vector[1]), ft_atoi(vector[2])};
     free(vector);
+	if ((check_float_string(line[3])) || check_float_string(line[4]))
+		return (1);
     cylinders->diameter = ft_atoi(line[3]);
     cylinders->height = ft_atoi(line[4]);
-    cylinders->color = ft_atoi(line[5]);
+	color = ft_split(line[5], ',');
+	if (check_color(color))
+		return (1);
+	cylinders->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+	free(color);
+	return (0);
 }
 
 int	parse_cylinders(char **line, t_vars *vars)

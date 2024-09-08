@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsea_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 14:30:16 by mindaewon         #+#    #+#             */
-/*   Updated: 2024/09/07 15:16:10 by mindaewon        ###   ########.fr       */
+/*   Updated: 2024/09/08 15:54:33 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 int	check_coord(char **coord)
 {
 	int			i;
-	t_point3d	point;
 	
+	if (!coord)
+		return (1);
 	i = 0;
 	while (i < 3)
 	{
@@ -24,11 +25,6 @@ int	check_coord(char **coord)
 			return (1);
 		i++;
 	}
-	point.x = ft_atof(coord[0]);
-	point.y = ft_atof(coord[1]);
-	point.z = ft_atof(coord[2]);
-	if (point.x < -FLT_MAX || point.x > FLT_MAX || point.y < -FLT_MAX || point.y > FLT_MAX || point.z < -FLT_MAX || point.z > FLT_MAX)
-		return (1);
 	return (0);
 }
 
@@ -37,6 +33,8 @@ int check_vector(char **vector)
 	int			i;
 	t_vector3d	vec;
 	
+	if (!vector)
+		return (1);
 	i = 0;
 	while (i < 3)
 	{

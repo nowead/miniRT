@@ -8,7 +8,9 @@ INCLDS			=	$(addprefix includes/, minirt.h)
 PARSE_DIR		=	parse/
 RENDER_DIR		=	render/
 SRC				=	$(addprefix sources/, minirt.c\
-$(addprefix $(PARSE_DIR), parse.c parse_rt.c)\
+$(addprefix $(PARSE_DIR), parse.c parse_utils.c parse_mesh_cylinder.c parse_mesh_plane.c\
+						  parse_mesh_sphere.c parse_object_amb_light.c parse_object_camera.c\
+						  parse_object_point_light.c)\
 $(addprefix $(RENDER_DIR), my_mlx_pixel_put.c	render_scene.c	setup_event_hooks.c))
 OBJ				=	$(patsubst %.c, %.o, $(SRC))
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/08/31 20:56:48 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/08 16:38:51 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	render_scene(t_vars *vars)
 		while (y < (vars->img.height / 2))
 		{
 			D = canvas_to_viewport(x, y, &vars->img);
-			color = trace_ray(&vars->obj, D, 1, FLT_MAX);
+			color = trace_ray(&vars->scene, D, 1, FLT_MAX);
 			my_mlx_pixel_put(x, y, color, &vars->img);
 			y++;
 		}

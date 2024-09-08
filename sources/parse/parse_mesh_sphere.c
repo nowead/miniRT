@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:00:51 by damin             #+#    #+#             */
-/*   Updated: 2024/09/04 19:22:34 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/08 16:36:26 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,17 @@ int		set_sphere(char **line, t_sphere *spheres)
 	char	**coord;
 	char	**color;
 
-	coord = ft_split(line[1], ",");
-	if (!coord)
+	coord = ft_split(line[1], ',');
+	if (check_coord(coord))
 		return (1);
-	spheres->center = (t_point3d){ft_atoi(coord[0]), ft_atoi(coord[1]), ft_atoi(coord[2])};
+	spheres->center = (t_point3d){ft_atof(coord[0]), ft_atof(coord[1]), ft_atof(coord[2])};
 	free(coord);
 	spheres->radius = ft_atoi(line[2]) / 2;
-	color = ft_split(line[3], ",");
-	spheres->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
-	if (spheres->color == -1)
+	color = ft_split(line[3], ',');
+	if (check_color(color))
 		return (1);
+	spheres->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+	free(color);
 	return (0);
 }
 

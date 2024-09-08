@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/07 15:28:51 by mindaewon        ###   ########.fr       */
+/*   Updated: 2024/09/08 16:37:57 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ int			init_cylinders(t_cylinder *cylinders, char **line);
 int			get_color(int r, int g, int b);
 void		free_lists(char **lists);
 float		ft_atof(char *str);
+int			ft_strslen(char **strs);
 
 //parse_check.c
 int			check_coord(char **coord);
