@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:41:16 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/05 21:31:21 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/08 20:06:38 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2)
 float	dot(t_vector3d v1, t_vector3d v2)
 {
 	return ((v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z));
+}
+
+t_vector3d	cross(t_vector3d v1, t_vector3d v2)
+{
+	return ((t_vector3d){v1.y * v2.z - v1.z * v2.y, \
+	v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x});
 }
 
 t_vector3d	scale_vector(t_vector3d v, float s)
@@ -40,4 +46,19 @@ float	length(t_vector3d v)
 t_vector3d	subtract_3dvectors(t_vector3d v1, t_vector3d v2)
 {
 	return ((t_vector3d){v1.x - v2.x, v1.y - v2.y, v1.z - v2.z});
+}
+
+t_vector3d	add_3dvectors(t_vector3d v1, t_vector3d v2)
+{
+	return ((t_vector3d){v1.x + v2.x, v1.y + v2.y, v1.z + v2.z});
+}
+
+float	cosine_between_vectors(t_vector3d v1, t_vector3d v2)
+{
+	return (dot(v1, v2) / (length(v1) * length(v2)));
+}
+
+t_vector3d	normalize_vector(t_vector3d v)
+{
+	return (scale_vector(v, 1 / length(v)));
 }

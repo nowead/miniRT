@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/06 21:51:55 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/08 20:54:39 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,11 +127,11 @@ typedef struct s_scene
 	t_plane		plane;
 }	t_scene;
 
-typedef	struct	s_inter
+typedef	struct	s_closest_hit
 {
-	t_sphere	*closest_sphere;
-	float		closest_t;
-}	t_inter;
+	t_sphere	*sphere;
+	float		t;
+}	t_closest_hit;
 
 typedef struct s_win
 {
@@ -166,9 +166,10 @@ void		init_scene(t_scene *scene);
 
 // render_scene.c
 void		render_scene(t_vars *vars);
-t_vector3d	canvas_to_viewport(int x, int y, t_img *img);
+t_vector3d	canvas_to_viewport(int x, int y, t_img *img, int fov);
+t_vector3d	rotate_camera(t_vector3d camera_dir, t_vector3d d);
 int			trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max);
-t_inter		closest_intersection(t_point3d O, t_vector3d D, t_float_range t_range, t_scene *scene);
+t_closest_hit		closest_intersection(t_point3d O, t_vector3d D, t_float_range t_range, t_scene *scene);
 int			apply_lighting(int color, float lighting);
 
 // intersect_ray_sphere.c
@@ -189,9 +190,13 @@ int			exit_no_error(void);
 // vector_operations.c
 t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2);
 float		dot(t_vector3d v1, t_vector3d v2);
+t_vector3d	cross(t_vector3d v1, t_vector3d v2);
 t_vector3d	scale_vector(t_vector3d v, float s);
 t_point3d	add_vector_to_point(t_point3d p, t_vector3d v);
 float		length(t_vector3d v);
 t_vector3d	subtract_3dvectors(t_vector3d v1, t_vector3d v2);
+t_vector3d	add_3dvectors(t_vector3d v1, t_vector3d v2);
+float		cosine_between_vectors(t_vector3d v1, t_vector3d v2);
+t_vector3d	normalize_vector(t_vector3d v);
 
 #endif

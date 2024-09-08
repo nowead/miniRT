@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/05 21:43:12 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/08 21:03:22 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	init_vars(t_vars *vars)
 void	init_scene(t_scene *scene)
 {
 	scene->camera.pos = (t_point3d){0, 0, 0};
+	scene->camera.dir = (t_vector3d){0, 0, 1};
+	scene->camera.fov = 120;
 
 	scene->num_of_lights = 3;
 	scene->lights = (t_light *)malloc(sizeof(t_light) * scene->num_of_lights);
