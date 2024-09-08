@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 16:37:57 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/08 16:55:37 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@
 # define ESC_KEY 53
 
 # define BACKGROUND_COLOR 0xFFFFFF
+# define RED 0xFF0000
+# define GREEN 0x00FF00
+# define BLUE 0x0000FF
+# define YELLOW 0xFFFF00
 
 # define FLT_MAX 3.402823466e+38F
 
@@ -53,18 +57,11 @@ typedef struct	s_vector3d
 	float	z;
 }	t_vector3d;
 
-typedef struct	s_hit
+typedef struct	s_ray_hit
 {
 	float	t1;
 	float	t2;
-}	t_hit;
-
-typedef struct	s_camera
-{
-	t_point3d	coord;
-	t_vector3d	vector;
-	float		fov;
-}	t_camera;
+}	t_ray_hit;
 
 typedef enum e_light_type
 {
@@ -83,6 +80,13 @@ typedef struct  s_light
 	struct s_light	*next;
 }   t_light;
 
+typedef struct	s_camera
+{
+	t_point3d	pos;
+	t_vector3d	dir;
+	float		fov;
+}	t_camera;
+
 typedef struct	s_plane
 {
 	t_point3d		coord;
@@ -91,23 +95,31 @@ typedef struct	s_plane
 	struct s_plane	*next;
 }	t_plane;
 
+typedef struct s_cylinder
+{
+	t_point3d	center;
+	t_vector3d	vector;
+	float		diameter;
+	float		height;
+	int				color;
+	struct s_cylinder	*next;
+}	t_cylinder;
+
 typedef struct	s_sphere
 {
 	t_point3d		center;
 	float			radius;
 	int				color;
 	struct s_sphere	*next;
+	int			specular;
 }	t_sphere;
 
-typedef struct	s_cylinder
+typedef struct	s_float_range
 {
-	t_point3d			center;
-	t_vector3d			vector;
-	float				diameter;
-	float				height;
-	int					color;
-	struct s_cylinder	*next;
-}	t_cylinder;
+	float	min;
+	float	max;
+}	t_float_range;
+
 
 typedef struct s_scene
 {
@@ -122,6 +134,11 @@ typedef struct s_scene
 	int			num_of_cylinders;
 }	t_scene;
 
+typedef	struct	s_inter
+{
+	t_sphere	*closest_sphere;
+	float		closest_t;
+}	t_inter;
 typedef struct s_win
 {
 	void	*ptr;
@@ -204,10 +221,15 @@ void		init_scene(t_scene *scene);
 void		render_scene(t_vars *vars);
 t_vector3d	canvas_to_viewport(int x, int y, t_img *img);
 int			trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max);
-t_hit		intersect_ray_sphere(t_point3d O, t_vector3d D, \
+t_inter		closest_intersection(t_point3d O, t_vector3d D, t_float_range t_range, t_scene *scene);
+int			apply_lighting(int color, float lighting);
+
+// intersect_ray_sphere.c
+t_ray_hit	intersect_ray_sphere(t_point3d O, t_vector3d D, \
 t_sphere *sphere);
-t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2);
-float		dot(t_vector3d v1, t_vector3d v2);
+
+// compute_lighting.c
+float		compute_lighting(t_point3d p, t_vector3d v, t_sphere *sphere, t_scene *scene);
 
 // my_mlx_pixel_put.c
 void		my_mlx_pixel_put(int x, int y, int color, t_img *img);
@@ -216,5 +238,13 @@ void		my_mlx_pixel_put(int x, int y, int color, t_img *img);
 void		setup_event_hooks(t_vars *vars);
 int			key_hook(int keycode, void *param);
 int			exit_no_error(void);
+
+// vector_operations.c
+t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2);
+float		dot(t_vector3d v1, t_vector3d v2);
+t_vector3d	scale_vector(t_vector3d v, float s);
+t_point3d	add_vector_to_point(t_point3d p, t_vector3d v);
+float		length(t_vector3d v);
+t_vector3d	subtract_3dvectors(t_vector3d v1, t_vector3d v2);
 
 #endif

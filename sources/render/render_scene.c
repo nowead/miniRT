@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 16:38:51 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/08 16:49:14 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,72 +39,63 @@ t_vector3d	canvas_to_viewport(int x, int y, t_img *img)
 	return ((t_vector3d){x * (1 / (float)img->width), y * (1 / (float)img->height), 1});
 }
 
-int	trace_ray(t_obj *obj, t_vector3d D, float t_min, float t_max)
+int	trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max)
 {
-    float		closest_t;
-	t_sphere	*closest_sphere;
-	int			i;
-	t_hit		hit;
+	t_point3d	p;
+	t_inter		inter;
 
-	closest_t = t_max;
+	inter = closest_intersection(scene->camera.pos, D, (t_float_range){t_min, t_max}, scene);
+    if (!inter.closest_sphere)
+        return (BACKGROUND_COLOR);
+	p = add_vector_to_point(scene->camera.pos, scale_vector(D, inter.closest_t));
+    return (apply_lighting(inter.closest_sphere->color, compute_lighting(p, scale_vector(D, -1), inter.closest_sphere, scene)));
+}
+
+t_inter	closest_intersection(t_point3d O, t_vector3d D, t_float_range t_range, t_scene *scene)
+{
+	float		closest_t;
+	t_sphere	*closest_sphere;
+	t_ray_hit	hit;
+	int			i;
+
+	closest_t = t_range.max;
     closest_sphere = NULL;
 	i = 0;
-    while (i < obj->num_of_spheres)
+    while (i < scene->num_of_spheres)
     {
-        hit = intersect_ray_sphere(obj->camera, D, &(obj->spheres)[i]);
-        if ((t_min < hit.t1 && hit.t1 < t_max) && hit.t1 < closest_t) 
+        hit = intersect_ray_sphere(O, D, &(scene->spheres)[i]);
+        if ((t_range.min < hit.t1 && hit.t1 < t_range.max) && hit.t1 < closest_t)
         {
             closest_t = hit.t1;
-            closest_sphere = &obj->spheres[i];
+            closest_sphere = &scene->spheres[i];
         }
-		if ((t_min < hit.t2 && hit.t2 < t_max) && hit.t2 < closest_t) 
+		if ((t_range.min < hit.t2 && hit.t2 < t_range.max) && hit.t2 < closest_t)
         {
             closest_t = hit.t2;
-            closest_sphere = &obj->spheres[i];
+            closest_sphere = &scene->spheres[i];
         }
 		i++;
 	}
-    if (closest_sphere == NULL) 
-        return (BACKGROUND_COLOR);
-    return (closest_sphere->color);
+	return ((t_inter){closest_sphere, closest_t});
 }
 
-t_hit	intersect_ray_sphere(t_point3d O, t_vector3d D, \
-t_sphere *sphere)
+int apply_lighting(int color, float lighting)
 {
-	float		r;
-	float		t1;
-	float		t2;
-	float		discriminant;
-	t_vector3d	CO;
-	float		a;
-	float		b;
-	float		c;
-	
-	
-    r = sphere->radius;
-    CO = subtract_3dpoints(O, sphere->center);
-    a = dot(D, D);
-    b = 2 * dot(CO, D);
-    c = dot(CO, CO) - (r * r);
+    int r;
+	int	g;
+	int	b;
 
-    discriminant = b * b - 4 * a * c;
-
-    if (discriminant < 0)
-        return ((t_hit){FLT_MAX, FLT_MAX});
-
-    t1 = (-b + sqrt(discriminant)) / (2 * a);
-    t2 = (-b - sqrt(discriminant)) / (2 * a);
-    
-    return ((t_hit){t1, t2});
-}
-
-t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2)
-{
-	return ((t_vector3d){p1.x - p2.x, p1.y - p2.y, p1.z - p2.z});
-}
-
-float	dot(t_vector3d v1, t_vector3d v2)
-{
-	return ((v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z));
+    r = (color >> 16) & 0xFF;
+    g = (color >> 8) & 0xFF;
+    b = color & 0xFF;
+    r = (int)(r * lighting);
+    g = (int)(g * lighting);
+    b = (int)(b * lighting);
+	if (r > 255)
+		r = 255;
+	if (g > 255)
+		g = 255;
+	if (b > 255)
+		b = 255;
+    return ((r << 16) | (g << 8) | b);
 }
