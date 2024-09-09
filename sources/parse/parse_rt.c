@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 20:41:44 by damin             #+#    #+#             */
-/*   Updated: 2024/09/08 21:05:44 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/09 17:11:33 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void    get_line(int fd, t_vars *vars)
 		temp = get_next_line(fd);
 		if (!temp)
 			break ;
-		printf("temp: %s", temp);
+		printf("%s", temp);	// for debugging
 		if (temp[0] == '\n')
 		{
 			free(temp);

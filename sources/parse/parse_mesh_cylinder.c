@@ -6,13 +6,13 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/08 16:35:47 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/09 16:38:44 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int		init_cylinders(t_cylinder *cylinders, char **line)
+int		init_cylinders(t_cylinder *cylinders, char **line, t_vars *vars)
 {
 	cylinders = (t_cylinder *)malloc(sizeof(t_cylinder));
 	if (!cylinders)
@@ -20,6 +20,7 @@ int		init_cylinders(t_cylinder *cylinders, char **line)
 	if (set_cylinder(line, cylinders))
 		return (1);
 	cylinders->next = NULL;
+	vars->scene.cylinders = cylinders;
 	return (0);
 }
 
@@ -60,7 +61,7 @@ int	parse_cylinders(char **line, t_vars *vars)
 	cylinders = vars->scene.cylinders;
 	if (cylinders == NULL)
 	{
-		if (init_cylinders(cylinders, line))
+		if (init_cylinders(cylinders, line, vars))
 			return (1);
 	}
 	else

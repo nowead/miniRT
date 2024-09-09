@@ -6,19 +6,20 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:00:38 by damin             #+#    #+#             */
-/*   Updated: 2024/09/08 16:36:04 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/09 16:38:59 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	init_planes(t_plane *planes, char **line)
+int	init_planes(t_plane *planes, char **line, t_vars *vars)
 {
 	planes = (t_plane *)malloc(sizeof(t_plane));
 	if (!planes)
 		return (1);
 	set_plane(line, planes);
 	planes->next = NULL;
+	vars->scene.planes = planes;
 	return (0);
 }
 
@@ -55,7 +56,7 @@ int	parse_plane(char **line, t_vars *vars)
 	planes = vars->scene.planes;
 	if (planes == NULL)
 	{
-		if (init_planes(planes, line))
+		if (init_planes(planes, line, vars))
 			return (1);
 	}
 	else

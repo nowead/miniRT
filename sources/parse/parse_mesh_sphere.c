@@ -6,13 +6,13 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:00:51 by damin             #+#    #+#             */
-/*   Updated: 2024/09/08 16:36:26 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/09 16:39:21 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int		init_spheres(t_sphere *spheres, char **line)
+int		init_spheres(t_sphere *spheres, char **line, t_vars *vars)
 {
 	spheres = (t_sphere *)malloc(sizeof(t_sphere));
 	if (!spheres)
@@ -20,6 +20,7 @@ int		init_spheres(t_sphere *spheres, char **line)
 	if (set_sphere(line, spheres))
 		return (1);
 	spheres->next = NULL;
+	vars->scene.spheres = spheres;
 	return (0);
 }
 
@@ -51,7 +52,7 @@ int	parse_spheres(char **line,t_vars *vars)
 	spheres = vars->scene.spheres;
 	if (spheres == NULL)
 	{
-		if (init_spheres(spheres, line))
+		if (init_spheres(spheres, line, vars))
 			return (1);
 	}
 	else

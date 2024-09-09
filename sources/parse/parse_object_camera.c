@@ -31,5 +31,7 @@ int parse_camera(char **line, t_vars *vars)
 	if (check_float_string(line[3]))
 		return (1);
 	vars->scene.camera.fov = ft_atof(line[3]);
+	if (vars->scene.camera.fov < 0 || vars->scene.camera.fov > 180)
+		return (1);
 	return (0);
 }

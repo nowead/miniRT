@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 20:52:17 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/09 17:36:18 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct  s_light
 {
     t_light_type    type;
     float           intens;
+	float			ratio;
     int             color;
     t_vector3d      dir;
     t_point3d       pos;
@@ -182,29 +183,29 @@ int			parse_rt(char *argv, t_vars *vars);
 int			parse_camera(char **line, t_vars *vars);
 
 //parse_object_amb_light.c
-int			init_amb_light(t_light *lights, char **line);
+int			init_amb_light(t_light *lights, char **line, t_vars *vars);
 int			set_amb_light(char **line, t_light *lights);
 int			parse_amb_light(char **line, t_vars *vars);
 
 //parse_object_point_light.c
-int			init_point_light(t_light *lights, char **line);
+int			init_point_light(t_light *lights, char **line, t_vars *vars);
 int			set_point_light(char **line, t_light *lights);
 int			parse_point_light(char **line, t_vars *vars);
 
 // parse_mesh_plane.c
 int			parse_plane(char **line, t_vars *vars);
 int			set_plane(char **line, t_plane *planes);
-int			init_planes(t_plane *planes, char **line);
+int			init_planes(t_plane *planes, char **line, t_vars *vars);
 
 // parse_mesh_sphere.c
 int			parse_spheres(char **line, t_vars *vars);
 int			set_sphere(char **line, t_sphere *spheres);
-int			init_spheres(t_sphere *spheres, char **line);
+int			init_spheres(t_sphere *spheres, char **line, t_vars *vars);
 
 // parse_mesh_cylinder.c
 int			parse_cylinders(char **line, t_vars *vars);
 int			set_cylinder(char **line, t_cylinder *cylinders);
-int			init_cylinders(t_cylinder *cylinders, char **line);
+int			init_cylinders(t_cylinder *cylinders, char **line, t_vars *vars);
 
 //parse_utils.c
 int			get_color(int r, int g, int b);
