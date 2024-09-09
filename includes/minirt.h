@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 21:50:29 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/09 13:46:48 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,6 @@ typedef struct	s_vector3d
 	float	z;
 }	t_vector3d;
 
-typedef struct	s_ray_hit
-{
-	float	t1;
-	float	t2;
-}	t_ray_hit;
-
 typedef struct	s_float_range
 {
 	float	min;
@@ -71,9 +65,9 @@ typedef struct	s_float_range
 
 typedef struct	s_camera
 {
-	t_point3d	pos;
-	t_vector3d	dir;
-	int			fov;
+	t_point3d		pos;
+	t_vector3d		dir;
+	int				fov;
 }	t_camera;
 
 typedef enum e_light_type
@@ -96,8 +90,6 @@ typedef struct	s_plane
 {
 	t_point3d	pos;
 	t_vector3d	normal;
-	int			color;
-	int			specular;
 }	t_plane;
 
 typedef struct s_cylinder
@@ -106,16 +98,12 @@ typedef struct s_cylinder
 	t_vector3d	vector;
 	float		diameter;
 	float		height;
-	int			color;
-	int			specular;
 }	t_cylinder;
 
 typedef struct	s_sphere
 {
 	t_point3d	center;
 	float		radius;
-	int			color;
-	int			specular;
 }	t_sphere;
 
 typedef enum e_obj_type
@@ -135,7 +123,9 @@ typedef union u_obj_data
 typedef struct s_obj
 {
 	t_obj_type	type;
-	t_obj_data	data;	
+	t_obj_data	data;
+	int			color;
+	int			specular;
 }	t_obj;
 
 typedef struct s_scene
@@ -147,10 +137,16 @@ typedef struct s_scene
 	int			num_of_obj;
 }	t_scene;
 
+typedef struct	s_ray_hit
+{
+	float	t1;
+	float	t2;
+}	t_ray_hit;
+
 typedef	struct	s_closest_hit
 {
-	t_sphere	*sphere;
-	float		t;
+	t_obj	*obj;
+	float	t;
 }	t_closest_hit;
 
 typedef struct s_win
@@ -180,43 +176,42 @@ typedef struct s_vars
 }	t_vars;
 
 // minirt.c
-void		error_exit(char *err_msg, int perror_flag);
-void		init_vars(t_vars *vars);
-void		init_scene(t_scene *scene);
+void			error_exit(char *err_msg, int perror_flag);
+void			init_vars(t_vars *vars);
+void			init_scene(t_scene *scene);
 
 // render_scene.c
-void		render_scene(t_vars *vars);
-t_vector3d	canvas_to_viewport(int x, int y, t_img *img, int fov);
-t_vector3d	rotate_camera(t_vector3d camera_dir, t_vector3d d);
-int			trace_ray(t_scene *scene, t_vector3d D, float t_min, float t_max);
-t_closest_hit		closest_intersection(t_point3d O, t_vector3d D, t_float_range t_range, t_scene *scene);
-int			apply_lighting(int color, float lighting);
+void			render_scene(t_vars *vars);
+t_vector3d		canvas_to_viewport(int x, int y, t_img *img, int fov);
+t_vector3d		rotate_camera(t_vector3d camera_dir, t_vector3d d);
+int				trace_ray(t_scene *scene, t_vector3d ray_dir);
+t_closest_hit	closest_intersection(t_vector3d ray_dir, t_scene *scene);
 
 // intersect_ray_sphere.c
-t_ray_hit	intersect_ray_sphere(t_point3d O, t_vector3d D, \
-t_sphere *sphere);
+void			intersect_ray_sphere(t_camera *camera, t_vector3d D, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
 
 // compute_lighting.c
-float		compute_lighting(t_point3d p, t_vector3d v, t_sphere *sphere, t_scene *scene);
+float			compute_lighting(t_point3d p, t_vector3d v, t_obj *obj, t_scene *scene);
+int				apply_lighting(int color, float lighting);
 
 // my_mlx_pixel_put.c
-void		my_mlx_pixel_put(int x, int y, int color, t_img *img);
+void			my_mlx_pixel_put(int x, int y, int color, t_img *img);
 
 // setup_event_hooks.c
-void		setup_event_hooks(t_vars *vars);
-int			key_hook(int keycode, void *param);
-int			exit_no_error(void);
+void			setup_event_hooks(t_vars *vars);
+int				key_hook(int keycode, void *param);
+int				exit_no_error(void);
 
 // vector_operations.c
-t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2);
-float		dot(t_vector3d v1, t_vector3d v2);
-t_vector3d	cross(t_vector3d v1, t_vector3d v2);
-t_vector3d	scale_vector(t_vector3d v, float s);
-t_point3d	add_vector_to_point(t_point3d p, t_vector3d v);
-float		length(t_vector3d v);
-t_vector3d	subtract_3dvectors(t_vector3d v1, t_vector3d v2);
-t_vector3d	add_3dvectors(t_vector3d v1, t_vector3d v2);
-float		cosine_between_vectors(t_vector3d v1, t_vector3d v2);
-t_vector3d	normalize_vector(t_vector3d v);
+t_vector3d		subtract_3dpoints(t_point3d p1, t_point3d p2);
+float			dot(t_vector3d v1, t_vector3d v2);
+t_vector3d		cross(t_vector3d v1, t_vector3d v2);
+t_vector3d		scale_vector(t_vector3d v, float s);
+t_point3d		add_vector_to_point(t_point3d p, t_vector3d v);
+float			length(t_vector3d v);
+t_vector3d		subtract_3dvectors(t_vector3d v1, t_vector3d v2);
+t_vector3d		add_3dvectors(t_vector3d v1, t_vector3d v2);
+float			cosine_between_vectors(t_vector3d v1, t_vector3d v2);
+t_vector3d		normalize_vector(t_vector3d v);
 
 #endif

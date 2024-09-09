@@ -6,13 +6,13 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 17:06:51 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/09 13:49:47 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-float	compute_lighting(t_point3d p, t_vector3d v, t_sphere *sphere, t_scene *scene)
+float	compute_lighting(t_point3d p, t_vector3d v, t_obj *obj, t_scene *scene)
 {
 	t_light			*light;
 	t_closest_hit	closest_hit;
@@ -25,7 +25,7 @@ float	compute_lighting(t_point3d p, t_vector3d v, t_sphere *sphere, t_scene *sce
 	int				i;
 	float			t_max;
 
-	n = subtract_3dpoints(p , sphere->center);
+	n = subtract_3dpoints(p , obj->data.sphere.center);
 	n = scale_vector(n, 1 / length(n));
     intens = 0.0;
 	i = 0;
@@ -47,7 +47,7 @@ float	compute_lighting(t_point3d p, t_vector3d v, t_sphere *sphere, t_scene *sce
 				t_max = FLT_MAX;
 			}
 			closest_hit = closest_intersection(p, l, (t_float_range){0.001, t_max}, scene);
-			if (!closest_hit.sphere)
+			if (!closest_hit.obj)
 			{
 				n_dot_l = dot(n, l);
 				if (n_dot_l > 0) 
@@ -56,10 +56,31 @@ float	compute_lighting(t_point3d p, t_vector3d v, t_sphere *sphere, t_scene *sce
 				r = subtract_3dvectors(scale_vector(n, 2 * dot(n, l)), l);
 				r_dot_v = dot(r, v);
 				if (r_dot_v > 0)
-					intens += light->intens * pow(r_dot_v / (length(r) * length(v)), sphere->specular);
+					intens += light->intens * pow(r_dot_v / (length(r) * length(v)), obj->specular);
 			}
 		}
 		i++;
     }
     return (intens);
+}
+
+int apply_lighting(int color, float lighting)
+{
+    int r;
+	int	g;
+	int	b;
+
+    r = (color >> 16) & 0xFF;
+    g = (color >> 8) & 0xFF;
+    b = color & 0xFF;
+    r = (int)(r * lighting);
+    g = (int)(g * lighting);
+    b = (int)(b * lighting);
+	if (r > 255)
+		r = 255;
+	if (g > 255)
+		g = 255;
+	if (b > 255)
+		b = 255;
+    return ((r << 16) | (g << 8) | b);
 }

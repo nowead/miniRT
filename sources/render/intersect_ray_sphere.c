@@ -6,14 +6,13 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:40:55 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/06 21:26:32 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/09 13:46:21 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_ray_hit	intersect_ray_sphere(t_point3d O, t_vector3d D, \
-t_sphere *sphere)
+void	intersect_ray_sphere(t_camera *camera, t_vector3d D, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit)
 {
 	float		r;
 	float		t1;
@@ -25,8 +24,8 @@ t_sphere *sphere)
 	float		c;
 	
 	
-    r = sphere->radius;
-    CO = subtract_3dpoints(O, sphere->center);
+    r = obj->data.sphere.radius;
+    CO = subtract_3dpoints(camera->pos, obj->data.sphere.center);
     a = dot(D, D);
     b = 2 * dot(CO, D);
     c = dot(CO, CO) - (r * r);
@@ -34,10 +33,25 @@ t_sphere *sphere)
     discriminant = b * b - 4 * a * c;
 
     if (discriminant < 0)
-        return ((t_ray_hit){FLT_MAX, FLT_MAX});
-
-    t1 = (-b + sqrt(discriminant)) / (2 * a);
-    t2 = (-b - sqrt(discriminant)) / (2 * a);
-    
-    return ((t_ray_hit){t1, t2});
+    {
+		t1 = t_range.max;
+		t2 = t_range.max;
+	}
+	else
+	{
+		t1 = (-b + sqrt(discriminant)) / (2 * a);
+		t2 = (-b - sqrt(discriminant)) / (2 * a);
+	}
+	
+	if ((t_range.min < t1 && t1 < t_range.max) && t1 < closest_hit->t)
+	{
+		closest_hit->t = t1;
+		closest_hit->obj = obj;
+	}
+	if ((t_range.min < t2 && t2 < t_range.max) && t2 < closest_hit->t)
+	{
+		closest_hit->t = t1;
+		closest_hit->obj = obj;
+	}
+    return ;
 }

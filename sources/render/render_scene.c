@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 21:35:26 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/09 13:48:50 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	render_scene(t_vars *vars)
 		while (y < (vars->img.height / 2))
 		{
 			ray_dir = rotate_camera(vars->scene.camera.dir, canvas_to_viewport(x, y, &vars->img, vars->scene.camera.fov));
-			color = trace_ray(&vars->scene, ray_dir, 0, FLT_MAX);
+			color = trace_ray(&vars->scene, ray_dir);
 			my_mlx_pixel_put(x, y, color, &vars->img);
 			y++;
 		}
@@ -71,70 +71,35 @@ t_vector3d	rotate_camera(t_vector3d camera_dir, t_vector3d d)
 	return (rotated_vector);
 }
 
-int	trace_ray(t_scene *scene, t_vector3d ray_dir, float t_min, float t_max)
+int	trace_ray(t_scene *scene, t_vector3d ray_dir)
 {
 	t_point3d		p;
 	t_closest_hit	closest_hit;
 
-	closest_hit = closest_intersection(scene->camera.pos, ray_dir, (t_float_range){t_min, t_max}, scene);
-    if (!closest_hit.sphere)
+	closest_hit = closest_intersection(ray_dir, scene);
+    if (!closest_hit.obj)
         return (BACKGROUND_COLOR);
 	p = add_vector_to_point(scene->camera.pos, scale_vector(ray_dir, closest_hit.t));
-    return (apply_lighting(closest_hit.sphere->color, compute_lighting(p, scale_vector(ray_dir, -1), closest_hit.sphere, scene)));
+    return (apply_lighting(closest_hit.obj->color, compute_lighting(p, scale_vector(ray_dir, -1), closest_hit.obj, scene)));
 }
 
-t_closest_hit	closest_intersection(t_point3d O, t_vector3d D, t_float_range t_range, t_scene *scene)
+t_closest_hit	closest_intersection(t_point3d o, t_vector3d ray_dir, t_scene *scene, t_float_range t_range)
 {
-	float		closest_t;
-	t_sphere	*closest_sphere;
-	t_ray_hit	hit;
-	float		t;
-	int			i;
+	t_closest_hit	closest_hit;
+	int				i;
 
-	closest_t = t_range.max;
-    closest_sphere = NULL;
+	closest_hit.t = t_range.max;
+    closest_hit.obj = NULL;
 	i = 0;
-    while (i < scene->num_of_spheres)
+    while (i < scene->num_of_obj)
     {
-        hit = intersect_ray_sphere(O, D, &(scene->spheres)[i]);
-        if ((t_range.min < hit.t1 && hit.t1 < t_range.max) && hit.t1 < closest_t)
-        {
-            closest_t = hit.t1;
-            closest_sphere = &scene->spheres[i];
-        }
-		if ((t_range.min < hit.t2 && hit.t2 < t_range.max) && hit.t2 < closest_t)
-        {
-            closest_t = hit.t2;
-            closest_sphere = &scene->spheres[i];
-        }
+		if (scene->obj[i].type == SPHERE)
+        	intersect_ray_sphere(o, ray_dir, &(scene->obj[i]), &closest_hit);
+		// else if (scene->obj[i].type == PLANE)
+		// 	closest_hit = intersect_ray_plane(scene->camera, ray_dir, &(scene->obj[i]), &closest_hit);
+		// else if (scene->obj[i].type == CYLINDER)
+		// 	closest_hit = intersect_ray_plane(scene->camera, ray_dir, &(scene->obj[i]), &closest_hit);
 		i++;
 	}
-	t = intersect_ray_plane(O, D, &scene->plane);
-	if ((t_range.min < t && t < t_range.max) && t < closest_t)
-	{
-		closest_t = t;
-		closest_sphere = &scene->spheres[i];
-	}
-	return ((t_closest_hit){closest_sphere, closest_t});
-}
-
-int apply_lighting(int color, float lighting)
-{
-    int r;
-	int	g;
-	int	b;
-
-    r = (color >> 16) & 0xFF;
-    g = (color >> 8) & 0xFF;
-    b = color & 0xFF;
-    r = (int)(r * lighting);
-    g = (int)(g * lighting);
-    b = (int)(b * lighting);
-	if (r > 255)
-		r = 255;
-	if (g > 255)
-		g = 255;
-	if (b > 255)
-		b = 255;
-    return ((r << 16) | (g << 8) | b);
+	return (closest_hit);
 }

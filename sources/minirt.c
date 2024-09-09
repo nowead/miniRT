@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 21:33:14 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/09 13:41:36 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,33 +82,38 @@ void	init_scene(t_scene *scene)
 	scene->lights[2].dir = (t_vector3d){1, 4, 4};
 	scene->lights[2].intens = 0.2;
 
-	scene->plane = (t_plane *)malloc(sizeof(t_plane));
-	scene->plane->pos = (t_point3d){0, -1, 0};
-	scene->plane->color = YELLOW;
-	scene->plane->normal = (t_vector3d){0, 1, 0};
-	scene->plane->specular = 1000;
+	scene->num_of_obj = 4;
+	scene->obj = (t_obj *)ft_calloc(scene->num_of_obj, sizeof(t_obj));
+	if (!scene->obj)
+		return (error_exit("malloc obj error", PERROR_ON));
 
-	scene->num_of_spheres = 3;
-	scene->spheres = (t_sphere *)malloc(sizeof(t_sphere) * scene->num_of_spheres);
-	if (!scene->spheres)
-		error_exit("malloc spheres error", PERROR_ON);
-	scene->spheres[0].center = (t_point3d){-2, 0, 4};
-	scene->spheres[0].radius = 1;
-	scene->spheres[0].color = GREEN;
-	scene->spheres[0].specular = 10;
-	
-	scene->spheres[1].center = (t_point3d){0, -1, 3};
-	scene->spheres[1].radius = 1;
-	scene->spheres[1].color = RED;
-	scene->spheres[1].specular = 500;
-	
-	scene->spheres[2].center = (t_point3d){2, 0, 4};
-	scene->spheres[2].radius = 1;
-	scene->spheres[2].color = BLUE;
-	scene->spheres[2].specular = 500;
+	// scene->obj[0].type = PLANE;
+	// scene->obj[0].color = YELLOW;
+	// scene->obj[0].specular = 1000;
+	// scene->obj[0].data.plane.pos = (t_point3d){0, -1, 0};
+	// scene->obj[0].data.plane.normal = (t_vector3d){0, 1, 0};
 
-	// scene->spheres[3].center = (t_point3d){0, -5001, 0};
-	// scene->spheres[3].radius = 5000;
-	// scene->spheres[3].color = YELLOW;
-	// scene->spheres[3].specular = 1000;
+	scene->obj[0].type = SPHERE;
+	scene->obj[0].color = GREEN;
+	scene->obj[0].specular = 10;
+	scene->obj[0].data.sphere.center = (t_point3d){-2, 0, 4};
+	scene->obj[0].data.sphere.radius = 1;
+
+	scene->obj[1].type = SPHERE;
+	scene->obj[1].color = RED;
+	scene->obj[1].specular = 500;
+	scene->obj[1].data.sphere.center = (t_point3d){0, -1, 3};
+	scene->obj[1].data.sphere.radius = 1;
+
+	scene->obj[2].type = SPHERE;
+	scene->obj[2].color = BLUE;
+	scene->obj[2].specular = 500;
+	scene->obj[2].data.sphere.center = (t_point3d){2, 0, 4};
+	scene->obj[2].data.sphere.radius = 1;
+
+	scene->obj[3].type = SPHERE;
+	scene->obj[3].color = YELLOW;
+	scene->obj[3].specular = 1000;
+	scene->obj[3].data.sphere.center = (t_point3d){0, -5001, 0};
+	scene->obj[3].data.sphere.radius = 5000;
 }
