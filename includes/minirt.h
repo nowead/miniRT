@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/09 17:36:18 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/09 20:49:02 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void		parse(int argc, char **argv, t_vars *vars);
 //parse_rt.c
 char		*truncate_end_nl(char *str);
 int			parse_line(char **line, t_vars *vars, int *parse_err_flag);
-void		get_line(int fd, t_vars *vars);
+int			get_line(int fd, t_vars *vars);
 int			parse_rt(char *argv, t_vars *vars);
 
 

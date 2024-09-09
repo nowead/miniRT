@@ -6,16 +6,21 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 17:46:10 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/09 20:56:09 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minirt.h"
 
+void	chk(void){
+	system("leaks miniRT");
+}
+
 int main(int argc, char **argv)
 {
     t_vars  vars;
 
+	atexit(chk);
     init_vars(&vars);
 	init_scene(&vars.scene);
 	parse(argc, argv, &vars);

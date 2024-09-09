@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 20:41:44 by damin             #+#    #+#             */
-/*   Updated: 2024/09/09 17:11:33 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/09 20:54:59 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	parse_line(char **line, t_vars *vars, int *parse_err_flag)
 	return (0);
 }
 
-void    get_line(int fd, t_vars *vars)
+int	get_line(int fd, t_vars *vars)
 {
     int		parse_err_flag;
     char    *temp;
@@ -69,10 +69,50 @@ void    get_line(int fd, t_vars *vars)
 		}
 		line = ft_split(truncate_end_nl(temp), ' ');
 		if (!line)
-			break ;
-		parse_line(line, vars, &parse_err_flag);
+			parse_err_flag = 1;
+		if (!parse_err_flag && parse_line(line, vars, &parse_err_flag))
+			parse_err_flag = 1;
+
 		free(temp);
 		free_lists(line);
+	}
+	return (parse_err_flag);
+}
+
+void	clear_vars(t_vars *vars)
+{
+	t_light		*lights;
+	t_sphere	*spheres;
+	t_cylinder	*cylinders;
+	t_plane		*planes;
+
+	lights = vars->scene.lights;
+	spheres = vars->scene.spheres;
+	cylinders = vars->scene.cylinders;
+	planes = vars->scene.planes;
+	while (lights)
+	{
+		vars->scene.lights = lights->next;
+		free(lights);
+		lights = vars->scene.lights;
+	}
+	while (spheres)
+	{
+		vars->scene.spheres = spheres->next;
+		free(spheres);
+		spheres = vars->scene.spheres;
+	}
+	while (cylinders)
+	{
+		vars->scene.cylinders = cylinders->next;
+		free(cylinders);
+		cylinders = vars->scene.cylinders;
+	}
+	while (planes)
+	{
+		vars->scene.planes = planes->next;
+		free(planes);
+		planes = vars->scene.planes;
 	}
 }
 
@@ -87,7 +127,13 @@ int	parse_rt(char *argv, t_vars *vars)
 	fd = open(file, O_RDWR);;
 	if (fd == -1)
 		error_exit("open failed", PERROR_ON);
-    get_line(fd, vars);
+    if (get_line(fd, vars))
+	{
+		clear_vars(vars);
+		free(file);
+		close(fd);
+		return (1);
+	}
 	free(file);
 	if (close(fd))
 		error_exit("close failed", PERROR_ON);
