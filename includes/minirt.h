@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/09 13:46:48 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/10 14:07:15 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,10 +185,10 @@ void			render_scene(t_vars *vars);
 t_vector3d		canvas_to_viewport(int x, int y, t_img *img, int fov);
 t_vector3d		rotate_camera(t_vector3d camera_dir, t_vector3d d);
 int				trace_ray(t_scene *scene, t_vector3d ray_dir);
-t_closest_hit	closest_intersection(t_vector3d ray_dir, t_scene *scene);
+t_closest_hit	closest_intersection(t_point3d o, t_vector3d ray_dir, t_float_range t_range, t_scene *scene);
 
 // intersect_ray_sphere.c
-void			intersect_ray_sphere(t_camera *camera, t_vector3d D, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
+void	intersect_ray_sphere(t_point3d o, t_vector3d D, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
 
 // compute_lighting.c
 float			compute_lighting(t_point3d p, t_vector3d v, t_obj *obj, t_scene *scene);

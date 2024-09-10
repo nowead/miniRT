@@ -6,13 +6,13 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:40:55 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/09 13:46:21 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/10 14:30:15 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	intersect_ray_sphere(t_camera *camera, t_vector3d D, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit)
+void	intersect_ray_sphere(t_point3d o, t_vector3d D, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit)
 {
 	float		r;
 	float		t1;
@@ -25,7 +25,7 @@ void	intersect_ray_sphere(t_camera *camera, t_vector3d D, t_obj *obj, t_float_ra
 	
 	
     r = obj->data.sphere.radius;
-    CO = subtract_3dpoints(camera->pos, obj->data.sphere.center);
+    CO = subtract_3dpoints(o, obj->data.sphere.center);
     a = dot(D, D);
     b = 2 * dot(CO, D);
     c = dot(CO, CO) - (r * r);
@@ -34,8 +34,8 @@ void	intersect_ray_sphere(t_camera *camera, t_vector3d D, t_obj *obj, t_float_ra
 
     if (discriminant < 0)
     {
-		t1 = t_range.max;
-		t2 = t_range.max;
+		t1 = FLT_MAX;
+		t2 = FLT_MAX;
 	}
 	else
 	{
@@ -50,7 +50,7 @@ void	intersect_ray_sphere(t_camera *camera, t_vector3d D, t_obj *obj, t_float_ra
 	}
 	if ((t_range.min < t2 && t2 < t_range.max) && t2 < closest_hit->t)
 	{
-		closest_hit->t = t1;
+		closest_hit->t = t2;
 		closest_hit->obj = obj;
 	}
     return ;

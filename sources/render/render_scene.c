@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/09 13:48:50 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/10 14:22:40 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,14 @@ int	trace_ray(t_scene *scene, t_vector3d ray_dir)
 	t_point3d		p;
 	t_closest_hit	closest_hit;
 
-	closest_hit = closest_intersection(ray_dir, scene);
+	closest_hit = closest_intersection(scene->camera.pos, ray_dir, (t_float_range){0, FLT_MAX}, scene);
     if (!closest_hit.obj)
         return (BACKGROUND_COLOR);
 	p = add_vector_to_point(scene->camera.pos, scale_vector(ray_dir, closest_hit.t));
     return (apply_lighting(closest_hit.obj->color, compute_lighting(p, scale_vector(ray_dir, -1), closest_hit.obj, scene)));
 }
 
-t_closest_hit	closest_intersection(t_point3d o, t_vector3d ray_dir, t_scene *scene, t_float_range t_range)
+t_closest_hit	closest_intersection(t_point3d o, t_vector3d ray_dir, t_float_range t_range, t_scene *scene)
 {
 	t_closest_hit	closest_hit;
 	int				i;
@@ -94,7 +94,7 @@ t_closest_hit	closest_intersection(t_point3d o, t_vector3d ray_dir, t_scene *sce
     while (i < scene->num_of_obj)
     {
 		if (scene->obj[i].type == SPHERE)
-        	intersect_ray_sphere(o, ray_dir, &(scene->obj[i]), &closest_hit);
+        	intersect_ray_sphere(o, ray_dir, &(scene->obj[i]), t_range, &closest_hit);
 		// else if (scene->obj[i].type == PLANE)
 		// 	closest_hit = intersect_ray_plane(scene->camera, ray_dir, &(scene->obj[i]), &closest_hit);
 		// else if (scene->obj[i].type == CYLINDER)
