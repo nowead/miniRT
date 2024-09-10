@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/08 17:06:51 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/10 21:06:09 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,21 @@ float	compute_lighting(t_point3d p, t_vector3d v, t_sphere *sphere, t_scene *sce
 	t_closest_hit	closest_hit;
 	t_vector3d		n;
 	t_vector3d		l;
-	t_vector3d		r;
-	float			intens;
+	// t_vector3d		r;
+	float			ratio;
 	float			n_dot_l;
-	float			r_dot_v;
-	int				i;
+	// float			r_dot_v;
 	float			t_max;
 
+	(void)v;
 	n = subtract_3dpoints(p , sphere->center);
 	n = scale_vector(n, 1 / length(n));
-    intens = 0.0;
-	i = 0;
-    while (i < scene->num_of_lights)
+    ratio = 0.0;
+	light = scene->lights;
+    while (light)
     {
-		light = &(scene->lights[i]);
         if (light->type == AMBIENT_LIGHT)
-        	intens += light->intens;
+        	ratio += light->ratio;
         else
         {
             if (light->type == POINT_LIGHT)
@@ -51,15 +50,15 @@ float	compute_lighting(t_point3d p, t_vector3d v, t_sphere *sphere, t_scene *sce
 			{
 				n_dot_l = dot(n, l);
 				if (n_dot_l > 0) 
-					intens += light->intens * n_dot_l / length(l);
+					ratio += light->ratio * n_dot_l / length(l);
 				
-				r = subtract_3dvectors(scale_vector(n, 2 * dot(n, l)), l);
-				r_dot_v = dot(r, v);
-				if (r_dot_v > 0)
-					intens += light->intens * pow(r_dot_v / (length(r) * length(v)), sphere->specular);
+				// r = subtract_3dvectors(scale_vector(n, 2 * dot(n, l)), l);
+				// r_dot_v = dot(r, v);
+				// if (r_dot_v > 0)
+				// 	ratio += light->ratio * pow(r_dot_v / (length(r) * length(v)), sphere->specular);
 			}
 		}
-		i++;
+		light = light->next;
     }
-    return (intens);
+    return (ratio);
 }

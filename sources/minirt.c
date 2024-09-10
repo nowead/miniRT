@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 18:59:27 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/10 21:06:09 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ int main(int argc, char **argv)
 
 	(void)argc;
 	(void)argv;
-	atexit(chk);
+	// atexit(chk);
     init_vars(&vars);
-	init_scene(&vars.scene);
 	parse(argc, argv, &vars);
 	render_scene(&vars);
 	mlx_put_image_to_window(vars.mlx, vars.win.ptr, vars.img.ptr, 0, 0);
@@ -44,6 +43,7 @@ void	error_exit(char *err_msg, int perror_flag)
 
 void	init_vars(t_vars *vars)
 {
+	*vars = (t_vars){};
 	vars->mlx = mlx_init();
     if (!vars->mlx)
         error_exit("mlx_init error", PERROR_OFF);
@@ -64,18 +64,6 @@ void	init_vars(t_vars *vars)
         error_exit("mlx_get_data_addr error", PERROR_OFF);
 }
 
-void	init_scene(t_scene *scene)
-{
-	scene->lights = NULL;
-	scene->spheres = NULL;
-	scene->planes = NULL;
-	scene->cylinders = NULL;
-	scene->num_of_lights = 0;
-	scene->num_of_spheres = 0;
-	scene->num_of_planes = 0;
-	scene->num_of_cylinders = 0;
-}
-
 // void	init_scene(t_scene *scene)
 // {
 // 	scene->camera.pos = (t_point3d){0, 0, 0};
@@ -85,15 +73,15 @@ void	init_scene(t_scene *scene)
 // 	if (!scene->lights)
 // 		error_exit("malloc lights error", PERROR_ON);
 // 	scene->lights[0].type = AMBIENT_LIGHT;
-// 	scene->lights[0].intens = 0.2;
+// 	scene->lights[0].ratio = 0.2;
 	
 // 	scene->lights[1].type = POINT_LIGHT;
 // 	scene->lights[1].pos = (t_point3d){2, 1, 0};
-// 	scene->lights[1].intens = 0.6;
+// 	scene->lights[1].ratio = 0.6;
 	
 // 	scene->lights[2].type = DIRECTIONAL_LIGHT;
 // 	scene->lights[2].dir = (t_vector3d){1, 4, 4};
-// 	scene->lights[2].intens = 0.2;
+// 	scene->lights[2].ratio = 0.2;
 
 // 	scene->num_of_spheres = 4;
 // 	scene->spheres = (t_sphere *)malloc(sizeof(t_sphere) * scene->num_of_spheres);

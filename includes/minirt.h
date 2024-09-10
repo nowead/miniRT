@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 18:58:53 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/10 21:06:11 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef enum e_light_type
 typedef struct  s_light
 {
     t_light_type    type;
-    float           intens;
 	float			ratio;
     int             color;
     t_vector3d      dir;
@@ -98,11 +97,11 @@ typedef struct	s_plane
 
 typedef struct s_cylinder
 {
-	t_point3d	center;
-	t_vector3d	vector;
-	float		diameter;
-	float		height;
-	int				color;
+	t_point3d			center;
+	t_vector3d			vector;
+	float				diameter;
+	float				height;
+	int					color;
 	struct s_cylinder	*next;
 }	t_cylinder;
 
@@ -111,8 +110,8 @@ typedef struct	s_sphere
 	t_point3d		center;
 	float			radius;
 	int				color;
+	int				specular;
 	struct s_sphere	*next;
-	int			specular;
 }	t_sphere;
 
 typedef struct	s_float_range
@@ -126,8 +125,8 @@ typedef struct s_scene
 {
 	t_camera	camera;
 	t_light		*lights;
-	t_plane		*planes;
 	t_sphere	*spheres;
+	t_plane		*planes;
 	t_cylinder	*cylinders;
 	int			num_of_lights;
 	int			num_of_spheres;
@@ -161,10 +160,10 @@ typedef struct s_img
 
 typedef struct s_vars
 {
-	void		*mlx;
-	t_win		win;
-	t_img		img;
-	t_scene		scene;
+	void	*mlx;
+	t_win	win;
+	t_img	img;
+	t_scene	scene;
 }	t_vars;
 
 //parse.c
@@ -224,7 +223,6 @@ int			check_float_string(char *str);
 // minirt.c
 void		error_exit(char *err_msg, int perror_flag);
 void		init_vars(t_vars *vars);
-void		init_scene(t_scene *scene);
 void		clear_vars(t_vars *vars);
 
 // render_scene.c

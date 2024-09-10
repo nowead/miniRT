@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 18:59:50 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/10 20:57:07 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,25 +88,25 @@ t_closest_hit	closest_intersection(t_point3d O, t_vector3d D, t_float_range t_ra
 	float		closest_t;
 	t_sphere	*closest_sphere;
 	t_ray_hit	hit;
-	int			i;
+	t_sphere	*sphere;
 
 	closest_t = t_range.max;
     closest_sphere = NULL;
-	i = 0;
-    while (i < scene->num_of_spheres)
+	sphere = scene->spheres;
+    while (sphere)
     {
-        hit = intersect_ray_sphere(O, D, &(scene->spheres)[i]);
+        hit = intersect_ray_sphere(O, D, sphere);
         if ((t_range.min < hit.t1 && hit.t1 < t_range.max) && hit.t1 < closest_t)
         {
             closest_t = hit.t1;
-            closest_sphere = &scene->spheres[i];
+            closest_sphere = sphere;
         }
 		if ((t_range.min < hit.t2 && hit.t2 < t_range.max) && hit.t2 < closest_t)
         {
             closest_t = hit.t2;
-            closest_sphere = &scene->spheres[i];
+            closest_sphere = sphere;
         }
-		i++;
+		sphere = sphere->next;
 	}
 	return ((t_closest_hit){closest_sphere, closest_t});
 }
