@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 20:41:44 by damin             #+#    #+#             */
-/*   Updated: 2024/09/09 20:54:59 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/10 18:51:57 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	get_line(int fd, t_vars *vars)
 			parse_err_flag = 1;
 		if (!parse_err_flag && parse_line(line, vars, &parse_err_flag))
 			parse_err_flag = 1;
-
 		free(temp);
 		free_lists(line);
 	}

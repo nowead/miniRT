@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/09 16:38:44 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/10 18:54:08 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ int     set_cylinder(char **line, t_cylinder *cylinders)
 	if (check_coord(coord))
 		return (1);
     cylinders->center = (t_point3d){ft_atoi(coord[0]), ft_atoi(coord[1]), ft_atoi(coord[2])};
-    free(coord);
+    free_lists(coord);
     vector = ft_split(line[2], ',');
 	if (check_vector(vector))
 		return (1);
     cylinders->vector = (t_vector3d){ft_atoi(vector[0]), ft_atoi(vector[1]), ft_atoi(vector[2])};
-    free(vector);
+    free_lists(vector);
 	if ((check_float_string(line[3])) || check_float_string(line[4]))
 		return (1);
     cylinders->diameter = ft_atoi(line[3]);
@@ -48,7 +48,7 @@ int     set_cylinder(char **line, t_cylinder *cylinders)
 	if (check_color(color))
 		return (1);
 	cylinders->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
-	free(color);
+	free_lists(color);
 	return (0);
 }
 

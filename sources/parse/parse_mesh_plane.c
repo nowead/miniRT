@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:00:38 by damin             #+#    #+#             */
-/*   Updated: 2024/09/09 16:38:59 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/10 18:54:00 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ int	set_plane(char **line, t_plane *planes)
 	if (check_coord(coord))
 		return (1);
 	planes->coord = (t_point3d){ft_atoi(coord[0]), ft_atoi(coord[1]), ft_atoi(coord[2])};
-	free(coord);
+	free_lists(coord);
 	vector = ft_split(line[2], ',');
 	if (check_vector(vector))
 		return (1);
 	planes->vector = (t_vector3d){ft_atof(vector[0]), ft_atof(vector[1]), ft_atof(vector[2])};
-	free(vector);
+	free_lists(vector);
 	color = ft_split(line[3], ',');
 	if (check_color(color))
 		return (1);
 	planes->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
-	free(color);
+	free_lists(color);
 	return (0);
 }
 

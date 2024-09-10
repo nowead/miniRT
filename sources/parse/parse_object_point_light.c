@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 09:51:31 by mindaewon         #+#    #+#             */
-/*   Updated: 2024/09/09 17:41:15 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/10 18:53:29 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int set_point_light(char **line, t_light *lights)
 	if (check_coord(coord))
 		return (1);
 	lights->pos = (t_point3d){ft_atof(coord[0]), ft_atof(coord[1]), ft_atof(coord[2])};
-	free(coord);
+	free_lists(coord);
 	if (check_float_string(line[2]))
 		return (1);
 	lights->ratio = ft_atof(line[2]);
@@ -45,7 +45,7 @@ int set_point_light(char **line, t_light *lights)
 	if (check_color(color))
 		return (1);
 	lights->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
-	free(color);
+	free_lists(color);
 	lights->type = POINT_LIGHT;
 	return (0);
 }

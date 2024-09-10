@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/09 20:49:02 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/10 16:37:29 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,7 @@ int			check_float_string(char *str);
 void		error_exit(char *err_msg, int perror_flag);
 void		init_vars(t_vars *vars);
 void		init_scene(t_scene *scene);
+void		clear_vars(t_vars *vars);
 
 // render_scene.c
 void		render_scene(t_vars *vars);
@@ -245,7 +246,7 @@ void		my_mlx_pixel_put(int x, int y, int color, t_img *img);
 // setup_event_hooks.c
 void		setup_event_hooks(t_vars *vars);
 int			key_hook(int keycode, void *param);
-int			exit_no_error(void);
+int			exit_no_error(void *param);
 
 // vector_operations.c
 t_vector3d	subtract_3dpoints(t_point3d p1, t_point3d p2);

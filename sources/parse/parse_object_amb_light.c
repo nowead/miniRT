@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 18:13:45 by mindaewon         #+#    #+#             */
-/*   Updated: 2024/09/09 17:36:36 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/10 18:52:54 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int set_amb_light(char **line, t_light *lights)
     if (check_color(color))
         return (1);
     lights->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
-    free(color);
+    free_lists(color);
     lights->type = AMBIENT_LIGHT;
     return (0);
 }
