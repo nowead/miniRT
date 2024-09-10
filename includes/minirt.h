@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 18:49:49 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/10 21:32:27 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct	s_light
 	int				color;
 	t_vec3			dir;
 	t_point3		pos;
+	struct s_light	*next;
 }	t_light;
 
 typedef struct	s_plane
@@ -123,10 +124,11 @@ typedef union u_obj_data
 
 typedef struct s_obj
 {
-	t_obj_type	type;
-	t_obj_data	data;
-	int			color;
-	int			specular;
+	t_obj_type		type;
+	t_obj_data		data;
+	int				color;
+	int				specular;
+	struct s_obj	*next;
 }	t_obj;
 
 typedef struct s_scene
@@ -209,5 +211,56 @@ t_vec3			subtract_3dvectors(t_vec3 v1, t_vec3 v2);
 t_vec3			add_3dvectors(t_vec3 v1, t_vec3 v2);
 float			cosine_between_vectors(t_vec3 v1, t_vec3 v2);
 t_vec3			unit_vector(t_vec3 v);
+
+//parse.c
+int			parse_argv(int argc, char **argv);
+void		parse(int argc, char **argv, t_vars *vars);
+
+//parse_rt.c
+char		*truncate_end_nl(char *str);
+int			parse_line(char **line, t_vars *vars, int *parse_err_flag);
+int			get_line(int fd, t_vars *vars);
+int			parse_rt(char *argv, t_vars *vars);
+
+// parse_object_camera.c
+int			parse_camera(char **line, t_vars *vars);
+
+// parse_object_amb_light.c
+int			init_amb_light(t_light *lights, char **line, t_vars *vars);
+int			set_amb_light(char **line, t_light *lights);
+int			parse_amb_light(char **line, t_vars *vars);
+
+// parse_object_point_light.c
+int			init_point_light(t_light *lights, char **line, t_vars *vars);
+int			set_point_light(char **line, t_light *lights);
+int			parse_point_light(char **line, t_vars *vars);
+
+// parse_mesh_plane.c
+int			parse_plane(char **line, t_vars *vars);
+int			set_plane(char **line, t_plane *planes);
+int			init_planes(t_plane *planes, char **line, t_vars *vars);
+
+// parse_mesh_sphere.c
+int			parse_spheres(char **line, t_vars *vars);
+int			set_sphere(char **line, t_sphere *spheres);
+int			init_spheres(t_sphere *spheres, char **line, t_vars *vars);
+
+// parse_mesh_cylinder.c
+int			parse_cylinders(char **line, t_vars *vars);
+int			set_cylinder(char **line, t_cylinder *cylinders);
+int			init_cylinders(t_cylinder *cylinders, char **line, t_vars *vars);
+
+// parse_utils.c
+int			get_color(int r, int g, int b);
+void		free_lists(char **lists);
+float		ft_atof(char *str);
+int			ft_strslen(char **strs);
+
+// parse_check.c
+int			check_coord(char **coord);
+int			check_vector(char **vector);
+int			check_color(char **color);
+int			check_num_string(char *str);
+int			check_float_string(char *str);
 
 #endif

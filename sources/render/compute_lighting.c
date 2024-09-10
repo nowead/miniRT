@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 18:43:45 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/10 21:32:27 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,20 @@ float	compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene)
 {
 	t_light			*light;
 	t_closest_hit	closest_hit;
-	t_vec3		n;
-	t_vec3		l;
-	t_vec3		r;
+	t_vec3			n;
+	t_vec3			l;
+	t_vec3			r;
 	float			intens;
 	float			n_dot_l;
 	float			r_dot_v;
-	int				i;
 	float			t_max;
 
 	n = subtract_3dpoints(p , obj->data.sphere.center);
 	n = scale_vector(n, 1 / length(n));
     intens = 0.0;
-	i = 0;
-    while (i < scene->num_of_lights)
+	light = scene->lights;
+    while (light)
     {
-		light = &(scene->lights[i]);
         if (light->type == AMBIENT_LIGHT)
         	intens += light->intens;
         else
@@ -59,7 +57,7 @@ float	compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene)
 					intens += light->intens * pow(r_dot_v / (length(r) * length(v)), obj->specular);
 			}
 		}
-		i++;
+		light = light->next;
     }
     return (intens);
 }

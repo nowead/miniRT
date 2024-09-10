@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 18:57:17 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/10 21:37:54 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int main(int argc, char **argv)
     // if (2 != argc)
 	// 	exit_error("Usage: ./minirt [file.rt]", PERROR_OFF);
     init_vars(&vars);
-	init_scene(&vars.scene);
+	// init_scene(&vars.scene);
+	parse(argc, argv, &vars);
 	render_scene(&vars);
 	mlx_put_image_to_window(vars.mlx, vars.win.ptr, vars.img.ptr, 0, 0);
 	setup_event_hooks(&vars);
@@ -68,7 +69,7 @@ void	init_scene(t_scene *scene)
 	scene->camera.fov = 53;
 
 	scene->num_of_lights = 3;
-	scene->lights = (t_light *)malloc(sizeof(t_light) * scene->num_of_lights);
+	scene->lights = (t_light *)ft_calloc(scene->num_of_lights, sizeof(t_light));
 	if (!scene->lights)
 		error_exit("malloc lights error", PERROR_ON);
 	scene->lights[0].type = AMBIENT_LIGHT;

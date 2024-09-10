@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 18:49:49 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/10 21:29:15 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,20 +86,20 @@ int	trace_ray(t_scene *scene, t_vec3 ray_dir)
 t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene)
 {
 	t_closest_hit	closest_hit;
-	int				i;
+	t_obj			*obj;
 
 	closest_hit.t = t_range.max;
     closest_hit.obj = NULL;
-	i = 0;
-    while (i < scene->num_of_obj)
+	obj = scene->obj;
+    while (obj)
     {
-		if (scene->obj[i].type == SPHERE)
-        	intersect_ray_sphere(&ray, &(scene->obj[i]), t_range, &closest_hit);
-		else if (scene->obj[i].type == PLANE)
-			intersect_ray_plane(&ray, &(scene->obj[i]), t_range, &closest_hit);
+		if (obj->type == SPHERE)
+        	intersect_ray_sphere(&ray, obj, t_range, &closest_hit);
+		else if (obj->type == PLANE)
+			intersect_ray_plane(&ray, obj, t_range, &closest_hit);
 		// else if (scene->obj[i].type == CYLINDER)
 		// 	closest_hit = intersect_ray_plane(scene->camera, ray_dir, &(scene->obj[i]), &closest_hit);
-		i++;
+		obj = obj->next;
 	}
 	return (closest_hit);
 }
