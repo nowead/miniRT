@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 14:07:15 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/10 18:49:49 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,25 +37,26 @@
 
 # define FLT_MAX 3.402823466e+38F
 
-typedef struct	s_point2d
+typedef struct	s_point2
 {
 	int	x;
 	int	y;
-}	t_point2d;
+}	t_point2;
 
-typedef struct	s_point3d
+typedef struct	s_vec3
 {
 	float	x;
 	float	y;
 	float	z;
-}	t_point3d;
+}	t_vec3;
 
-typedef struct	s_vector3d
+typedef t_vec3 t_point3;
+
+typedef struct	s_ray
 {
-	float	x;
-	float	y;
-	float	z;
-}	t_vector3d;
+	t_point3	origin;
+	t_vec3		dir;
+}	t_ray;
 
 typedef struct	s_float_range
 {
@@ -65,9 +66,9 @@ typedef struct	s_float_range
 
 typedef struct	s_camera
 {
-	t_point3d		pos;
-	t_vector3d		dir;
-	int				fov;
+	t_point3	pos;
+	t_vec3		dir;
+	int			fov;
 }	t_camera;
 
 typedef enum e_light_type
@@ -82,27 +83,27 @@ typedef struct	s_light
 	t_light_type	type;
 	float			intens;
 	int				color;
-	t_vector3d		dir;
-	t_point3d		pos;
+	t_vec3			dir;
+	t_point3		pos;
 }	t_light;
 
 typedef struct	s_plane
 {
-	t_point3d	pos;
-	t_vector3d	normal;
+	t_point3	pos;
+	t_vec3		normal;
 }	t_plane;
 
 typedef struct s_cylinder
 {
-	t_point3d	center;
-	t_vector3d	vector;
+	t_point3	center;
+	t_vec3		vector;
 	float		diameter;
 	float		height;
 }	t_cylinder;
 
 typedef struct	s_sphere
 {
-	t_point3d	center;
+	t_point3	center;
 	float		radius;
 }	t_sphere;
 
@@ -136,12 +137,6 @@ typedef struct s_scene
 	t_obj		*obj;
 	int			num_of_obj;
 }	t_scene;
-
-typedef struct	s_ray_hit
-{
-	float	t1;
-	float	t2;
-}	t_ray_hit;
 
 typedef	struct	s_closest_hit
 {
@@ -182,16 +177,17 @@ void			init_scene(t_scene *scene);
 
 // render_scene.c
 void			render_scene(t_vars *vars);
-t_vector3d		canvas_to_viewport(int x, int y, t_img *img, int fov);
-t_vector3d		rotate_camera(t_vector3d camera_dir, t_vector3d d);
-int				trace_ray(t_scene *scene, t_vector3d ray_dir);
-t_closest_hit	closest_intersection(t_point3d o, t_vector3d ray_dir, t_float_range t_range, t_scene *scene);
+t_vec3			canvas_to_viewport(int x, int y, t_img *img, int fov);
+t_vec3			rotate_camera(t_vec3 camera_dir, t_vec3 d);
+int				trace_ray(t_scene *scene, t_vec3 ray_dir);
+t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene);
 
-// intersect_ray_sphere.c
-void	intersect_ray_sphere(t_point3d o, t_vector3d D, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
+// intersect_ray_obj.c
+void			intersect_ray_sphere(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
+void			intersect_ray_plane(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
 
 // compute_lighting.c
-float			compute_lighting(t_point3d p, t_vector3d v, t_obj *obj, t_scene *scene);
+float			compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene);
 int				apply_lighting(int color, float lighting);
 
 // my_mlx_pixel_put.c
@@ -203,15 +199,15 @@ int				key_hook(int keycode, void *param);
 int				exit_no_error(void);
 
 // vector_operations.c
-t_vector3d		subtract_3dpoints(t_point3d p1, t_point3d p2);
-float			dot(t_vector3d v1, t_vector3d v2);
-t_vector3d		cross(t_vector3d v1, t_vector3d v2);
-t_vector3d		scale_vector(t_vector3d v, float s);
-t_point3d		add_vector_to_point(t_point3d p, t_vector3d v);
-float			length(t_vector3d v);
-t_vector3d		subtract_3dvectors(t_vector3d v1, t_vector3d v2);
-t_vector3d		add_3dvectors(t_vector3d v1, t_vector3d v2);
-float			cosine_between_vectors(t_vector3d v1, t_vector3d v2);
-t_vector3d		normalize_vector(t_vector3d v);
+t_vec3			subtract_3dpoints(t_point3 p1, t_point3 p2);
+float			dot(t_vec3 v1, t_vec3 v2);
+t_vec3			cross(t_vec3 v1, t_vec3 v2);
+t_vec3			scale_vector(t_vec3 v, float s);
+t_point3		add_vector_to_point(t_point3 p, t_vec3 v);
+float			length(t_vec3 v);
+t_vec3			subtract_3dvectors(t_vec3 v1, t_vec3 v2);
+t_vec3			add_3dvectors(t_vec3 v1, t_vec3 v2);
+float			cosine_between_vectors(t_vec3 v1, t_vec3 v2);
+t_vec3			unit_vector(t_vec3 v);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 14:33:13 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/10 18:57:17 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	init_vars(t_vars *vars)
 	vars->mlx = mlx_init();
     if (!vars->mlx)
         error_exit("mlx_init error", PERROR_OFF);
-	vars->win.width = 1080;
-	vars->win.height = 1080;
+	vars->win.width = 1280;
+	vars->win.height = 720;
 	vars->win.ptr = mlx_new_window(vars->mlx, \
 	vars->win.width, vars->win.height, "miniRT");
     if (!vars->win.ptr)
@@ -63,8 +63,8 @@ void	init_vars(t_vars *vars)
 
 void	init_scene(t_scene *scene)
 {
-	scene->camera.pos = (t_point3d){0, 0, 0};
-	scene->camera.dir = (t_vector3d){0, 0, 1};
+	scene->camera.pos = (t_point3){6, 2, 3.5};
+	scene->camera.dir = (t_vec3){1, 0.5, 0};
 	scene->camera.fov = 53;
 
 	scene->num_of_lights = 3;
@@ -75,11 +75,11 @@ void	init_scene(t_scene *scene)
 	scene->lights[0].intens = 0.2;
 	
 	scene->lights[1].type = POINT_LIGHT;
-	scene->lights[1].pos = (t_point3d){2, 1, 0};
+	scene->lights[1].pos = (t_point3){2, 1, 0};
 	scene->lights[1].intens = 0.6;
 	
 	scene->lights[2].type = DIRECTIONAL_LIGHT;
-	scene->lights[2].dir = (t_vector3d){1, 4, 4};
+	scene->lights[2].dir = (t_vec3){1, 4, 4};
 	scene->lights[2].intens = 0.2;
 
 	scene->num_of_obj = 4;
@@ -87,33 +87,33 @@ void	init_scene(t_scene *scene)
 	if (!scene->obj)
 		return (error_exit("malloc obj error", PERROR_ON));
 
-	// scene->obj[0].type = PLANE;
-	// scene->obj[0].color = YELLOW;
-	// scene->obj[0].specular = 1000;
-	// scene->obj[0].data.plane.pos = (t_point3d){0, -1, 0};
-	// scene->obj[0].data.plane.normal = (t_vector3d){0, 1, 0};
-
 	scene->obj[0].type = SPHERE;
 	scene->obj[0].color = RED;
 	scene->obj[0].specular = 500;
-	scene->obj[0].data.sphere.center = (t_point3d){0, -1, 3};
+	scene->obj[0].data.sphere.center = (t_point3){0, -1, 3};
 	scene->obj[0].data.sphere.radius = 1;
 
 	scene->obj[1].type = SPHERE;
 	scene->obj[1].color = BLUE;
 	scene->obj[1].specular = 500;
-	scene->obj[1].data.sphere.center = (t_point3d){2, 0, 4};
+	scene->obj[1].data.sphere.center = (t_point3){2, 0, 4};
 	scene->obj[1].data.sphere.radius = 1;
 
 	scene->obj[2].type = SPHERE;
 	scene->obj[2].color = GREEN;
 	scene->obj[2].specular = 10;
-	scene->obj[2].data.sphere.center = (t_point3d){-2, 0, 4};
+	scene->obj[2].data.sphere.center = (t_point3){-2, 0, 4};
 	scene->obj[2].data.sphere.radius = 1;
 
 	scene->obj[3].type = SPHERE;
 	scene->obj[3].color = YELLOW;
 	scene->obj[3].specular = 1000;
-	scene->obj[3].data.sphere.center = (t_point3d){0, -5001, 0};
+	scene->obj[3].data.sphere.center = (t_point3){0, -5001, 0};
 	scene->obj[3].data.sphere.radius = 5000;
+
+	// scene->obj[3].type = PLANE;
+	// scene->obj[3].color = YELLOW;
+	// scene->obj[3].specular = 1;
+	// scene->obj[3].data.plane.pos = (t_point3){0, -1, 0};
+	// scene->obj[3].data.plane.normal = (t_vec3){0, 1, 0};
 }

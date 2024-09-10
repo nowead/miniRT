@@ -6,19 +6,19 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/09 13:49:47 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/10 18:43:45 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-float	compute_lighting(t_point3d p, t_vector3d v, t_obj *obj, t_scene *scene)
+float	compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene)
 {
 	t_light			*light;
 	t_closest_hit	closest_hit;
-	t_vector3d		n;
-	t_vector3d		l;
-	t_vector3d		r;
+	t_vec3		n;
+	t_vec3		l;
+	t_vec3		r;
 	float			intens;
 	float			n_dot_l;
 	float			r_dot_v;
@@ -46,7 +46,7 @@ float	compute_lighting(t_point3d p, t_vector3d v, t_obj *obj, t_scene *scene)
 				l = light->dir;
 				t_max = FLT_MAX;
 			}
-			closest_hit = closest_intersection(p, l, (t_float_range){0.001, t_max}, scene);
+			closest_hit = closest_intersection((t_ray){p, l}, (t_float_range){0.001, t_max}, scene);
 			if (!closest_hit.obj)
 			{
 				n_dot_l = dot(n, l);

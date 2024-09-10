@@ -9,7 +9,7 @@ PARSE_DIR		=	parse/
 RENDER_DIR		=	render/
 SRC				=	$(addprefix sources/, minirt.c setup_event_hooks.c my_mlx_pixel_put.c\
 $(addprefix $(PARSE_DIR), parse_argv.c)\
-$(addprefix $(RENDER_DIR), compute_lighting.c	intersect_ray_sphere.c	render_scene.c	vector_operations.c))
+$(addprefix $(RENDER_DIR), compute_lighting.c	intersect_ray_obj.c	render_scene.c	vector_operations.c))
 OBJ				=	$(patsubst %.c, %.o, $(SRC))
 
 MLX				=	libmlx.dylib
