@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/06 22:06:48 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/08 17:06:51 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 float	compute_lighting(t_point3d p, t_vector3d v, t_sphere *sphere, t_scene *scene)
 {
-	t_light		*light;
-	t_inter		inter;
-	t_vector3d	n;
-	t_vector3d	l;
-	t_vector3d	r;
-	float		intens;
-	float		n_dot_l;
-	float		r_dot_v;
-	int			i;
-	float		t_max;
+	t_light			*light;
+	t_closest_hit	closest_hit;
+	t_vector3d		n;
+	t_vector3d		l;
+	t_vector3d		r;
+	float			intens;
+	float			n_dot_l;
+	float			r_dot_v;
+	int				i;
+	float			t_max;
 
 	n = subtract_3dpoints(p , sphere->center);
 	n = scale_vector(n, 1 / length(n));
@@ -46,8 +46,8 @@ float	compute_lighting(t_point3d p, t_vector3d v, t_sphere *sphere, t_scene *sce
 				l = light->dir;
 				t_max = FLT_MAX;
 			}
-			inter = closest_intersection(p, l, (t_float_range){0.001, t_max}, scene);
-			if (!inter.closest_sphere)
+			closest_hit = closest_intersection(p, l, (t_float_range){0.001, t_max}, scene);
+			if (!closest_hit.sphere)
 			{
 				n_dot_l = dot(n, l);
 				if (n_dot_l > 0) 
