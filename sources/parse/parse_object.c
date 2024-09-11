@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/11 15:41:26 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 17:12:58 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ int	set_sphere(char **line, t_obj *sphere)
 		return (1);
 	sphere->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
 	free_lists(color);
-	
-	sphere->next = NULL;
 	return (0);
 }
 
@@ -68,8 +66,6 @@ int	set_plane(char **line, t_obj *plane)
 		return (1);
 	plane->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
 	free_lists(color);
-
-	plane->next = NULL;
 	return (0);
 }
 
@@ -86,13 +82,13 @@ int	set_cylinder(char **line, t_obj *cylinder)
 		return (1);
     cylinder->data.cylinder.center = (t_point3){ft_atoi(coord[0]), ft_atoi(coord[1]), ft_atoi(coord[2])};
     free_lists(coord);
-	
+
     vector = ft_split(line[2], ',');
 	if (check_vector(vector))
 		return (1);
     cylinder->data.cylinder.vector = (t_vec3){ft_atoi(vector[0]), ft_atoi(vector[1]), ft_atoi(vector[2])};
     free_lists(vector);
-	
+
 	if ((check_float_str(line[3])) || check_float_str(line[4]) || check_float_str(line[5]))
 		return (1);
     cylinder->data.cylinder.radius = ft_atoi(line[3]) / 2;
@@ -104,7 +100,5 @@ int	set_cylinder(char **line, t_obj *cylinder)
 		return (1);
 	cylinder->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
 	free_lists(color);
-	
-	cylinder->next = NULL;
 	return (0);
 }

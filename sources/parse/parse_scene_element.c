@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_rt_scene_file.c                                         :+:      :+:    :+:   */
+/*   parse_scene_element.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/08 20:41:44 by damin             #+#    #+#             */
-/*   Updated: 2024/09/11 11:46:21 by seonseo          ###   ########.fr       */
+/*   Created: 2024/09/11 17:14:10 by seonseo           #+#    #+#             */
+/*   Updated: 2024/09/11 17:14:39 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	parse_scene_element(char **line, t_vars *vars)
 	return (0);
 }
 
-int	parse_light(char **line, t_vars *vars, int (*set_light)(char **line, t_light *light))
+int	parse_light(char **line, t_vars *vars, \
+int (*set_light)(char **line, t_light *light))
 {
 	t_light *curr;
 	t_light *light;
@@ -65,7 +66,8 @@ int	parse_light(char **line, t_vars *vars, int (*set_light)(char **line, t_light
 	return (0);
 }
 
-int	parse_object(char **line,t_vars *vars, int (*set_obj)(char **line, t_obj *obj))
+int	parse_object(char **line,t_vars *vars, \
+int (*set_obj)(char **line, t_obj *obj))
 {
 	t_obj	*obj;
 	t_obj	*curr;
