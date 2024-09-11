@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:50:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/11 14:14:12 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 16:57:33 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ int get_color(int r, int g, int b)
 
 float ft_atof(char *str)
 {
-	float res;
-	float sign;
-	float dec;
-	int i;
+	float	result;
+	int		sign;
+	int		divisor;
+	int		i;
 
-	res = 0;
+	result = 0;
 	sign = 1;
-	dec = 0;
+	divisor = 1;
 	i = 0;
 	if (str[i] == '-')
 	{
@@ -36,17 +36,15 @@ float ft_atof(char *str)
 		i++;
 	}
 	while (ft_isdigit(str[i]))
-		res = res * 10 + str[i++] - '0';
+		result = result * 10 + str[i++] - '0';
 	if (str[i] == '.')
 		i++;
 	while (ft_isdigit(str[i]))
 	{
-		res = res * 10 + str[i++] - '0';
-		dec++;
+		result = result * 10 + str[i++] - '0';
+		divisor *= 10;
 	}
-	while (dec--)
-		res /= 10;
-	return (res * sign);
+	return (result * sign / divisor);
 }
 
 int	ft_strslen(char **strs)

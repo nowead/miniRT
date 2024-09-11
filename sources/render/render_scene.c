@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 21:29:15 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 17:04:01 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	render_scene(t_vars *vars)
 		y = -(vars->img.height / 2);
 		while (y < (vars->img.height / 2))
 		{
-			ray_dir = rotate_camera(vars->scene.camera.dir, canvas_to_viewport(x, y, &vars->img, vars->scene.camera.fov));
+			ray_dir = rotate_camera(vars->scene.camera.dir, \
+			canvas_to_viewport(x, y, &vars->img, vars->scene.camera.fov));
 			color = trace_ray(&vars->scene, ray_dir);
 			my_mlx_pixel_put(x, y, color, &vars->img);
 			y++;
@@ -43,7 +44,8 @@ t_vec3	canvas_to_viewport(int x, int y, t_img *img, int fov)
 	fov_radian = fov * M_PI / 180;
 	viewport_w = 2 * tan((float)fov_radian / 2);
 	viewport_h = viewport_w * (img->height / (float)img->width);
-	return ((t_vec3){x * (viewport_w / (float)img->width), y * (viewport_h / (float)img->height), 1});
+	return ((t_vec3){x * (viewport_w / (float)img->width), \
+	y * (viewport_h / (float)img->height), 1});
 }
 
 t_vec3	rotate_camera(t_vec3 camera_dir, t_vec3 d)
@@ -76,11 +78,14 @@ int	trace_ray(t_scene *scene, t_vec3 ray_dir)
 	t_point3		p;
 	t_closest_hit	closest_hit;
 
-	closest_hit = closest_intersection((t_ray){scene->camera.pos, ray_dir}, (t_float_range){0, FLT_MAX}, scene);
+	closest_hit = closest_intersection((t_ray){scene->camera.pos, ray_dir}, \
+	(t_float_range){0, FLT_MAX}, scene);
     if (!closest_hit.obj)
         return (BACKGROUND_COLOR);
-	p = add_vector_to_point(scene->camera.pos, scale_vector(ray_dir, closest_hit.t));
-    return (apply_lighting(closest_hit.obj->color, compute_lighting(p, scale_vector(ray_dir, -1), closest_hit.obj, scene)));
+	p = add_vector_to_point(scene->camera.pos, \
+	scale_vector(ray_dir, closest_hit.t));
+    return (apply_lighting(closest_hit.obj->color, \
+	compute_lighting(p, scale_vector(ray_dir, -1), closest_hit.obj, scene)));
 }
 
 t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene)

@@ -6,13 +6,14 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:40:55 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 18:46:07 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 17:04:53 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	intersect_ray_sphere(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit)
+void	intersect_ray_sphere(t_ray *ray, t_obj *obj, t_float_range t_range, \
+t_closest_hit *closest_hit)
 {
 	float	r;
 	float	t1;
@@ -25,17 +26,15 @@ void	intersect_ray_sphere(t_ray *ray, t_obj *obj, t_float_range t_range, t_close
 	
     r = obj->data.sphere.radius;
     CO = subtract_3dpoints(ray->origin, obj->data.sphere.center);
+	
     a = dot(ray->dir, ray->dir);
     b = 2 * dot(CO, ray->dir);
     c = dot(CO, CO) - (r * r);
-
+	
     discriminant = b * b - 4 * a * c;
 
     if (discriminant < 0)
-    {
-		t1 = FLT_MAX;
-		t2 = FLT_MAX;
-	}
+		return ;
 	else
 	{
 		t1 = (-b + sqrt(discriminant)) / (2 * a);
@@ -55,7 +54,8 @@ void	intersect_ray_sphere(t_ray *ray, t_obj *obj, t_float_range t_range, t_close
     return ;
 }
 
-void	intersect_ray_plane(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit)
+void	intersect_ray_plane(t_ray *ray, t_obj *obj, t_float_range t_range, \
+t_closest_hit *closest_hit)
 {
 	float	t;
 

@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 21:32:27 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 16:52:11 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ float	compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene)
 	float			r_dot_v;
 	float			t_max;
 
-	n = subtract_3dpoints(p , obj->data.sphere.center);
-	n = scale_vector(n, 1 / length(n));
+	n = unit_vector(subtract_3dpoints(p , obj->data.sphere.center));
     intens = 0.0;
 	light = scene->lights;
     while (light)
@@ -47,10 +46,11 @@ float	compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene)
 			closest_hit = closest_intersection((t_ray){p, l}, (t_float_range){0.001, t_max}, scene);
 			if (!closest_hit.obj)
 			{
+				// apply diffuse reflection
 				n_dot_l = dot(n, l);
 				if (n_dot_l > 0) 
 					intens += light->intens * n_dot_l / length(l);
-				
+				// apply specular reflection
 				r = subtract_3dvectors(scale_vector(n, 2 * dot(n, l)), l);
 				r_dot_v = dot(r, v);
 				if (r_dot_v > 0)
