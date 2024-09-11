@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:50:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/08 21:45:55 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/11 14:14:12 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,16 @@ void free_lists(char **lists)
     while (*temp)
         free(*temp++);
     free(lists);
+}
+
+char	*truncate_end_nl(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	if (str[i - 1] == '\n')
+		str[i - 1] = '\0';
+	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/11 12:47:49 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 15:51:48 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 # define YELLOW 0xFFFF00
 
 # define FLT_MAX 3.402823466e+38F
-# define DBL_MAX 1.7976931348623158e+308
 
 typedef struct	s_point2
 {
@@ -176,7 +175,7 @@ typedef struct s_vars
 // minirt.c
 void			error_exit(char *err_msg, int perror_flag);
 void			init_vars(t_vars *vars);
-void			init_scene(t_scene *scene);
+// void			init_scene(t_scene *scene);
 
 // render_scene.c
 void			render_scene(t_vars *vars);
@@ -215,53 +214,40 @@ t_vec3			unit_vector(t_vec3 v);
 
 //parse.c
 int			parse_argv(int argc, char **argv);
-void		parse(int argc, char **argv, t_vars *vars);
+void		parse_scene(int argc, char **argv, t_vars *vars);
+int			parse_rt_file(char *argv, t_vars *vars);
+int			parse_lines_from_rt_file(int fd, t_vars *vars);
+void		clear_scene(t_vars *vars);
 
-//parse_rt.c
-char		*truncate_end_nl(char *str);
-int			parse_line(char **line, t_vars *vars, int *parse_err_flag);
-int			get_line(int fd, t_vars *vars);
-int			parse_rt(char *argv, t_vars *vars);
+//parse_rt_file.c
+int			parse_scene_element(char **line, t_vars *vars);
+int			parse_light(char **line, t_vars *vars, int (*set_light)(char **line, t_light *light));
+int			parse_object(char **line,t_vars *vars, int (*set_obj)(char **line, t_obj *obj));
 
-// parse_object_camera.c
+// parse_camera.c
 int			parse_camera(char **line, t_vars *vars);
 
-// parse_object_amb_light.c
-int			init_amb_light(t_light *lights, char **line, t_vars *vars);
+// parse_light.c
 int			set_amb_light(char **line, t_light *lights);
-int			parse_amb_light(char **line, t_vars *vars);
-
-// parse_object_point_light.c
-int			init_point_light(t_light *lights, char **line, t_vars *vars);
 int			set_point_light(char **line, t_light *lights);
-int			parse_point_light(char **line, t_vars *vars);
 
-// parse_mesh_plane.c
-int			parse_plane(char **line, t_vars *vars);
-int			set_plane(char **line, t_obj *plane);
-int			init_planes(t_obj *plane, char **line, t_vars *vars);
-
-// parse_mesh_sphere.c
-int			parse_spheres(char **line, t_vars *vars);
+// parse_object.c
 int			set_sphere(char **line, t_obj *sphere);
-int			init_spheres(t_obj *sphere, char **line, t_vars *vars);
-
-// parse_mesh_cylinder.c
-int			parse_cylinders(char **line, t_vars *vars);
+int			set_plane(char **line, t_obj *plane);
 int			set_cylinder(char **line, t_obj *cylinder);
-int			init_cylinders(t_obj *cylinder, char **line, t_vars *vars);
 
 // parse_utils.c
 int			get_color(int r, int g, int b);
 void		free_lists(char **lists);
 float		ft_atof(char *str);
 int			ft_strslen(char **strs);
+char		*truncate_end_nl(char *str);
 
-// parse_check.c
+// parse_error_check.c
 int			check_coord(char **coord);
 int			check_vector(char **vector);
 int			check_color(char **color);
-int			check_num_string(char *str);
-int			check_float_string(char *str);
+int			check_decimal_str(char *str);
+int			check_float_str(char *str);
 
 #endif

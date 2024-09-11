@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/11 12:40:03 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 14:42:54 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     t_vars  vars;
 
     init_vars(&vars);
-	parse(argc, argv, &vars);
+	parse_scene(argc, argv, &vars);
 	render_scene(&vars);
 	mlx_put_image_to_window(vars.mlx, vars.win.ptr, vars.img.ptr, 0, 0);
 	setup_event_hooks(&vars);

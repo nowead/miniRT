@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/11 13:21:48 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 15:51:39 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int parse_argv(int argc, char **argv)
+void	print_parsed_vars(t_vars *vars);
+
+void	parse_scene(int argc, char **argv, t_vars *vars)
+{
+	if (parse_argv(argc, argv))
+		error_exit("Usage: ./minirt [file.rt]", PERROR_OFF);
+	if (parse_rt_file(argv[1], vars))
+		error_exit("Error", PERROR_OFF);
+	print_parsed_vars(vars);
+}
+
+int	parse_argv(int argc, char **argv)
 {
 	if (argc != 2)
 		return (1);
@@ -21,6 +32,79 @@ int parse_argv(int argc, char **argv)
 	if (ft_strncmp(&argv[1][ft_strlen(argv[1]) - 3], ".rt", 4) == 0)
 		return (0);
 	return (1);
+}
+
+int	parse_rt_file(char *argv, t_vars *vars)
+{
+	char	*file;
+	int		fd;
+
+	file = ft_strjoin("scenes/", argv);
+	if (!file)
+		error_exit("malloc failed", PERROR_ON);
+	fd = open(file, O_RDWR);;
+	if (fd == -1)
+		error_exit("open failed", PERROR_ON);
+	free(file);
+    if (parse_lines_from_rt_file(fd, vars))
+	{
+		clear_scene(vars);
+		close(fd);
+		return (1);
+	}
+	if (close(fd))
+		error_exit("close failed", PERROR_ON);
+	return (0);
+}
+
+int	parse_lines_from_rt_file(int fd, t_vars *vars)
+{
+    int		err_flag;
+    char    *temp;
+    char    **line;
+
+    err_flag = 0;
+    while (!err_flag)
+	{
+		temp = get_next_line(fd);
+		if (!temp)
+			break ;
+		printf("%s", temp);	// for debugging
+		if (temp[0] == '\n')
+		{
+			free(temp);
+			continue ;
+		}
+		line = ft_split(truncate_end_nl(temp), ' ');
+		if (!line)
+			err_flag = 1;
+		if (!err_flag)
+			err_flag = parse_scene_element(line, vars);
+		free(temp);
+		free_lists(line);
+	}
+	return (err_flag);
+}
+
+void	clear_scene(t_vars *vars)
+{
+	t_light		*lights;
+	t_obj		*obj;
+
+	lights = vars->scene.lights;
+	obj = vars->scene.obj;
+	while (lights)
+	{
+		vars->scene.lights = lights->next;
+		free(lights);
+		lights = vars->scene.lights;
+	}
+	while (obj)
+	{
+		vars->scene.obj = obj->next;
+		free(obj);
+		obj = vars->scene.obj;
+	}
 }
 
 void	print_parsed_vars(t_vars *vars)
@@ -65,6 +149,7 @@ void	print_parsed_vars(t_vars *vars)
 		{
 			printf("sphere pos: %g %g %g\n", obj->data.sphere.center.x, obj->data.sphere.center.y, obj->data.sphere.center.z);
 			printf("sphere rad: %g\n", obj->data.sphere.radius);
+			printf("sphere specular: %d\n", obj->specular);
 			printf("sphere color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
 			printf("\n");
 		}
@@ -79,13 +164,4 @@ void	print_parsed_vars(t_vars *vars)
 		}
 		obj = obj->next;
 	}
-}
-
-void	parse(int argc, char **argv, t_vars *vars)
-{
-	if (parse_argv(argc, argv))
-		error_exit("Usage: ./minirt [file.rt]", PERROR_OFF);
-	if (parse_rt(argv[1], vars))
-		error_exit("Error", PERROR_OFF);
-	print_parsed_vars(vars);
 }

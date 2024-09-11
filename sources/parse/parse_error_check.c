@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 14:30:16 by mindaewon         #+#    #+#             */
-/*   Updated: 2024/09/11 11:42:20 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 14:18:56 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_coord(char **coord)
 	i = 0;
 	while (i < 3)
 	{
-		if (check_float_string(coord[i]))
+		if (check_float_str(coord[i]))
 			return (1);
 		i++;
 	}
@@ -38,7 +38,7 @@ int check_vector(char **vector)
 	i = 0;
 	while (i < 3)
 	{
-		if (check_float_string(vector[i]))
+		if (check_float_str(vector[i]))
 			return (1);
 		i++;
 	}
@@ -60,7 +60,7 @@ int check_color(char **color)
 	i = 0;
 	while (i < 3)
 	{
-		if (check_num_string(color[i]))
+		if (check_decimal_str(color[i]))
 			return (1);
 		i++;
 	}
@@ -72,7 +72,7 @@ int check_color(char **color)
 	return (0);
 }
 
-int check_num_string(char *str)
+int check_decimal_str(char *str)
 {
 	int i;
 
@@ -84,7 +84,7 @@ int check_num_string(char *str)
 	return (0);
 }
 
-int	check_float_string(char *str)
+int	check_float_str(char *str)
 {
 	int i;
 	int dot;

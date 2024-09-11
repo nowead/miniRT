@@ -16,7 +16,7 @@ int parse_camera(char **line, t_vars *vars)
 	char **coord;
 	char **vector;
 
-	if (ft_strslen(line) != 4 )
+	if (ft_strslen(line) != 4)
 		return (1);
 	coord = ft_split(line[1], ',');
 	if (check_coord(coord))
@@ -28,7 +28,7 @@ int parse_camera(char **line, t_vars *vars)
 		return (1);
 	vars->scene.camera.dir = (t_vec3){ft_atof(vector[0]), ft_atof(vector[1]), ft_atof(vector[2])};
 	free_lists(vector);
-	if (check_float_string(line[3]))
+	if (check_float_str(line[3]))
 		return (1);
 	vars->scene.camera.fov = ft_atof(line[3]);
 	if (vars->scene.camera.fov < 0 || vars->scene.camera.fov > 180)
