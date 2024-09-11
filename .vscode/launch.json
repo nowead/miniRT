@@ -8,8 +8,8 @@
 			"type": "lldb",
 			"request": "launch",
 			"name": "minirt",
-			"program": "${workspaceFolder}/miniRT",
-			"args": ["test.rt"],
+			"program": "${workspaceFolder}/minirt",
+			"args": [],
 			"cwd": "${workspaceFolder}"
 		}
 	]

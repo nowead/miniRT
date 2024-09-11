@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_object_point_light.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 09:51:31 by mindaewon         #+#    #+#             */
-/*   Updated: 2024/09/10 18:53:29 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/10 21:46:37 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int init_point_light(t_light *lights, char **line, t_vars *vars)
 {
-	lights = (t_light *)malloc(sizeof(t_light));
+	lights = (t_light *)ft_calloc(1, sizeof(t_light));
 	if (!lights)
 		return (1);
 	if (set_point_light(line, lights))
@@ -34,12 +34,12 @@ int set_point_light(char **line, t_light *lights)
 	coord = ft_split(line[1], ',');
 	if (check_coord(coord))
 		return (1);
-	lights->pos = (t_point3d){ft_atof(coord[0]), ft_atof(coord[1]), ft_atof(coord[2])};
+	lights->pos = (t_point3){ft_atof(coord[0]), ft_atof(coord[1]), ft_atof(coord[2])};
 	free_lists(coord);
 	if (check_float_string(line[2]))
 		return (1);
-	lights->ratio = ft_atof(line[2]);
-	if (lights->ratio < 0 || lights->ratio > 1)
+	lights->intens = ft_atof(line[2]);
+	if (lights->intens < 0 || lights->intens > 1)
 		return (1);
 	color = ft_split(line[3], ',');
 	if (check_color(color))
@@ -67,7 +67,7 @@ int parse_point_light(char **line, t_vars *vars)
 		curr = lights;
 		while (curr->next)
 			curr = curr->next;
-		curr->next = (t_light *)malloc(sizeof(t_light));
+		curr->next = (t_light *)ft_calloc(1, sizeof(t_light));
 		if (!curr->next)
 			return (1);
 		if (set_point_light(line, curr->next))

@@ -3,78 +3,82 @@
 /*                                                        :::      ::::::::   */
 /*   parse_mesh_cylinder.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/10 18:54:08 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/11 12:15:23 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int		init_cylinders(t_cylinder *cylinders, char **line, t_vars *vars)
+int		init_cylinders(t_obj *cylinder, char **line, t_vars *vars)
 {
-	cylinders = (t_cylinder *)malloc(sizeof(t_cylinder));
-	if (!cylinders)
+	cylinder = (t_obj *)ft_calloc(1, sizeof(t_obj));
+	if (!cylinder)
 		return (1);
-	if (set_cylinder(line, cylinders))
+	if (set_cylinder(line, cylinder))
 		return (1);
-	cylinders->next = NULL;
-	vars->scene.cylinders = cylinders;
+	vars->scene.obj = cylinder;
 	return (0);
 }
 
-int     set_cylinder(char **line, t_cylinder *cylinders)
+int     set_cylinder(char **line, t_obj *cylinder)
 {
     char    **coord;
     char    **vector;
 	char	**color;
 
+	cylinder->type = CYLINDER;
+	
     coord = ft_split(line[1], ',');
 	if (check_coord(coord))
 		return (1);
-    cylinders->center = (t_point3d){ft_atoi(coord[0]), ft_atoi(coord[1]), ft_atoi(coord[2])};
+    cylinder->data.cylinder.center = (t_point3){ft_atoi(coord[0]), ft_atoi(coord[1]), ft_atoi(coord[2])};
     free_lists(coord);
+	
     vector = ft_split(line[2], ',');
 	if (check_vector(vector))
 		return (1);
-    cylinders->vector = (t_vector3d){ft_atoi(vector[0]), ft_atoi(vector[1]), ft_atoi(vector[2])};
+    cylinder->data.cylinder.vector = (t_vec3){ft_atoi(vector[0]), ft_atoi(vector[1]), ft_atoi(vector[2])};
     free_lists(vector);
-	if ((check_float_string(line[3])) || check_float_string(line[4]))
+	
+	if ((check_float_string(line[3])) || check_float_string(line[4]) || check_float_string(line[5]))
 		return (1);
-    cylinders->diameter = ft_atoi(line[3]);
-    cylinders->height = ft_atoi(line[4]);
-	color = ft_split(line[5], ',');
+    cylinder->data.cylinder.radius = ft_atoi(line[3]) / 2;
+    cylinder->data.cylinder.height = ft_atoi(line[4]);
+	cylinder->specular = ft_atof(line[5]);
+
+	color = ft_split(line[6], ',');
 	if (check_color(color))
 		return (1);
-	cylinders->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+	cylinder->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
 	free_lists(color);
+	
+	cylinder->next = NULL;
 	return (0);
 }
 
 int	parse_cylinders(char **line, t_vars *vars)
 {
-	t_cylinder	*curr;
-	t_cylinder	*cylinders;
+	t_obj	*curr;
 	
-	vars->scene.num_of_cylinders++;
-	cylinders = vars->scene.cylinders;
-	if (cylinders == NULL)
+	vars->scene.num_of_obj++;
+	curr = vars->scene.obj;
+	if (curr == NULL)
 	{
-		if (init_cylinders(cylinders, line, vars))
+		if (init_cylinders(curr, line, vars))
 			return (1);
 	}
 	else
 	{
-		curr = cylinders;
 		while (curr->next)
 			curr = curr->next;
-		curr->next = (t_cylinder *)malloc(sizeof(t_cylinder));
+		curr->next = (t_obj *)ft_calloc(1, sizeof(t_obj));
 		if (!curr->next)
             return (1);
 		if (set_cylinder(line, curr->next))
             return (1);
-		curr->next->next = NULL;
 	}
 	return (0);
 }
