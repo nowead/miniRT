@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/11 15:51:48 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 17:19:46 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,41 +213,41 @@ float			cosine_between_vectors(t_vec3 v1, t_vec3 v2);
 t_vec3			unit_vector(t_vec3 v);
 
 //parse.c
-int			parse_argv(int argc, char **argv);
-void		parse_scene(int argc, char **argv, t_vars *vars);
-int			parse_rt_file(char *argv, t_vars *vars);
-int			parse_lines_from_rt_file(int fd, t_vars *vars);
-void		clear_scene(t_vars *vars);
+int				parse_argv(int argc, char **argv);
+void			parse_scene(int argc, char **argv, t_vars *vars);
+int				parse_rt_file(char *argv, t_vars *vars);
+int				parse_lines_from_rt_file(int fd, t_vars *vars);
+void			clear_scene(t_vars *vars);
 
 //parse_rt_file.c
-int			parse_scene_element(char **line, t_vars *vars);
-int			parse_light(char **line, t_vars *vars, int (*set_light)(char **line, t_light *light));
-int			parse_object(char **line,t_vars *vars, int (*set_obj)(char **line, t_obj *obj));
+int				parse_scene_element(char **line, t_vars *vars);
+int				parse_light(char **line, t_vars *vars, int (*set_light)(char **line, t_light *light));
+int				parse_object(char **line,t_vars *vars, int (*set_obj)(char **line, t_obj *obj));
 
 // parse_camera.c
-int			parse_camera(char **line, t_vars *vars);
+int				parse_camera(char **line, t_vars *vars);
 
 // parse_light.c
-int			set_amb_light(char **line, t_light *lights);
-int			set_point_light(char **line, t_light *lights);
+int				set_amb_light(char **line, t_light *lights);
+int				set_point_light(char **line, t_light *lights);
 
 // parse_object.c
-int			set_sphere(char **line, t_obj *sphere);
-int			set_plane(char **line, t_obj *plane);
-int			set_cylinder(char **line, t_obj *cylinder);
+int				set_sphere(char **line, t_obj *sphere);
+int				set_plane(char **line, t_obj *plane);
+int				set_cylinder(char **line, t_obj *cylinder);
 
 // parse_utils.c
-int			get_color(int r, int g, int b);
-void		free_lists(char **lists);
-float		ft_atof(char *str);
-int			ft_strslen(char **strs);
-char		*truncate_end_nl(char *str);
+int				get_color(int r, int g, int b);
+void			free_lists(char **lists);
+float			ft_atof(char *str);
+int				ft_strslen(char **strs);
+char			*truncate_end_nl(char *str);
 
 // parse_error_check.c
-int			check_coord(char **coord);
-int			check_vector(char **vector);
-int			check_color(char **color);
-int			check_decimal_str(char *str);
-int			check_float_str(char *str);
+int				check_coord(char **coord);
+int				check_vector(char **vector);
+int				check_color(char **color);
+int				check_decimal_str(char *str);
+int				check_float_str(char *str);
 
 #endif
