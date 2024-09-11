@@ -9,6 +9,8 @@
 		"ostream": "c",
 		"string": "c",
 		"string_view": "c",
-		"utility": "c"
+		"utility": "c",
+		"iosfwd": "c",
+		"iterator": "c"
 	}
 }

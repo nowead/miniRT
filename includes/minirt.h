@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 21:32:27 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 12:47:49 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define YELLOW 0xFFFF00
 
 # define FLT_MAX 3.402823466e+38F
+# define DBL_MAX 1.7976931348623158e+308
 
 typedef struct	s_point2
 {
@@ -98,7 +99,7 @@ typedef struct s_cylinder
 {
 	t_point3	center;
 	t_vec3		vector;
-	float		diameter;
+	float		radius;
 	float		height;
 }	t_cylinder;
 
@@ -237,18 +238,18 @@ int			parse_point_light(char **line, t_vars *vars);
 
 // parse_mesh_plane.c
 int			parse_plane(char **line, t_vars *vars);
-int			set_plane(char **line, t_plane *planes);
-int			init_planes(t_plane *planes, char **line, t_vars *vars);
+int			set_plane(char **line, t_obj *plane);
+int			init_planes(t_obj *plane, char **line, t_vars *vars);
 
 // parse_mesh_sphere.c
 int			parse_spheres(char **line, t_vars *vars);
-int			set_sphere(char **line, t_sphere *spheres);
-int			init_spheres(t_sphere *spheres, char **line, t_vars *vars);
+int			set_sphere(char **line, t_obj *sphere);
+int			init_spheres(t_obj *sphere, char **line, t_vars *vars);
 
 // parse_mesh_cylinder.c
 int			parse_cylinders(char **line, t_vars *vars);
-int			set_cylinder(char **line, t_cylinder *cylinders);
-int			init_cylinders(t_cylinder *cylinders, char **line, t_vars *vars);
+int			set_cylinder(char **line, t_obj *cylinder);
+int			init_cylinders(t_obj *cylinder, char **line, t_vars *vars);
 
 // parse_utils.c
 int			get_color(int r, int g, int b);

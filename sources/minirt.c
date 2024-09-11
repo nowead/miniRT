@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 21:37:54 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/11 12:40:03 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,7 @@ int main(int argc, char **argv)
 {
     t_vars  vars;
 
-	(void)argc;
-	(void)argv;
-    // if (2 != argc)
-	// 	exit_error("Usage: ./minirt [file.rt]", PERROR_OFF);
     init_vars(&vars);
-	// init_scene(&vars.scene);
 	parse(argc, argv, &vars);
 	render_scene(&vars);
 	mlx_put_image_to_window(vars.mlx, vars.win.ptr, vars.img.ptr, 0, 0);
@@ -45,8 +40,8 @@ void	init_vars(t_vars *vars)
 	vars->mlx = mlx_init();
     if (!vars->mlx)
         error_exit("mlx_init error", PERROR_OFF);
-	vars->win.width = 1280;
-	vars->win.height = 720;
+	vars->win.width = 1080;
+	vars->win.height = 1080;
 	vars->win.ptr = mlx_new_window(vars->mlx, \
 	vars->win.width, vars->win.height, "miniRT");
     if (!vars->win.ptr)
@@ -62,59 +57,59 @@ void	init_vars(t_vars *vars)
         error_exit("mlx_get_data_addr error", PERROR_OFF);
 }
 
-void	init_scene(t_scene *scene)
-{
-	scene->camera.pos = (t_point3){6, 2, 3.5};
-	scene->camera.dir = (t_vec3){1, 0.5, 0};
-	scene->camera.fov = 53;
+// void	init_scene(t_scene *scene)
+// {
+// 	scene->camera.pos = (t_point3){6, 2, 3.5};
+// 	scene->camera.dir = (t_vec3){1, 0.5, 0};
+// 	scene->camera.fov = 53;
 
-	scene->num_of_lights = 3;
-	scene->lights = (t_light *)ft_calloc(scene->num_of_lights, sizeof(t_light));
-	if (!scene->lights)
-		error_exit("malloc lights error", PERROR_ON);
-	scene->lights[0].type = AMBIENT_LIGHT;
-	scene->lights[0].intens = 0.2;
+// 	scene->num_of_lights = 3;
+// 	scene->lights = (t_light *)ft_calloc(scene->num_of_lights, sizeof(t_light));
+// 	if (!scene->lights)
+// 		error_exit("malloc lights error", PERROR_ON);
+// 	scene->lights[0].type = AMBIENT_LIGHT;
+// 	scene->lights[0].intens = 0.2;
 	
-	scene->lights[1].type = POINT_LIGHT;
-	scene->lights[1].pos = (t_point3){2, 1, 0};
-	scene->lights[1].intens = 0.6;
+// 	scene->lights[1].type = POINT_LIGHT;
+// 	scene->lights[1].pos = (t_point3){2, 1, 0};
+// 	scene->lights[1].intens = 0.6;
 	
-	scene->lights[2].type = DIRECTIONAL_LIGHT;
-	scene->lights[2].dir = (t_vec3){1, 4, 4};
-	scene->lights[2].intens = 0.2;
+// 	scene->lights[2].type = DIRECTIONAL_LIGHT;
+// 	scene->lights[2].dir = (t_vec3){1, 4, 4};
+// 	scene->lights[2].intens = 0.2;
 
-	scene->num_of_obj = 4;
-	scene->obj = (t_obj *)ft_calloc(scene->num_of_obj, sizeof(t_obj));
-	if (!scene->obj)
-		return (error_exit("malloc obj error", PERROR_ON));
+// 	scene->num_of_obj = 4;
+// 	scene->obj = (t_obj *)ft_calloc(scene->num_of_obj, sizeof(t_obj));
+// 	if (!scene->obj)
+// 		return (error_exit("malloc obj error", PERROR_ON));
 
-	scene->obj[0].type = SPHERE;
-	scene->obj[0].color = RED;
-	scene->obj[0].specular = 500;
-	scene->obj[0].data.sphere.center = (t_point3){0, -1, 3};
-	scene->obj[0].data.sphere.radius = 1;
+// 	scene->obj[0].type = SPHERE;
+// 	scene->obj[0].color = RED;
+// 	scene->obj[0].specular = 500;
+// 	scene->obj[0].data.sphere.center = (t_point3){0, -1, 3};
+// 	scene->obj[0].data.sphere.radius = 1;
 
-	scene->obj[1].type = SPHERE;
-	scene->obj[1].color = BLUE;
-	scene->obj[1].specular = 500;
-	scene->obj[1].data.sphere.center = (t_point3){2, 0, 4};
-	scene->obj[1].data.sphere.radius = 1;
+// 	scene->obj[1].type = SPHERE;
+// 	scene->obj[1].color = GREEN;
+// 	scene->obj[1].specular = 10;
+// 	scene->obj[1].data.sphere.center = (t_point3){-2, 0, 4};
+// 	scene->obj[1].data.sphere.radius = 1;
 
-	scene->obj[2].type = SPHERE;
-	scene->obj[2].color = GREEN;
-	scene->obj[2].specular = 10;
-	scene->obj[2].data.sphere.center = (t_point3){-2, 0, 4};
-	scene->obj[2].data.sphere.radius = 1;
+// 	scene->obj[2].type = SPHERE;
+// 	scene->obj[2].color = BLUE;
+// 	scene->obj[2].specular = 500;
+// 	scene->obj[2].data.sphere.center = (t_point3){2, 0, 4};
+// 	scene->obj[2].data.sphere.radius = 1;
 
-	scene->obj[3].type = SPHERE;
-	scene->obj[3].color = YELLOW;
-	scene->obj[3].specular = 1000;
-	scene->obj[3].data.sphere.center = (t_point3){0, -5001, 0};
-	scene->obj[3].data.sphere.radius = 5000;
+// 	scene->obj[3].type = SPHERE;
+// 	scene->obj[3].color = YELLOW;
+// 	scene->obj[3].specular = 1000;
+// 	scene->obj[3].data.sphere.center = (t_point3){0, -5001, 0};
+// 	scene->obj[3].data.sphere.radius = 5000;
 
-	// scene->obj[3].type = PLANE;
-	// scene->obj[3].color = YELLOW;
-	// scene->obj[3].specular = 1;
-	// scene->obj[3].data.plane.pos = (t_point3){0, -1, 0};
-	// scene->obj[3].data.plane.normal = (t_vec3){0, 1, 0};
-}
+// 	// scene->obj[3].type = PLANE;
+// 	// scene->obj[3].color = YELLOW;
+// 	// scene->obj[3].specular = 1;
+// 	// scene->obj[3].data.plane.pos = (t_point3){0, -1, 0};
+// 	// scene->obj[3].data.plane.normal = (t_vec3){0, 1, 0};
+// }

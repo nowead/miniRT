@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_rt.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 20:41:44 by damin             #+#    #+#             */
-/*   Updated: 2024/09/10 18:51:57 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/11 11:46:21 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,40 +78,24 @@ int	get_line(int fd, t_vars *vars)
 	return (parse_err_flag);
 }
 
-void	clear_vars(t_vars *vars)
+void	clear_scene(t_vars *vars)
 {
 	t_light		*lights;
-	t_sphere	*spheres;
-	t_cylinder	*cylinders;
-	t_plane		*planes;
+	t_obj		*obj;
 
 	lights = vars->scene.lights;
-	spheres = vars->scene.spheres;
-	cylinders = vars->scene.cylinders;
-	planes = vars->scene.planes;
+	obj = vars->scene.obj;
 	while (lights)
 	{
 		vars->scene.lights = lights->next;
 		free(lights);
 		lights = vars->scene.lights;
 	}
-	while (spheres)
+	while (obj)
 	{
-		vars->scene.spheres = spheres->next;
-		free(spheres);
-		spheres = vars->scene.spheres;
-	}
-	while (cylinders)
-	{
-		vars->scene.cylinders = cylinders->next;
-		free(cylinders);
-		cylinders = vars->scene.cylinders;
-	}
-	while (planes)
-	{
-		vars->scene.planes = planes->next;
-		free(planes);
-		planes = vars->scene.planes;
+		vars->scene.obj = obj->next;
+		free(obj);
+		obj = vars->scene.obj;
 	}
 }
 
@@ -128,7 +112,7 @@ int	parse_rt(char *argv, t_vars *vars)
 		error_exit("open failed", PERROR_ON);
     if (get_line(fd, vars))
 	{
-		clear_vars(vars);
+		clear_scene(vars);
 		free(file);
 		close(fd);
 		return (1);
