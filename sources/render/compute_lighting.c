@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 18:45:01 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/12 20:45:59 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_vec3	get_normal_vector(t_point3 p, t_obj *obj)
 		n = unit_vector(subtract_3dpoints(p, obj->data.sphere.center));
 	else
 		n = obj->data.plane.normal;
+	// else
+	// 	n = obj->data.cylinder.vector;
 	return (n);
 }
 

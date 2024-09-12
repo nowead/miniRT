@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 18:02:38 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/12 20:45:46 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *sc
         	intersect_ray_sphere(&ray, obj, t_range, &closest_hit);
 		else if (obj->type == PLANE)
 			intersect_ray_plane(&ray, obj, t_range, &closest_hit);
-		// else if (scene->obj[i].type == CYLINDER)
-		// 	closest_hit = intersect_ray_plane(scene->camera, ray_dir, &(scene->obj[i]), &closest_hit);
+		// else if (obj->type == CYLINDER)
+		// 	intersect_ray_cylinder(&ray, obj, t_range, &closest_hit);
 		obj = obj->next;
 	}
 	return (closest_hit);

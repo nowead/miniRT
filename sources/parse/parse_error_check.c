@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 14:30:16 by mindaewon         #+#    #+#             */
-/*   Updated: 2024/09/12 19:03:30 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/12 20:05:45 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int check_vector(char **vector)
 	vec.z = ft_atof(vector[2]);
 	if (vec.x < -1 || vec.x > 1 || vec.y < -1 || vec.y > 1 || vec.z < -1 || vec.z > 1)
 		return (1);
-	if (length(vec) != 1)
-		return (1);
+	// if (length(vec) != 1)
+	// 	return (1);
 	return (0);
 }
 
