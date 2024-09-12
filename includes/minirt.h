@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 16:54:22 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/12 20:38:46 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct	s_camera
 	float		viewport_w;
 	float		viewport_h;
 	t_vec3		viewport_c;
-	t_vec3		w;
 	t_vec3		u;
 	t_vec3		v;
 }	t_camera;
@@ -109,6 +108,14 @@ typedef struct s_cylinder
 	float		height;
 }	t_cylinder;
 
+typedef struct s_cone
+{
+	t_point3	vertex;
+	t_vec3		axis;
+	float		radius;
+	float		height;
+}	t_cone;
+
 typedef struct	s_sphere
 {
 	t_point3	center;
@@ -119,14 +126,16 @@ typedef enum e_obj_type
 {
 	SPHERE,
 	PLANE,
-	CYLINDER
+	CYLINDER,
+	CONE
 }	t_obj_type;
 
 typedef union u_obj_data
 {
-    t_sphere   sphere;
-    t_plane    plane;
-    t_cylinder cylinder;
+    t_sphere	sphere;
+    t_plane		plane;
+    t_cylinder	cylinder;
+	t_cone		cone;
 } t_obj_data;
 
 typedef struct s_obj
@@ -242,6 +251,12 @@ int				set_point_light(char **line, t_light *lights);
 int				set_sphere(char **line, t_obj *sphere);
 int				set_plane(char **line, t_obj *plane);
 int				set_cylinder(char **line, t_obj *cylinder);
+int				set_cone(char **line, t_obj *cone);
+
+// parse_types.c
+int				parse_3dpoint(char *str, t_point3 *point);
+int				parse_3dvector(char *str, t_vec3 *vector);
+int				parse_color(char *str, int *color);
 
 // parse_utils.c
 int				get_color(int r, int g, int b);

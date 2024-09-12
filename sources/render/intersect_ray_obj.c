@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:40:55 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/11 17:04:53 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/12 20:42:15 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,3 +67,10 @@ t_closest_hit *closest_hit)
 	}
     return ;
 }
+
+// void	intersect_ray_cone(t_ray *ray, t_obj *obj, t_float_range t_range, \
+// t_closest_hit *closest_hit)
+// {
+// 	float	t1;
+// 	float	t2;
+// }
