@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 20:45:46 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/12 20:58:03 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *sc
 			intersect_ray_plane(&ray, obj, t_range, &closest_hit);
 		// else if (obj->type == CYLINDER)
 		// 	intersect_ray_cylinder(&ray, obj, t_range, &closest_hit);
+		// else if (obj->type == CONE)
+		// 	intersect_ray_cone(&ray, obj, t_range, &closest_hit);
 		obj = obj->next;
 	}
 	return (closest_hit);

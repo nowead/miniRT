@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_ray_obj.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:40:55 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 20:45:29 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/12 20:57:16 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,11 @@ t_closest_hit *closest_hit)
 // 		closeset_hit->obj = obj;
 // 	}
 // 	return ;
+// }
+
+// void	intersect_ray_cone(t_ray *ray, t_obj *obj, t_float_range t_range, \
+// t_closest_hit *closest_hit)
+// {
+// 	float	t1;
+// 	float	t2;
 // }

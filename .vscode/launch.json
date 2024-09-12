@@ -8,9 +8,9 @@
 			"type": "lldb",
 			"request": "launch",
 			"name": "minirt",
-			"program": "${workspaceFolder}/miniRT",
-			"args": ["test2.rt"],
-			"cwd": "${workspaceFolder}"
+			"program": "${workspaceFolder}/minirt",
+			"args": ["test.rt"],
+			"cwd": "${workspaceFolder}",
 		}
 	]
 }
