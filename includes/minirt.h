@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/11 17:19:46 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/12 16:54:22 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,13 @@ typedef struct	s_camera
 	t_point3	pos;
 	t_vec3		dir;
 	int			fov;
+	float		fov_radian;
+	float		viewport_w;
+	float		viewport_h;
+	t_vec3		viewport_c;
+	t_vec3		w;
+	t_vec3		u;
+	t_vec3		v;
 }	t_camera;
 
 typedef enum e_light_type
@@ -179,8 +186,8 @@ void			init_vars(t_vars *vars);
 
 // render_scene.c
 void			render_scene(t_vars *vars);
-t_vec3			canvas_to_viewport(int x, int y, t_img *img, int fov);
-t_vec3			rotate_camera(t_vec3 camera_dir, t_vec3 d);
+void			init_camera_and_viewport(t_camera *camera, t_img *img);
+t_vec3			canvas_to_viewport(int x, int y, t_img *img, t_camera *camera);
 int				trace_ray(t_scene *scene, t_vec3 ray_dir);
 t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene);
 
