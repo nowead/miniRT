@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/11 17:12:58 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/12 15:27:58 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	set_plane(char **line, t_obj *plane)
 	coord = ft_split(line[1], ',');
 	if (check_coord(coord))
 		return (1);
-	plane->data.plane.pos = (t_point3){ft_atoi(coord[0]), ft_atoi(coord[1]), ft_atoi(coord[2])};
+	plane->data.plane.pos = (t_point3){ft_atof(coord[0]), ft_atof(coord[1]), ft_atof(coord[2])};
 	free_lists(coord);
 
 	vector = ft_split(line[2], ',');
