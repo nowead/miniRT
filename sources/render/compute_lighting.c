@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   compute_lighting.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/11 16:52:11 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/12 18:45:01 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+t_vec3	get_normal_vector(t_point3 p, t_obj *obj)
+{
+	t_vec3	n;
+
+	if (obj->type == SPHERE)
+		n = unit_vector(subtract_3dpoints(p, obj->data.sphere.center));
+	else
+		n = obj->data.plane.normal;
+	return (n);
+}
 
 float	compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene)
 {
@@ -24,7 +35,7 @@ float	compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene)
 	float			r_dot_v;
 	float			t_max;
 
-	n = unit_vector(subtract_3dpoints(p , obj->data.sphere.center));
+	n = get_normal_vector(p, obj);
     intens = 0.0;
 	light = scene->lights;
     while (light)
