@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:40:55 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 20:45:29 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/12 21:02:21 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,39 +69,39 @@ t_closest_hit *closest_hit)
     return ;
 }
 
-// void	intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, \
-// t_closest_hit *closeset_hit)
-// {
-// 	float	a;
-// 	float	b;
-// 	float	c;
-// 	float	discriminant;
-// 	float	t1;
-// 	float	t2;
+void	intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, \
+t_closest_hit *closeset_hit)
+{
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
+	float	t1;
+	float	t2;
 
-// 	a = pow(dot(ray->dir, obj->data.cylinder.vector), 2) - 1;
-// 	b = dot(ray->dir, obj->data.cylinder.vector) * dot(subtract_3dpoints(obj->data.cylinder.center, ray->origin), obj->data.cylinder.vector);
-// 	b -= dot(subtract_3dpoints(obj->data.cylinder.center, ray->origin), ray->dir);
-// 	c = pow(obj->data.cylinder.radius, 2) - dot(subtract_3dpoints(obj->data.cylinder.center, ray->origin), subtract_3dpoints(obj->data.cylinder.center, ray->origin));
-// 	c += pow(dot(subtract_3dpoints(obj->data.cylinder.center, ray->origin), obj->data.cylinder.vector), 2);	
+	a = pow(dot(ray->dir, obj->data.cylinder.vector), 2) - 1;
+	b = dot(ray->dir, obj->data.cylinder.vector) * dot(subtract_3dpoints(ray->origin, obj->data.cylinder.center), obj->data.cylinder.vector);
+	b -= dot(subtract_3dpoints(ray->origin, obj->data.cylinder.center), ray->dir);
+	c = pow(obj->data.cylinder.radius, 2) - dot(subtract_3dpoints(ray->origin, obj->data.cylinder.center), subtract_3dpoints(ray->origin, obj->data.cylinder.center));
+	c += pow(dot(subtract_3dpoints(ray->origin, obj->data.cylinder.center), obj->data.cylinder.vector), 2);	
 
-// 	discriminant = b * b - 4 * a * c;
-// 	if (discriminant < 0)
-// 		return ;
-// 	else
-// 	{
-// 		t1 = (-b + sqrt(discriminant)) / (2 * a);
-// 		t2 = (-b - sqrt(discriminant)) / (2 * a);
-// 	}
-// 	if ((t_range.min < t1 && t1 < t_range.max) && t1 < closeset_hit->t)
-// 	{
-// 		closeset_hit->t = t1;
-// 		closeset_hit->obj = obj;
-// 	}
-// 	if ((t_range.min < t2 && t2 < t_range.max) && t2 < closeset_hit->t)
-// 	{
-// 		closeset_hit->t = t2;
-// 		closeset_hit->obj = obj;
-// 	}
-// 	return ;
-// }
+	discriminant = b * b - 4 * a * c;
+	if (discriminant < 0)
+		return ;
+	else
+	{
+		t1 = (-b + sqrt(discriminant)) / (2 * a);
+		t2 = (-b - sqrt(discriminant)) / (2 * a);
+	}
+	if ((t_range.min < t1 && t1 < t_range.max) && t1 < closeset_hit->t)
+	{
+		closeset_hit->t = t1;
+		closeset_hit->obj = obj;
+	}
+	if ((t_range.min < t2 && t2 < t_range.max) && t2 < closeset_hit->t)
+	{
+		closeset_hit->t = t2;
+		closeset_hit->obj = obj;
+	}
+	return ;
+}
