@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 20:07:41 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/13 18:40:45 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,21 @@ typedef struct s_cylinder
 	float		height;
 }	t_cylinder;
 
+typedef struct s_cylinder_vars {
+    t_vec3	D;
+    t_vec3	V;
+    t_vec3	CO;
+    float	r;
+    float	h;    
+    float	D_dot_V;
+    float	CO_dot_V;
+    t_vec3	D_perp;
+    t_vec3	CO_perp;
+    float	a;
+    float	b;
+    float	c;
+} t_cylinder_vars;
+
 typedef struct	s_sphere
 {
 	t_point3	center;
@@ -151,6 +166,8 @@ typedef	struct	s_closest_hit
 {
 	t_obj	*obj;
 	float	t;
+	int		is_cap;
+	t_vec3	cap_normal;
 }	t_closest_hit;
 
 typedef struct s_win
@@ -196,8 +213,15 @@ void			intersect_ray_sphere(t_ray *ray, t_obj *obj, t_float_range t_range, t_clo
 void			intersect_ray_plane(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
 void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
 
+// intersect_ray_cylinder.c
+void			get_cylinder_vars(t_ray *ray, t_obj *obj, t_cylinder_vars *vars);
+int				solve_quadratic(t_cylinder_vars *vars, float *t1, float *t2);
+void			check_side_hit(float t, t_cylinder_vars *vars, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
+void			check_cap_intersection(t_ray *ray, t_cylinder_vars *vars, t_point3 center, int cap_orientation, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
+void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
+
 // compute_lighting.c
-float			compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene);
+float			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);
 int				apply_lighting(int color, float lighting);
 
 // my_mlx_pixel_put.c

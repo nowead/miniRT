@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 20:55:33 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/13 16:57:23 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	trace_ray(t_scene *scene, t_vec3 ray_dir)
 {
 	t_point3		p;
 	t_closest_hit	closest_hit;
+	float			lighting;
 
 	closest_hit = closest_intersection((t_ray){scene->camera.pos, ray_dir}, \
 	(t_float_range){0, FLT_MAX}, scene);
@@ -75,8 +76,8 @@ int	trace_ray(t_scene *scene, t_vec3 ray_dir)
         return (BACKGROUND_COLOR);
 	p = add_vector_to_point(scene->camera.pos, \
 	scale_vector(ray_dir, closest_hit.t));
-    return (apply_lighting(closest_hit.obj->color, \
-	compute_lighting(p, scale_vector(ray_dir, -1), closest_hit.obj, scene)));
+	lighting = compute_lighting(p, scale_vector(ray_dir, -1), &closest_hit, scene);
+    return (apply_lighting(closest_hit.obj->color, lighting));
 }
 
 t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene)
