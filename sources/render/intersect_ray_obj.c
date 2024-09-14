@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:40:55 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 20:57:16 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/14 12:52:37 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,47 +68,3 @@ t_closest_hit *closest_hit)
 	}
     return ;
 }
-
-// void	intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, \
-// t_closest_hit *closeset_hit)
-// {
-// 	float	a;
-// 	float	b;
-// 	float	c;
-// 	float	discriminant;
-// 	float	t1;
-// 	float	t2;
-
-// 	a = pow(dot(ray->dir, obj->data.cylinder.vector), 2) - 1;
-// 	b = dot(ray->dir, obj->data.cylinder.vector) * dot(subtract_3dpoints(obj->data.cylinder.center, ray->origin), obj->data.cylinder.vector);
-// 	b -= dot(subtract_3dpoints(obj->data.cylinder.center, ray->origin), ray->dir);
-// 	c = pow(obj->data.cylinder.radius, 2) - dot(subtract_3dpoints(obj->data.cylinder.center, ray->origin), subtract_3dpoints(obj->data.cylinder.center, ray->origin));
-// 	c += pow(dot(subtract_3dpoints(obj->data.cylinder.center, ray->origin), obj->data.cylinder.vector), 2);	
-
-// 	discriminant = b * b - 4 * a * c;
-// 	if (discriminant < 0)
-// 		return ;
-// 	else
-// 	{
-// 		t1 = (-b + sqrt(discriminant)) / (2 * a);
-// 		t2 = (-b - sqrt(discriminant)) / (2 * a);
-// 	}
-// 	if ((t_range.min < t1 && t1 < t_range.max) && t1 < closeset_hit->t)
-// 	{
-// 		closeset_hit->t = t1;
-// 		closeset_hit->obj = obj;
-// 	}
-// 	if ((t_range.min < t2 && t2 < t_range.max) && t2 < closeset_hit->t)
-// 	{
-// 		closeset_hit->t = t2;
-// 		closeset_hit->obj = obj;
-// 	}
-// 	return ;
-// }
-
-// void	intersect_ray_cone(t_ray *ray, t_obj *obj, t_float_range t_range, \
-// t_closest_hit *closest_hit)
-// {
-// 	float	t1;
-// 	float	t2;
-// }

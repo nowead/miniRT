@@ -6,26 +6,46 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 20:45:59 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/13 16:57:44 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+t_vec3 get_cylinder_normal(t_point3 p, t_closest_hit *hit)
+{
+	t_vec3 temp;
+	t_vec3 q;
+	float m;
 
-t_vec3	get_normal_vector(t_point3 p, t_obj *obj)
+	if (hit->is_cap)
+	{
+		return (hit->cap_normal);
+	}
+	else
+	{
+		temp = subtract_3dpoints(p, hit->obj->data.cylinder.center);
+        m = dot(temp, hit->obj->data.cylinder.vector);
+        q = add_vector_to_point(hit->obj->data.cylinder.center,\
+		 scale_vector(hit->obj->data.cylinder.vector, m));
+        return (unit_vector(subtract_3dpoints(p, q)));
+	}
+	
+}
+
+t_vec3	get_normal_vector(t_point3 p, t_closest_hit *hit)
 {
 	t_vec3	n;
 
-	if (obj->type == SPHERE)
-		n = unit_vector(subtract_3dpoints(p, obj->data.sphere.center));
+	if (hit->obj->type == SPHERE)
+		n = unit_vector(subtract_3dpoints(p, hit->obj->data.sphere.center));
+	else if (hit->obj->type == PLANE)
+		n = hit->obj->data.plane.normal;
 	else
-		n = obj->data.plane.normal;
-	// else
-	// 	n = obj->data.cylinder.vector;
+		n = get_cylinder_normal(p, hit);
 	return (n);
 }
 
-float	compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene)
+float	compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene)
 {
 	t_light			*light;
 	t_closest_hit	closest_hit;
@@ -37,7 +57,7 @@ float	compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene)
 	float			r_dot_v;
 	float			t_max;
 
-	n = get_normal_vector(p, obj);
+	n = get_normal_vector(p, hit);
     intens = 0.0;
 	light = scene->lights;
     while (light)
@@ -67,7 +87,7 @@ float	compute_lighting(t_point3 p, t_vec3 v, t_obj *obj, t_scene *scene)
 				r = subtract_3dvectors(scale_vector(n, 2 * dot(n, l)), l);
 				r_dot_v = dot(r, v);
 				if (r_dot_v > 0)
-					intens += light->intens * pow(r_dot_v / (length(r) * length(v)), obj->specular);
+					intens += light->intens * pow(r_dot_v / (length(r) * length(v)), hit->obj->specular);
 			}
 		}
 		light = light->next;
