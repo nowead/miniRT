@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/14 15:00:18 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/14 20:29:09 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ typedef struct	s_camera
 typedef enum e_light_type
 {
 	AMBIENT_LIGHT,
-	POINT_LIGHT,
-	DIRECTIONAL_LIGHT
+	POINT_LIGHT
 }	t_light_type;
 
 typedef struct	s_light
@@ -85,7 +84,6 @@ typedef struct	s_light
 	t_light_type	type;
 	float			intens;
 	int				color;
-	t_vec3			dir;
 	t_point3		pos;
 	struct s_light	*next;
 }	t_light;
@@ -99,7 +97,7 @@ typedef struct	s_plane
 typedef struct s_cylinder
 {
 	t_point3	center;
-	t_vec3		vector;
+	t_vec3		axis;
 	float		radius;
 	float		height;
 }	t_cylinder;
@@ -222,7 +220,8 @@ t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *sc
 // intersect_ray_obj.c
 void			intersect_ray_sphere(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
 void			intersect_ray_plane(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
-void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
+void			intersect_ray_cone(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
+int				is_p_within_cone_height(float a_, float b_, float t, t_cone *cone);
 
 // intersect_ray_cylinder.c
 void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
@@ -234,6 +233,11 @@ void			check_cap_intersection(t_ray *ray, t_cylinder_vars *vars, t_vec3 cap_cent
 // compute_lighting.c
 float			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);
 int				apply_lighting(int color, float lighting);
+
+// get_normal_vector.c
+t_vec3			get_normal_vector(t_point3 p, t_closest_hit *hit);
+t_vec3			get_cylinder_normal(t_point3 p, t_closest_hit *hit);
+t_vec3			get_cone_normal(t_point3 p, t_closest_hit *hit);
 
 // my_mlx_pixel_put.c
 void			my_mlx_pixel_put(int x, int y, int color, t_img *img);

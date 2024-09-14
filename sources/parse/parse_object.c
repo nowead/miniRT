@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/12 20:43:24 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/14 15:39:38 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	set_cylinder(char **line, t_obj *cylinder)
 	cylinder->type = CYLINDER;
 	if (parse_3dpoint(line[1], &cylinder->data.cylinder.center))
 		return (1);
-	if (parse_3dvector(line[2], &cylinder->data.cylinder.vector))
+	if (parse_3dvector(line[2], &cylinder->data.cylinder.axis))
 		return (1);
 	if ((check_float_str(line[3])) || check_float_str(line[4]) || check_float_str(line[5]))
 		return (1);

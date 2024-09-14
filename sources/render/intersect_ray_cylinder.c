@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:26:26 by damin             #+#    #+#             */
-/*   Updated: 2024/09/14 14:15:38 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/14 15:39:38 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_clo
 void get_cylinder_vars(t_ray *ray, t_obj *obj, t_cylinder_vars *vars)
 {
     vars->D = ray->dir;
-    vars->V = obj->data.cylinder.vector; // Should be a unit vector
+    vars->V = obj->data.cylinder.axis; // Should be a unit vector
     vars->CO = subtract_3dpoints(ray->origin, obj->data.cylinder.center);
     vars->r = obj->data.cylinder.radius;
     vars->h = obj->data.cylinder.height;

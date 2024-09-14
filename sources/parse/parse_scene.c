@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/11 15:51:39 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/14 15:39:38 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	print_parsed_vars(t_vars *vars)
 		else if (obj->type == CYLINDER)
 		{
 			printf("cylinder pos: %g %g %g\n", obj->data.cylinder.center.x, obj->data.cylinder.center.y, obj->data.cylinder.center.z);
-			printf("cylinder dir: %g %g %g\n", obj->data.cylinder.vector.x, obj->data.cylinder.vector.y, obj->data.cylinder.vector.z);
+			printf("cylinder dir: %g %g %g\n", obj->data.cylinder.axis.x, obj->data.cylinder.axis.y, obj->data.cylinder.axis.z);
 			printf("cylinder rad: %g\n", obj->data.cylinder.radius);
 			printf("cylinder height: %g\n", obj->data.cylinder.height);
 			printf("cylinder color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
