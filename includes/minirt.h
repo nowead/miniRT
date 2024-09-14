@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/14 12:51:01 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/14 15:00:18 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@
 # define ESC_KEY 53
 
 # define BACKGROUND_COLOR 0xFFFFFF
-# define RED 0xFF0000
-# define GREEN 0x00FF00
-# define BLUE 0x0000FF
-# define YELLOW 0xFFFF00
 
 # define FLT_MAX 3.402823466e+38F
 
@@ -145,6 +141,13 @@ typedef enum e_obj_type
 	CONE
 }	t_obj_type;
 
+typedef enum e_sub_obj
+{
+	TOP_CAP,
+	BOTTOM_CAP,
+	SIDE,
+}	t_sub_obj;
+
 typedef union u_obj_data
 {
     t_sphere	sphere;
@@ -173,10 +176,9 @@ typedef struct s_scene
 
 typedef	struct	s_closest_hit
 {
-	t_obj	*obj;
-	float	t;
-	int		is_cap;
-	t_vec3	cap_normal;
+	t_obj		*obj;
+	t_sub_obj	sub_obj;
+	float		t;
 }	t_closest_hit;
 
 typedef struct s_win
@@ -223,11 +225,11 @@ void			intersect_ray_plane(t_ray *ray, t_obj *obj, t_float_range t_range, t_clos
 void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
 
 // intersect_ray_cylinder.c
+void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
 void			get_cylinder_vars(t_ray *ray, t_obj *obj, t_cylinder_vars *vars);
 int				solve_quadratic(t_cylinder_vars *vars, float *t1, float *t2);
 void			check_side_hit(float t, t_cylinder_vars *vars, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
-void			check_cap_intersection(t_ray *ray, t_cylinder_vars *vars, t_point3 center, int cap_orientation, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
-void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
+void			check_cap_intersection(t_ray *ray, t_cylinder_vars *vars, t_vec3 cap_center, int cap_orientation, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
 
 // compute_lighting.c
 float			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);

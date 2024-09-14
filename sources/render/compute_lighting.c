@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   compute_lighting.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/13 16:57:44 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/14 14:13:58 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 t_vec3 get_cylinder_normal(t_point3 p, t_closest_hit *hit)
 {
-	t_vec3 temp;
-	t_vec3 q;
-	float m;
+	t_vec3	temp;
+	t_vec3	q;
+	float	m;
 
-	if (hit->is_cap)
-	{
-		return (hit->cap_normal);
-	}
+	if (hit->sub_obj == TOP_CAP)
+		return (hit->obj->data.cylinder.vector);
+	else if (hit->sub_obj == BOTTOM_CAP)
+		return (scale_vector(hit->obj->data.cylinder.vector, -1));
 	else
 	{
 		temp = subtract_3dpoints(p, hit->obj->data.cylinder.center);
@@ -29,7 +29,6 @@ t_vec3 get_cylinder_normal(t_point3 p, t_closest_hit *hit)
 		 scale_vector(hit->obj->data.cylinder.vector, m));
         return (unit_vector(subtract_3dpoints(p, q)));
 	}
-	
 }
 
 t_vec3	get_normal_vector(t_point3 p, t_closest_hit *hit)
