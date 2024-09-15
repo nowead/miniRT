@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/14 15:36:45 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/15 20:35:23 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,27 +78,4 @@ int	trace_ray(t_scene *scene, t_vec3 ray_dir)
 	scale_vector(ray_dir, closest_hit.t));
 	lighting = compute_lighting(p, scale_vector(ray_dir, -1), &closest_hit, scene);
     return (apply_lighting(closest_hit.obj->color, lighting));
-}
-
-t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene)
-{
-	t_closest_hit	closest_hit;
-	t_obj			*obj;
-
-	closest_hit.t = t_range.max;
-    closest_hit.obj = NULL;
-	obj = scene->obj;
-    while (obj)
-    {
-		if (obj->type == SPHERE)
-        	intersect_ray_sphere(&ray, obj, t_range, &closest_hit);
-		else if (obj->type == PLANE)
-			intersect_ray_plane(&ray, obj, t_range, &closest_hit);
-		else if (obj->type == CYLINDER)
-			intersect_ray_cylinder(&ray, obj, t_range, &closest_hit);
-		else if (obj->type == CONE)
-			intersect_ray_cone(&ray, obj, t_range, &closest_hit);
-		obj = obj->next;
-	}
-	return (closest_hit);
 }
