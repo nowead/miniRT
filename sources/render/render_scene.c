@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/14 15:36:45 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/15 21:21:42 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,19 @@ t_vec3	canvas_to_viewport(int x, int y, t_img *img, t_camera *camera)
 	return (subtract_3dpoints(p, camera->pos));
 }
 
+int	checkerboard_color(t_point3 p, t_checkerboard checkerboard)
+{
+	int		checkerboard_color;
+
+
+	p_to_uv(&p, checkerboard);
+	if ((int)(p.x * 2) % 2 == (int)(p.z * 2) % 2)
+		checkerboard_color = checkerboard.color1;
+	else
+		checkerboard_color = checkerboard.color2;
+	return (checkerboard_color);
+}
+
 int	trace_ray(t_scene *scene, t_vec3 ray_dir)
 {
 	t_point3		p;
@@ -77,6 +90,8 @@ int	trace_ray(t_scene *scene, t_vec3 ray_dir)
 	p = add_vector_to_point(scene->camera.pos, \
 	scale_vector(ray_dir, closest_hit.t));
 	lighting = compute_lighting(p, scale_vector(ray_dir, -1), &closest_hit, scene);
+	if (closest_hit.obj->checkerboard.checkerboard_on)
+		return (apply_lighting(checkerboard_color(p, closest_hit.obj->checkerboard), lighting));
     return (apply_lighting(closest_hit.obj->color, lighting));
 }
 

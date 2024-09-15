@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/14 20:29:09 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/15 19:35:14 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,12 +154,22 @@ typedef union u_obj_data
 	t_cone		cone;
 } t_obj_data;
 
+typedef struct s_checkerboard
+{
+	int		checkerboard_on;
+	int		color1;
+	int		color2;
+	int		u;
+	int		v;
+}	t_checkerboard;
+
 typedef struct s_obj
 {
 	t_obj_type		type;
 	t_obj_data		data;
 	int				color;
 	int				specular;
+	t_checkerboard	checkerboard;
 	struct s_obj	*next;
 }	t_obj;
 
@@ -288,6 +298,7 @@ int				set_cone(char **line, t_obj *cone);
 int				parse_3dpoint(char *str, t_point3 *point);
 int				parse_3dvector(char *str, t_vec3 *vector);
 int				parse_color(char *str, int *color);
+int				parse_checkerboard(char *str, t_checkerboard *checkerboard);
 
 // parse_utils.c
 int				get_color(int r, int g, int b);

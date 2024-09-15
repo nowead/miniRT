@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_error_check.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 14:30:16 by mindaewon         #+#    #+#             */
-/*   Updated: 2024/09/12 20:56:16 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/15 19:03:42 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int	check_float_str(char *str)
 	int i;
 	int dot;
 
+	if (!str)
+		return (1);
 	i = 0;
 	dot = 0;
 	if (str[i] == '-')

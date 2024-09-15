@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/14 15:39:38 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/15 19:36:43 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,15 @@ void	print_parsed_vars(t_vars *vars)
 			printf("sphere pos: %g %g %g\n", obj->data.sphere.center.x, obj->data.sphere.center.y, obj->data.sphere.center.z);
 			printf("sphere rad: %g\n", obj->data.sphere.radius);
 			printf("sphere specular: %d\n", obj->specular);
-			printf("sphere color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
+			if (obj->checkerboard.checkerboard_on)
+			{
+				printf("checkerboard color1: %d %d %d\n", (obj->checkerboard.color1 >> 16) & 0xFF, (obj->checkerboard.color1 >> 8) & 0xFF, obj->checkerboard.color1 & 0xFF);
+				printf("checkerboard color2: %d %d %d\n", (obj->checkerboard.color2 >> 16) & 0xFF, (obj->checkerboard.color2 >> 8) & 0xFF, obj->checkerboard.color2 & 0xFF);
+				printf("checkerboard u: %d\n", obj->checkerboard.u);
+				printf("checkerboard v: %d\n", obj->checkerboard.v);
+			}
+			else
+				printf("sphere color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
 			printf("\n");
 		}
 		else if (obj->type == CYLINDER)

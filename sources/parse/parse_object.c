@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_object.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/14 15:39:38 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/15 19:29:42 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,13 @@ int	set_sphere(char **line, t_obj *sphere)
 	if (check_float_str(line[3]))
 		return (1);
 	sphere->specular = ft_atof(line[3]);
-	if (parse_color(line[4], &sphere->color))
+	if (line[4] && line[4][0] == 'c')
+		parse_checkerboard(line[4], &sphere->checkerboard);
+	else
+	{
+		if (parse_color(line[4], &sphere->color))
 		return (1);
+	}
 	return (0);
 }
 
