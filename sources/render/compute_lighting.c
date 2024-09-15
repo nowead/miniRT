@@ -3,47 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   compute_lighting.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/13 16:57:44 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/14 18:04:08 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-t_vec3 get_cylinder_normal(t_point3 p, t_closest_hit *hit)
-{
-	t_vec3 temp;
-	t_vec3 q;
-	float m;
-
-	if (hit->is_cap)
-	{
-		return (hit->cap_normal);
-	}
-	else
-	{
-		temp = subtract_3dpoints(p, hit->obj->data.cylinder.center);
-        m = dot(temp, hit->obj->data.cylinder.vector);
-        q = add_vector_to_point(hit->obj->data.cylinder.center,\
-		 scale_vector(hit->obj->data.cylinder.vector, m));
-        return (unit_vector(subtract_3dpoints(p, q)));
-	}
-	
-}
-
-t_vec3	get_normal_vector(t_point3 p, t_closest_hit *hit)
-{
-	t_vec3	n;
-
-	if (hit->obj->type == SPHERE)
-		n = unit_vector(subtract_3dpoints(p, hit->obj->data.sphere.center));
-	else if (hit->obj->type == PLANE)
-		n = hit->obj->data.plane.normal;
-	else
-		n = get_cylinder_normal(p, hit);
-	return (n);
-}
 
 float	compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene)
 {
@@ -70,11 +37,6 @@ float	compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene)
 			{
 				l = subtract_3dpoints(light->pos, p);
 				t_max = 1;
-			}
-            else
-			{
-				l = light->dir;
-				t_max = FLT_MAX;
 			}
 			closest_hit = closest_intersection((t_ray){p, l}, (t_float_range){0.001, t_max}, scene);
 			if (!closest_hit.obj)

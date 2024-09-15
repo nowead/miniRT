@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/13 18:40:45 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/14 20:29:09 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@
 # define ESC_KEY 53
 
 # define BACKGROUND_COLOR 0xFFFFFF
-# define RED 0xFF0000
-# define GREEN 0x00FF00
-# define BLUE 0x0000FF
-# define YELLOW 0xFFFF00
 
 # define FLT_MAX 3.402823466e+38F
 
@@ -73,7 +69,6 @@ typedef struct	s_camera
 	float		viewport_w;
 	float		viewport_h;
 	t_vec3		viewport_c;
-	t_vec3		w;
 	t_vec3		u;
 	t_vec3		v;
 }	t_camera;
@@ -81,8 +76,7 @@ typedef struct	s_camera
 typedef enum e_light_type
 {
 	AMBIENT_LIGHT,
-	POINT_LIGHT,
-	DIRECTIONAL_LIGHT
+	POINT_LIGHT
 }	t_light_type;
 
 typedef struct	s_light
@@ -90,7 +84,6 @@ typedef struct	s_light
 	t_light_type	type;
 	float			intens;
 	int				color;
-	t_vec3			dir;
 	t_point3		pos;
 	struct s_light	*next;
 }	t_light;
@@ -104,7 +97,7 @@ typedef struct	s_plane
 typedef struct s_cylinder
 {
 	t_point3	center;
-	t_vec3		vector;
+	t_vec3		axis;
 	float		radius;
 	float		height;
 }	t_cylinder;
@@ -124,6 +117,14 @@ typedef struct s_cylinder_vars {
     float	c;
 } t_cylinder_vars;
 
+typedef struct s_cone
+{
+	t_point3	vertex;
+	t_vec3		axis;
+	float		radius;
+	float		height;
+}	t_cone;
+
 typedef struct	s_sphere
 {
 	t_point3	center;
@@ -134,14 +135,23 @@ typedef enum e_obj_type
 {
 	SPHERE,
 	PLANE,
-	CYLINDER
+	CYLINDER,
+	CONE
 }	t_obj_type;
+
+typedef enum e_sub_obj
+{
+	TOP_CAP,
+	BOTTOM_CAP,
+	SIDE,
+}	t_sub_obj;
 
 typedef union u_obj_data
 {
-    t_sphere   sphere;
-    t_plane    plane;
-    t_cylinder cylinder;
+    t_sphere	sphere;
+    t_plane		plane;
+    t_cylinder	cylinder;
+	t_cone		cone;
 } t_obj_data;
 
 typedef struct s_obj
@@ -164,10 +174,9 @@ typedef struct s_scene
 
 typedef	struct	s_closest_hit
 {
-	t_obj	*obj;
-	float	t;
-	int		is_cap;
-	t_vec3	cap_normal;
+	t_obj		*obj;
+	t_sub_obj	sub_obj;
+	float		t;
 }	t_closest_hit;
 
 typedef struct s_win
@@ -211,18 +220,24 @@ t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *sc
 // intersect_ray_obj.c
 void			intersect_ray_sphere(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
 void			intersect_ray_plane(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
-void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
+void			intersect_ray_cone(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
+int				is_p_within_cone_height(float a_, float b_, float t, t_cone *cone);
 
 // intersect_ray_cylinder.c
+void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
 void			get_cylinder_vars(t_ray *ray, t_obj *obj, t_cylinder_vars *vars);
 int				solve_quadratic(t_cylinder_vars *vars, float *t1, float *t2);
 void			check_side_hit(float t, t_cylinder_vars *vars, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
-void			check_cap_intersection(t_ray *ray, t_cylinder_vars *vars, t_point3 center, int cap_orientation, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
-void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
+void			check_cap_intersection(t_ray *ray, t_cylinder_vars *vars, t_vec3 cap_center, int cap_orientation, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
 
 // compute_lighting.c
 float			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);
 int				apply_lighting(int color, float lighting);
+
+// get_normal_vector.c
+t_vec3			get_normal_vector(t_point3 p, t_closest_hit *hit);
+t_vec3			get_cylinder_normal(t_point3 p, t_closest_hit *hit);
+t_vec3			get_cone_normal(t_point3 p, t_closest_hit *hit);
 
 // my_mlx_pixel_put.c
 void			my_mlx_pixel_put(int x, int y, int color, t_img *img);
@@ -267,6 +282,12 @@ int				set_point_light(char **line, t_light *lights);
 int				set_sphere(char **line, t_obj *sphere);
 int				set_plane(char **line, t_obj *plane);
 int				set_cylinder(char **line, t_obj *cylinder);
+int				set_cone(char **line, t_obj *cone);
+
+// parse_types.c
+int				parse_3dpoint(char *str, t_point3 *point);
+int				parse_3dvector(char *str, t_vec3 *vector);
+int				parse_color(char *str, int *color);
 
 // parse_utils.c
 int				get_color(int r, int g, int b);

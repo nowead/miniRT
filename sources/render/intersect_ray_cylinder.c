@@ -6,16 +6,37 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:26:26 by damin             #+#    #+#             */
-/*   Updated: 2024/09/15 14:17:29 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/15 14:20:34 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+void intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit)
+{
+    t_cylinder_vars vars;
+    float   t1;
+    float   t2;
+    t_vec3  bottom_center;
+    t_vec3  top_center;
+
+    vars = (t_cylinder_vars){0};
+    get_cylinder_vars(ray, obj, &vars);
+    if (solve_quadratic(&vars, &t1, &t2))
+    {
+        check_side_hit(t1, &vars, t_range, closest_hit, obj);
+        check_side_hit(t2, &vars, t_range, closest_hit, obj);
+    }
+    bottom_center = obj->data.cylinder.center;
+    check_cap_intersection(ray, &vars, bottom_center, -1, t_range, closest_hit, obj);
+    top_center = add_vector_to_point(obj->data.cylinder.center, scale_vector(vars.V, vars.h));
+    check_cap_intersection(ray, &vars, top_center, 1, t_range, closest_hit, obj);
+}
+
 void get_cylinder_vars(t_ray *ray, t_obj *obj, t_cylinder_vars *vars)
 {
     vars->D = ray->dir;
-    vars->V = obj->data.cylinder.vector; // Should be a unit vector
+    vars->V = obj->data.cylinder.axis; // Should be a unit vector
     vars->CO = subtract_3dpoints(ray->origin, obj->data.cylinder.center);
     vars->r = obj->data.cylinder.radius;
     vars->h = obj->data.cylinder.height;
@@ -55,7 +76,7 @@ void check_side_hit(float t, t_cylinder_vars *vars, t_float_range t_range, t_clo
             {
                 closest_hit->t = t;
                 closest_hit->obj = obj;
-                closest_hit->is_cap = 0; // Side hit
+                closest_hit->sub_obj = SIDE;
             }
         }
     }
@@ -82,30 +103,11 @@ void check_cap_intersection(t_ray *ray, t_cylinder_vars *vars, t_vec3 cap_center
             {
                 closest_hit->t = t;
                 closest_hit->obj = obj;
-                closest_hit->is_cap = 1; // Cap hit
-                closest_hit->cap_normal = cap_orientation == 1 ? vars->V : scale_vector(vars->V, -1);
+				if (cap_orientation == 1)
+                	closest_hit->sub_obj = TOP_CAP;
+				else
+					closest_hit->sub_obj = BOTTOM_CAP;
             }
         }
     }
-}
-
-void intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit)
-{
-    t_cylinder_vars vars;
-    float   t1;
-    float   t2;
-    t_vec3  bottom_center;
-    t_vec3  top_center;
-
-    vars = (t_cylinder_vars){0};
-    get_cylinder_vars(ray, obj, &vars);
-    if (solve_quadratic(&vars, &t1, &t2))
-    {
-        check_side_hit(t1, &vars, t_range, closest_hit, obj);
-        check_side_hit(t2, &vars, t_range, closest_hit, obj);
-    }
-    bottom_center = obj->data.cylinder.center;
-    check_cap_intersection(ray, &vars, bottom_center, -1, t_range, closest_hit, obj);
-    top_center = add_vector_to_point(obj->data.cylinder.center, scale_vector(vars.V, vars.h));
-    check_cap_intersection(ray, &vars, top_center, 1, t_range, closest_hit, obj);
 }

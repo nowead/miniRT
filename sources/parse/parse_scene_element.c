@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:14:10 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/11 17:14:39 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/12 20:08:12 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	parse_scene_element(char **line, t_vars *vars)
 		err_flag = parse_object(line, vars, set_sphere);
 	else if (ft_strncmp(line[0], "cy", 3) == 0)
 		err_flag = parse_object(line, vars, set_cylinder);
+	else if (ft_strncmp(line[0], "co", 3) == 0)
+		err_flag = parse_object(line, vars, set_cone);
 	else
 	{
 		ft_putstr_fd("Error: No such identifier", STDERR_FILENO);
