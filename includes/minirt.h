@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/15 20:36:18 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/16 18:48:50 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,6 @@ typedef struct s_vars
 // minirt.c
 void			error_exit(char *err_msg, int perror_flag);
 void			init_vars(t_vars *vars);
-// void			init_scene(t_scene *scene);
 
 // render_scene.c
 void			render_scene(t_vars *vars);
@@ -236,15 +235,13 @@ t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *sc
 int				solve_quadratic_equation(float coeff[3], float t[2]);
 void			update_closest_hit(float t, t_sub_obj sub_obj, t_inter_vars *vars);
 
-// intersect_ray_obj.c
-void			intersect_ray_sphere(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
-void			intersect_ray_plane(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
+// intersect_ray_sphere.c
+void			intersect_ray_sphere(t_inter_vars vars);
+void			compute_sphere_quadratic_coefficients(t_ray *ray, t_sphere *sphere, float coeff[3]);
 
-// intersect_ray_cone.c
-void			intersect_ray_cone(t_inter_vars vars);
-void			compute_cone_side_intersection(t_inter_vars *vars);
-void			compute_cone_side_quadratic_coefficients(t_inter_vars *vars, float coeff[3], t_vec3 vo, float term[2]);
-int				is_p_within_cone_height(float a, float b, float t, float cone_height);
+// intersect_ray_plane.c
+void			intersect_ray_plane(t_inter_vars vars);
+int				compute_plane_intersection(t_ray *ray, t_plane *plane, float *t);
 
 // intersect_ray_cylinder.c
 void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
@@ -252,6 +249,13 @@ void			get_cylinder_vars(t_ray *ray, t_obj *obj, t_cylinder_vars *vars);
 int				solve_quadratic(t_cylinder_vars *vars, float *t1, float *t2);
 void			check_side_hit(float t, t_cylinder_vars *vars, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
 void			check_cap_intersection(t_ray *ray, t_cylinder_vars *vars, t_vec3 cap_center, int cap_orientation, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
+
+// intersect_ray_cone.c
+void			intersect_ray_cone(t_inter_vars vars);
+void			intersect_ray_cone_side(t_inter_vars *vars);
+void			compute_cone_side_quadratic_coefficients(t_inter_vars *vars, float coeff[3], t_vec3 vo, float term[2]);
+int				is_p_within_cone_height(float a, float b, float t, float cone_height);
+void			intersect_ray_cone_cap(t_inter_vars *vars);
 
 // compute_lighting.c
 float			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);

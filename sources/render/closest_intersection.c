@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 20:35:00 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/15 20:36:54 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/16 16:36:14 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *sc
     while (obj)
     {
 		if (obj->type == SPHERE)
-        	intersect_ray_sphere(&ray, obj, t_range, &closest_hit);
+        	intersect_ray_sphere((t_inter_vars){&ray, obj, &t_range, &closest_hit});
 		else if (obj->type == PLANE)
-			intersect_ray_plane(&ray, obj, t_range, &closest_hit);
+			intersect_ray_plane((t_inter_vars){&ray, obj, &t_range, &closest_hit});
 		else if (obj->type == CYLINDER)
 			intersect_ray_cylinder(&ray, obj, t_range, &closest_hit);
 		else if (obj->type == CONE)

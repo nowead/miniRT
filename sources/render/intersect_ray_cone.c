@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 16:41:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/15 21:09:20 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/16 20:14:04 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 
 void	intersect_ray_cone(t_inter_vars vars)
 {
-	compute_cone_side_intersection(&vars);
-	compute_cone_cap_intersection(&vars);
+	intersect_ray_cone_side(&vars);
+	intersect_ray_cone_cap(&vars);
 }
 
-void	compute_cone_side_intersection(t_inter_vars *vars)
+void	intersect_ray_cone_side(t_inter_vars *vars)
 {
 	t_cone	*cone;
 	t_vec3	vo;
@@ -33,7 +33,7 @@ void	compute_cone_side_intersection(t_inter_vars *vars)
 	vo = subtract_3dpoints(vars->ray->origin, cone->vertex);
 	term[VO_DOT_AXIS] = dot(vo, cone->axis);
 	term[D_DOT_AXIS] = dot(vars->ray->dir, cone->axis);
-	
+
 	compute_cone_side_quadratic_coefficients(vars, coeff, vo, term);
 	if (solve_quadratic_equation(coeff, t))
 	{
@@ -81,11 +81,20 @@ int	is_p_within_cone_height(float a, float b, float t, float cone_height)
 	return (0);
 }
 
-void	compute_cone_cap_intersection(t_inter_vars *vars)
+void	intersect_ray_cone_cap(t_inter_vars *vars)
 {
 	t_circle	circle;
+	float		t;
+	t_point3	p;
+	t_vec3		cp;
 	
 	circle.normal = vars->obj->data.cone.axis;
 	circle.center = add_vector_to_point(vars->obj->data.cone.vertex, scale_vector(circle.normal, vars->obj->data.cylinder.height));
 	circle.radius = vars->obj->data.cone.radius;
+	if (!compute_plane_intersection(vars->ray, &(t_plane){circle.center, circle.normal}, &t))
+		return ;
+	p = add_vector_to_point(vars->ray->origin, scale_vector(vars->ray->dir, t));
+	cp = subtract_3dpoints(p, circle.center);
+	if (length(cp) <= circle.radius)
+		update_closest_hit(t, BOTTOM_CAP, vars);
 }

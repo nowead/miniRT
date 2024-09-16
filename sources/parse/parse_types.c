@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:38:06 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 20:38:22 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/16 20:26:08 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	parse_3dvector(char *line, t_vec3 *obj_vec)
 	vector = ft_split(line, ',');
 	if (check_vector(vector))
 		return (1);
-	*obj_vec = (t_vec3){ft_atof(vector[0]), ft_atof(vector[1]), ft_atof(vector[2])};
+	*obj_vec = unit_vector((t_vec3){ft_atof(vector[0]), ft_atof(vector[1]), ft_atof(vector[2])});
 	free_lists(vector);
 	return (0);
 }

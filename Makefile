@@ -8,11 +8,11 @@ INCLDS			=	$(addprefix includes/, minirt.h)
 PARSE_DIR		=	parse/
 RENDER_DIR		=	render/
 SRC				=	$(addprefix sources/, minirt.c setup_event_hooks.c my_mlx_pixel_put.c\
-$(addprefix $(PARSE_DIR),	parse_scene.c		parse_utils.c		parse_object.c		parse_light.c\
-							parse_types.c		parse_camera.c		parse_error_check.c	parse_scene_element.c)\
-$(addprefix $(RENDER_DIR),	compute_lighting.c	intersect_ray_obj.c	render_scene.c		vector_operations.c\
+$(addprefix $(PARSE_DIR),	parse_scene.c		parse_utils.c			parse_object.c		parse_light.c\
+							parse_types.c		parse_camera.c			parse_error_check.c	parse_scene_element.c)\
+$(addprefix $(RENDER_DIR),	compute_lighting.c	intersect_ray_plane.c	render_scene.c		vector_operations.c\
 						   	intersect_ray_cylinder.c	intersect_ray_cone.c	get_normal_vector.c\
-							closest_intersection.c))
+							closest_intersection.c		intersect_ray_sphere.c))
 OBJ				=	$(patsubst %.c, %.o, $(SRC))
 
 MLX				=	libmlx.dylib
