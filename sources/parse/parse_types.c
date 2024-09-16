@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:38:06 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/15 19:35:43 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/16 15:30:48 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int parse_checkerboard(char *line, t_checkerboard *obj_checkerboard)
 	uv = ft_split(checkerboard[3], ',');
 	if (!uv || ft_strslen(uv) != 2 || check_decimal_str(uv[0]) || check_decimal_str(uv[1]))
 		return (1);
-	obj_checkerboard->u = ft_atoi(uv[0]);
-	obj_checkerboard->v = ft_atoi(uv[1]);
+	obj_checkerboard->width = ft_atoi(uv[0]);
+	obj_checkerboard->height = ft_atoi(uv[1]);
 	free_lists(uv);
 	free_lists(checkerboard);
 	return (0);

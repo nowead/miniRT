@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/15 19:35:14 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/16 15:32:29 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,10 @@ typedef struct s_checkerboard
 	int		checkerboard_on;
 	int		color1;
 	int		color2;
-	int		u;
-	int		v;
+	float	u;
+	float	v;
+	int		width;
+	int		height;
 }	t_checkerboard;
 
 typedef struct s_obj

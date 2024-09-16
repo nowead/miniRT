@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/15 19:36:43 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/16 15:32:47 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,8 @@ void	print_parsed_vars(t_vars *vars)
 			{
 				printf("checkerboard color1: %d %d %d\n", (obj->checkerboard.color1 >> 16) & 0xFF, (obj->checkerboard.color1 >> 8) & 0xFF, obj->checkerboard.color1 & 0xFF);
 				printf("checkerboard color2: %d %d %d\n", (obj->checkerboard.color2 >> 16) & 0xFF, (obj->checkerboard.color2 >> 8) & 0xFF, obj->checkerboard.color2 & 0xFF);
-				printf("checkerboard u: %d\n", obj->checkerboard.u);
-				printf("checkerboard v: %d\n", obj->checkerboard.v);
+				printf("checkerboard u: %f\n", obj->checkerboard.u);
+				printf("checkerboard v: %f\n", obj->checkerboard.v);
 			}
 			else
 				printf("sphere color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
