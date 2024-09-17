@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:26:26 by damin             #+#    #+#             */
-/*   Updated: 2024/09/17 21:51:15 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/17 23:50:51 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@
 void intersect_ray_cylinder(t_inter_vars vars)
 {
 	intersect_ray_cylinder_side(&vars);
-	intersect_ray_cylinder_cap(&vars, TOP_CAP);
+	intersect_ray_cylinder_cap(&vars, TOP_CAP );
 	intersect_ray_cylinder_cap(&vars, BOTTOM_CAP);
 }
 
 void	intersect_ray_cylinder_side(t_inter_vars *vars)
 {
-	t_cylinder	*cylinder;
+	t_cy_side	*cylinder;
 	t_vec3		co;
 	float		term[2];
 	float		coeff[3];
     float		t[2];
 
-	cylinder = &vars->obj->data.cylinder;
+	cylinder = &vars->obj->data.cylinder.side;
 	co = subtract_3dpoints(vars->ray->origin, cylinder->center);
     term[CO_DOT_AXIS] = dot(co, cylinder->axis);
     term[D_DOT_AXIS] = dot(vars->ray->dir, cylinder->axis);
@@ -46,7 +46,7 @@ void	intersect_ray_cylinder_side(t_inter_vars *vars)
 
 void compute_cylinder_side_quadratic_coefficients(t_inter_vars *vars, float coeff[3], t_vec3 *co, float term[2])
 {
-	t_cylinder	*cylinder;
+	t_cy_side	*cylinder;
 	t_vec3		d_perp;
 	t_vec3		co_perp;
 
@@ -70,22 +70,13 @@ int	is_p_within_cylinder_height(float co_dot_axis, float d_dot_axis, float t, fl
 
 void	intersect_ray_cylinder_cap(t_inter_vars *vars, t_sub_obj sub_obj)
 {
-	t_cylinder	*cylinder;
-	t_circle	circle;
 	float		t;
+	t_circle	*cap;
 
-	cylinder = &vars->obj->data.cylinder;
-	circle.radius = vars->obj->data.cylinder.radius;
-	if (sub_obj == BOTTOM_CAP)
-	{
-		circle.center = cylinder->center;
-		circle.normal = scale_vector(cylinder->axis, -1);
-	}
+	if (sub_obj == TOP_CAP)
+		cap = &vars->obj->data.cylinder.top_cap;
 	else
-	{
-		circle.center = add_vector_to_point(cylinder->center, scale_vector(cylinder->axis, cylinder->height));
-		circle.normal = cylinder->axis;
-	}
-	if (compute_circle_intersection(vars->ray, &circle, &t))
-		update_closest_hit(t, BOTTOM_CAP, vars);
+		cap = &vars->obj->data.cylinder.bottom_cap;
+	if (compute_circle_intersection(vars->ray, cap, &t))
+		update_closest_hit(t, sub_obj, vars);
 }

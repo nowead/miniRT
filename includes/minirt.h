@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/17 21:50:34 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 00:12:04 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,12 @@ typedef struct	s_light
 	struct s_light	*next;
 }	t_light;
 
+typedef struct	s_sphere
+{
+	t_point3	center;
+	float		radius;
+}	t_sphere;
+
 typedef struct	s_plane
 {
 	t_point3	pos;
@@ -101,27 +107,34 @@ typedef struct s_circle
 	float		radius;
 }	t_circle;
 
-typedef struct s_cylinder
+typedef struct s_cy_side
 {
 	t_point3	center;
 	t_vec3		axis;
 	float		radius;
 	float		height;
+}	t_cy_side;
+
+typedef struct s_cylinder
+{
+	t_cy_side	side;
+	t_circle	top_cap;
+	t_circle	bottom_cap;
 }	t_cylinder;
 
-typedef struct s_cone
+typedef struct s_co_side
 {
 	t_point3	vertex;
 	t_vec3		axis;
 	float		radius;
 	float		height;
-}	t_cone;
+}	t_co_side;
 
-typedef struct	s_sphere
+typedef struct s_cone
 {
-	t_point3	center;
-	float		radius;
-}	t_sphere;
+	t_co_side	side;
+	t_circle	bottom_cap;
+}	t_cone;
 
 typedef enum e_obj_type
 {
@@ -159,9 +172,7 @@ typedef struct s_scene
 {
 	t_camera	camera;
 	t_light		*lights;
-	int			num_of_lights;
 	t_obj		*obj;
-	int			num_of_obj;
 }	t_scene;
 
 typedef	struct	s_closest_hit

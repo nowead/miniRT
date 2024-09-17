@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:14:10 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/12 20:08:12 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 00:11:48 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ int (*set_light)(char **line, t_light *light))
 	t_light *curr;
 	t_light *light;
 
-	vars->scene.num_of_lights++;
-
 	light = (t_light *)ft_calloc(1, sizeof(t_light));
 	if (!light)
 		return (1);
@@ -73,8 +71,6 @@ int (*set_obj)(char **line, t_obj *obj))
 {
 	t_obj	*obj;
 	t_obj	*curr;
-
-	vars->scene.num_of_obj++;
 
 	obj = (t_obj *)ft_calloc(1, sizeof(t_obj));
 	if (!obj)

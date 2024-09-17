@@ -6,13 +6,15 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/14 15:39:38 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 00:17:37 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 void	print_parsed_vars(t_vars *vars);
+int		count_num_of_lights(t_light *lights);
+int		count_num_of_obj(t_obj *obj);
 
 void	parse_scene(int argc, char **argv, t_vars *vars)
 {
@@ -116,14 +118,14 @@ void	print_parsed_vars(t_vars *vars)
 	camera = &vars->scene.camera;
 	lights = vars->scene.lights;
 	obj = vars->scene.obj;
-	
+
 	printf("\n\n");
 	printf("camera pos: %g %g %g\n", camera->pos.x, camera->pos.y, camera->pos.z);
 	printf("camera dir: %g %g %g\n", camera->dir.x, camera->dir.y, camera->dir.z);
 	printf("camera fov: %d\n\n", camera->fov);
 	
-	printf("num_of_lights: %d\n", vars->scene.num_of_lights);
-	printf("num_of_obj: %d\n\n", vars->scene.num_of_obj);
+	printf("num_of_lights: %d\n", count_num_of_lights(lights));
+	printf("num_of_obj: %d\n\n", count_num_of_lights(obj));
 	
 	while (lights)
 	{
@@ -155,13 +157,48 @@ void	print_parsed_vars(t_vars *vars)
 		}
 		else if (obj->type == CYLINDER)
 		{
-			printf("cylinder pos: %g %g %g\n", obj->data.cylinder.center.x, obj->data.cylinder.center.y, obj->data.cylinder.center.z);
-			printf("cylinder dir: %g %g %g\n", obj->data.cylinder.axis.x, obj->data.cylinder.axis.y, obj->data.cylinder.axis.z);
-			printf("cylinder rad: %g\n", obj->data.cylinder.radius);
-			printf("cylinder height: %g\n", obj->data.cylinder.height);
+			printf("cylinder pos: %g %g %g\n", obj->data.cylinder.side.center.x, obj->data.cylinder.side.center.y, obj->data.cylinder.side.center.z);
+			printf("cylinder dir: %g %g %g\n", obj->data.cylinder.side.axis.x, obj->data.cylinder.side.axis.y, obj->data.cylinder.side.axis.z);
+			printf("cylinder rad: %g\n", obj->data.cylinder.side.radius);
+			printf("cylinder height: %g\n", obj->data.cylinder.side.height);
 			printf("cylinder color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
+			printf("\n");
+		}
+		else if (obj->type == CONE)
+		{
+			printf("cone pos: %g %g %g\n", obj->data.cone.side.vertex.x, obj->data.cone.side.vertex.y, obj->data.cone.side.vertex.z);
+			printf("cone dir: %g %g %g\n", obj->data.cone.side.axis.x, obj->data.cone.side.axis.y, obj->data.cone.side.axis.z);
+			printf("cone rad: %g\n", obj->data.cone.side.radius);
+			printf("cone height: %g\n", obj->data.cone.side.height);
+			printf("cone color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
 			printf("\n");
 		}
 		obj = obj->next;
 	}
+}
+
+int	count_num_of_lights(t_light *lights)
+{
+	int	cnt;
+
+	cnt = 0;
+	while (lights)
+	{
+		lights = lights->next;
+		cnt++;
+	}
+	return(cnt);
+}
+
+int	count_num_of_obj(t_obj *obj)
+{
+	int	cnt;
+
+	cnt = 0;
+	while (obj)
+	{
+		obj = obj->next;
+		cnt++;
+	}
+	return(cnt);
 }
