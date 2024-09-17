@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 16:41:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/16 20:14:04 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/17 21:46:49 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	intersect_ray_cone_side(t_inter_vars *vars)
 		if (t[0] != t[1] && is_p_within_cone_height(term[VO_DOT_AXIS], term[D_DOT_AXIS], t[1], cone->height))
 			update_closest_hit(t[1], SIDE, vars);
 	}
-	return ;
 }
 
 void	compute_cone_side_quadratic_coefficients(t_inter_vars *vars, float coeff[3], t_vec3 vo, float term[2])
@@ -83,18 +82,14 @@ int	is_p_within_cone_height(float a, float b, float t, float cone_height)
 
 void	intersect_ray_cone_cap(t_inter_vars *vars)
 {
+	t_cone		*cone;
 	t_circle	circle;
 	float		t;
-	t_point3	p;
-	t_vec3		cp;
-	
-	circle.normal = vars->obj->data.cone.axis;
-	circle.center = add_vector_to_point(vars->obj->data.cone.vertex, scale_vector(circle.normal, vars->obj->data.cylinder.height));
-	circle.radius = vars->obj->data.cone.radius;
-	if (!compute_plane_intersection(vars->ray, &(t_plane){circle.center, circle.normal}, &t))
-		return ;
-	p = add_vector_to_point(vars->ray->origin, scale_vector(vars->ray->dir, t));
-	cp = subtract_3dpoints(p, circle.center);
-	if (length(cp) <= circle.radius)
+
+	cone = &vars->obj->data.cone;
+	circle.normal = cone->axis;
+	circle.center = add_vector_to_point(cone->vertex, scale_vector(circle.normal, cone->height));
+	circle.radius = cone->radius;
+	if (compute_circle_intersection(vars->ray, &circle, &t))
 		update_closest_hit(t, BOTTOM_CAP, vars);
 }

@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersect_ray_plane.c                              :+:      :+:    :+:   */
+/*   compute_circle_intersection.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/03 20:40:55 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/17 21:59:28 by seonseo          ###   ########.fr       */
+/*   Created: 2024/09/17 21:46:52 by seonseo           #+#    #+#             */
+/*   Updated: 2024/09/17 21:46:59 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	intersect_ray_plane(t_inter_vars vars)
+int	compute_circle_intersection(t_ray *ray, t_circle *circle, float *t)
 {
-	float	t;
+	t_point3	p;
+	t_vec3		cp;
 
-	if (compute_plane_intersection(vars.ray, &vars.obj->data.plane, &t))
-		update_closest_hit(t, 0, &vars);
-}
-
-int	compute_plane_intersection(t_ray *ray, t_plane *plane, float *t)
-{
-	float	d_dot_n;
-
-	d_dot_n = dot(ray->dir, plane->normal);
-	if (!d_dot_n)
+	if (!compute_plane_intersection(ray, &(t_plane){circle->center, circle->normal}, t))
 		return (0);
-	*t = dot(subtract_3dpoints(plane->pos, ray->origin), \
-	plane->normal) / d_dot_n;
-	return (1);
+	p = add_vector_to_point(ray->origin, scale_vector(ray->dir, *t));
+	cp = subtract_3dpoints(p, circle->center);
+	if (length(cp) <= circle->radius)
+		return (1);
+	return (0);
 }

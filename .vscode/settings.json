@@ -12,6 +12,7 @@
 		"utility": "c",
 		"iosfwd": "c",
 		"iterator": "c",
-		"algorithm": "c"
+		"algorithm": "c",
+		"tuple": "c"
 	}
 }
