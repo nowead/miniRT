@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/16 15:32:29 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/18 17:02:34 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,18 +103,21 @@ typedef struct s_cylinder
 }	t_cylinder;
 
 typedef struct s_cylinder_vars {
-    t_vec3	D;
-    t_vec3	V;
-    t_vec3	CO;
-    float	r;
-    float	h;    
-    float	D_dot_V;
-    float	CO_dot_V;
-    t_vec3	D_perp;
-    t_vec3	CO_perp;
-    float	a;
-    float	b;
-    float	c;
+    t_vec3			D;
+    t_vec3			V;
+    t_vec3			CO;
+    float			r;
+    float			h;    
+    float			D_dot_V;
+    float			CO_dot_V;
+    t_vec3			D_perp;
+    t_vec3			CO_perp;
+    float			a;
+    float			b;
+    float			c;
+	t_float_range 	t_range;
+	t_vec3			bottom_center;
+	t_vec3			top_center;
 } t_cylinder_vars;
 
 typedef struct s_cone
@@ -237,9 +240,9 @@ int				is_p_within_cone_height(float a_, float b_, float t, t_cone *cone);
 
 // intersect_ray_cylinder.c
 void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
-void			get_cylinder_vars(t_ray *ray, t_obj *obj, t_cylinder_vars *vars);
+void			get_cylinder_vars(t_ray *ray, t_obj *obj, t_float_range t_range, t_cylinder_vars *vars);
 int				solve_quadratic(t_cylinder_vars *vars, float *t1, float *t2);
-void			check_side_hit(float t, t_cylinder_vars *vars, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
+void			check_side_hit(float t, t_cylinder_vars *vars, t_closest_hit *closest_hit, t_obj *obj);
 void			check_cap_intersection(t_ray *ray, t_cylinder_vars *vars, t_vec3 cap_center, int cap_orientation, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
 
 // compute_lighting.c

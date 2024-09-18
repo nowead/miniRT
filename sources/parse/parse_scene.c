@@ -6,12 +6,13 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/16 15:32:47 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/18 14:20:57 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+void	print_checkerboard(t_obj *obj);
 void	print_parsed_vars(t_vars *vars);
 
 void	parse_scene(int argc, char **argv, t_vars *vars)
@@ -107,6 +108,14 @@ void	clear_scene(t_vars *vars)
 	}
 }
 
+void	print_checkerboard(t_obj *obj)
+{
+	printf("checkerboard color1: %d %d %d\n", (obj->checkerboard.color1 >> 16) & 0xFF, (obj->checkerboard.color1 >> 8) & 0xFF, obj->checkerboard.color1 & 0xFF);
+	printf("checkerboard color2: %d %d %d\n", (obj->checkerboard.color2 >> 16) & 0xFF, (obj->checkerboard.color2 >> 8) & 0xFF, obj->checkerboard.color2 & 0xFF);
+	printf("checkerboard width: %d\n", obj->checkerboard.width);
+	printf("checkerboard height: %d\n", obj->checkerboard.height);
+}
+
 void	print_parsed_vars(t_vars *vars)
 {
 	t_light		*lights;
@@ -142,7 +151,10 @@ void	print_parsed_vars(t_vars *vars)
 		{
 			printf("plane pos: %g %g %g\n", obj->data.plane.pos.x, obj->data.plane.pos.y, obj->data.plane.pos.z);
 			printf("plane dir: %g %g %g\n", obj->data.plane.normal.x, obj->data.plane.normal.y, obj->data.plane.normal.z);
-			printf("plane color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
+			if (obj->checkerboard.checkerboard_on)
+				print_checkerboard(obj);
+			else
+				printf("plane color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
 			printf("\n");
 		}
 		else if (obj->type == SPHERE)
@@ -151,12 +163,7 @@ void	print_parsed_vars(t_vars *vars)
 			printf("sphere rad: %g\n", obj->data.sphere.radius);
 			printf("sphere specular: %d\n", obj->specular);
 			if (obj->checkerboard.checkerboard_on)
-			{
-				printf("checkerboard color1: %d %d %d\n", (obj->checkerboard.color1 >> 16) & 0xFF, (obj->checkerboard.color1 >> 8) & 0xFF, obj->checkerboard.color1 & 0xFF);
-				printf("checkerboard color2: %d %d %d\n", (obj->checkerboard.color2 >> 16) & 0xFF, (obj->checkerboard.color2 >> 8) & 0xFF, obj->checkerboard.color2 & 0xFF);
-				printf("checkerboard u: %f\n", obj->checkerboard.u);
-				printf("checkerboard v: %f\n", obj->checkerboard.v);
-			}
+				print_checkerboard(obj);
 			else
 				printf("sphere color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
 			printf("\n");
@@ -167,7 +174,10 @@ void	print_parsed_vars(t_vars *vars)
 			printf("cylinder dir: %g %g %g\n", obj->data.cylinder.axis.x, obj->data.cylinder.axis.y, obj->data.cylinder.axis.z);
 			printf("cylinder rad: %g\n", obj->data.cylinder.radius);
 			printf("cylinder height: %g\n", obj->data.cylinder.height);
-			printf("cylinder color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
+			if (obj->checkerboard.checkerboard_on)
+				print_checkerboard(obj);
+			else
+				printf("cylinder color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
 			printf("\n");
 		}
 		obj = obj->next;

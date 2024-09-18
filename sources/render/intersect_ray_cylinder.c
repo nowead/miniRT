@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:26:26 by damin             #+#    #+#             */
-/*   Updated: 2024/09/15 14:20:34 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/18 17:21:02 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_clo
     t_vec3  top_center;
 
     vars = (t_cylinder_vars){0};
-    get_cylinder_vars(ray, obj, &vars);
+    get_cylinder_vars(ray, obj, t_range, &vars);
     if (solve_quadratic(&vars, &t1, &t2))
     {
-        check_side_hit(t1, &vars, t_range, closest_hit, obj);
-        check_side_hit(t2, &vars, t_range, closest_hit, obj);
+        check_side_hit(t1, &vars, closest_hit, obj);
+        check_side_hit(t2, &vars, closest_hit, obj);
     }
     bottom_center = obj->data.cylinder.center;
     check_cap_intersection(ray, &vars, bottom_center, -1, t_range, closest_hit, obj);
@@ -33,7 +33,7 @@ void intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_clo
     check_cap_intersection(ray, &vars, top_center, 1, t_range, closest_hit, obj);
 }
 
-void get_cylinder_vars(t_ray *ray, t_obj *obj, t_cylinder_vars *vars)
+void get_cylinder_vars(t_ray *ray, t_obj *obj, t_float_range t_range, t_cylinder_vars *vars)
 {
     vars->D = ray->dir;
     vars->V = obj->data.cylinder.axis; // Should be a unit vector
@@ -47,6 +47,7 @@ void get_cylinder_vars(t_ray *ray, t_obj *obj, t_cylinder_vars *vars)
     vars->a = dot(vars->D_perp, vars->D_perp);
     vars->b = 2 * dot(vars->D_perp, vars->CO_perp);
     vars->c = dot(vars->CO_perp, vars->CO_perp) - (vars->r * vars->r);
+    vars->t_range = t_range;
 }
 
 int solve_quadratic(t_cylinder_vars *vars, float *t1, float *t2)
@@ -63,11 +64,11 @@ int solve_quadratic(t_cylinder_vars *vars, float *t1, float *t2)
     return 1;
 }
 
-void check_side_hit(float t, t_cylinder_vars *vars, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj)
+void check_side_hit(float t, t_cylinder_vars *vars, t_closest_hit *closest_hit, t_obj *obj)
 {
     float m;
 
-    if (t_range.min < t && t < t_range.max)
+    if (vars->t_range.min < t && t < vars->t_range.max)
     {
         m = vars->D_dot_V * t + vars->CO_dot_V;
         if (0 <= m && m <= vars->h)

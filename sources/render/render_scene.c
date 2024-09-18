@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/16 16:34:42 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/18 15:28:56 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,34 @@ t_vec3	canvas_to_viewport(int x, int y, t_img *img, t_camera *camera)
 void	p_to_uv(t_point3 p, t_obj *obj)
 {
 	t_vec3	op;
-	float	clamped_value;
 
 	if (obj->type == SPHERE)
 	{
 		op = subtract_3dpoints(p, obj->data.sphere.center);
-		// clamped_value = fmax(-1.0, fmin(1.0, po.y));
-		clamped_value = op.y / obj->data.sphere.radius;
 		obj->checkerboard.u = 0.5 - atan2(op.x, op.z) / (2 * M_PI);
-		obj->checkerboard.v = 1 - acos(clamped_value) / M_PI;
+		obj->checkerboard.v = 1 - acos(op.y / obj->data.sphere.radius) / M_PI;
+	}
+	else if (obj->type == PLANE)
+	{
+		op = subtract_3dpoints(p, obj->data.plane.pos);
+		obj->checkerboard.u = fmod(op.x, 1);
+		obj->checkerboard.v = fmod(op.z, 1);
+	}
+	else if (obj->type == CYLINDER)
+	{
+		op = subtract_3dpoints(p, obj->data.cylinder.center);
+		obj->checkerboard.u = 0.5 - atan2(op.x, op.z) / (2 * M_PI);
+		obj->checkerboard.v = fmod(op.y, 1);
+	}
+	else if (obj->type == CONE)
+	{
+		op = subtract_3dpoints(p, obj->data.cone.vertex);
+		obj->checkerboard.u = 0.5 - atan2(op.x, op.z) / (2 * M_PI);
+		obj->checkerboard.v = fmod(op.y, 1);
 	}
 }
 
-int	uv_mapping(t_obj *obj)
+int	uv_mapping(t_obj *obj, t_sub_obj sub_obj)
 {
 	int		u;
 	int		v;
@@ -91,15 +106,22 @@ int	uv_mapping(t_obj *obj)
 		checkerboard_color = obj->checkerboard.color1;
 	else
 		checkerboard_color = obj->checkerboard.color2;
+	if (sub_obj == TOP_CAP || sub_obj == BOTTOM_CAP)
+	{
+		if ((u + v) % 2 == 0)
+			checkerboard_color = obj->checkerboard.color2;
+		else
+			checkerboard_color = obj->checkerboard.color1;
+	}
 	return (checkerboard_color);
 }
 
-int	get_t_color(t_point3 p, t_closest_hit closest_hit)
+int	get_p_color(t_point3 p, t_closest_hit closest_hit)
 {
 	if (!closest_hit.obj->checkerboard.checkerboard_on)
 		return (closest_hit.obj->color);
 	p_to_uv(p, closest_hit.obj);
-	return (uv_mapping(closest_hit.obj));
+	return (uv_mapping(closest_hit.obj, closest_hit.sub_obj));
 }
 
 int	trace_ray(t_scene *scene, t_vec3 ray_dir)
@@ -115,7 +137,7 @@ int	trace_ray(t_scene *scene, t_vec3 ray_dir)
 	p = add_vector_to_point(scene->camera.pos, \
 	scale_vector(ray_dir, closest_hit.t));
 	lighting = compute_lighting(p, scale_vector(ray_dir, -1), &closest_hit, scene);
-    return (apply_lighting(get_t_color(p, closest_hit), lighting));
+    return (apply_lighting(get_p_color(p, closest_hit), lighting));
 }
 
 t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene)

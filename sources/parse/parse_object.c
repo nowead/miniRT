@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/15 19:29:42 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/18 15:11:33 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,13 @@ int	set_plane(char **line, t_obj *plane)
 	if (check_float_str(line[3]))
 		return (1);
 	plane->specular = ft_atof(line[3]);
-	if (parse_color(line[4], &plane->color))
-		return (1);
+	if (line[4] && line[4][0] == 'c')
+		parse_checkerboard(line[4], &plane->checkerboard);
+	else
+	{
+		if (parse_color(line[4], &plane->color))
+			return (1);
+	}
 	return (0);
 }
 
@@ -58,8 +63,13 @@ int	set_cylinder(char **line, t_obj *cylinder)
     cylinder->data.cylinder.radius = ft_atof(line[3]) / 2;
     cylinder->data.cylinder.height = ft_atof(line[4]);
 	cylinder->specular = ft_atof(line[5]);
-	if (parse_color(line[6], &cylinder->color))
-		return (1);
+	if (line[6] && line[6][0] == 'c')
+		parse_checkerboard(line[6], &cylinder->checkerboard);
+	else
+	{
+		if (parse_color(line[6], &cylinder->color))
+			return (1);	
+	}
 	return (0);
 }
 
@@ -75,7 +85,12 @@ int	set_cone(char **line, t_obj *cone)
 	cone->data.cone.radius = ft_atof(line[3]) / 2;
 	cone->data.cone.height = ft_atof(line[4]);
 	cone->specular = ft_atof(line[5]);
+	if (line[6] && line[6][0] == 'c')
+		parse_checkerboard(line[6], &cone->checkerboard);
+	else
+	{
 	if (parse_color(line[6], &cone->color))
 		return (1);
+	}
 	return (0);
 }
