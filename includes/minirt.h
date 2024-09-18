@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 18:08:51 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 18:28:18 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,7 +258,7 @@ void			intersect_ray_cylinder_cap(t_inter_vars *vars, t_sub_obj sub_obj);
 void			intersect_ray_cone(t_inter_vars vars);
 void			intersect_ray_cone_side(t_inter_vars *vars);
 void			compute_cone_side_quadratic_coefficients(t_inter_vars *vars, float coeff[3], t_vec3 vo, float term[2]);
-int				is_p_within_cone_height(float a, float b, float t, float cone_height);
+int				is_p_within_cone_height(float vo_dot_axis, float d_dot_axis, float t, float cone_height);
 void			intersect_ray_cone_cap(t_inter_vars *vars);
 
 // compute_circle_intersection.c

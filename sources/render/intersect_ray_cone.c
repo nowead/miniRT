@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 16:41:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 00:07:00 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 18:27:52 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,21 @@ void	compute_cone_side_quadratic_coefficients(t_inter_vars *vars, float coeff[3]
 	coeff[2] = (term[VO_DOT_AXIS] * term[VO_DOT_AXIS]) - (s * s * dot(v, v));
 }
 
-int	is_p_within_cone_height(float a, float b, float t, float cone_height)
+int	is_p_within_cone_height(float vo_dot_axis, float d_dot_axis, float t, float cone_height)
 {
-	if (b > 0)
+	if (d_dot_axis > 0)
 	{
-		if (-a / b <= t && t < (cone_height - a) / b)
+		if (-vo_dot_axis / d_dot_axis <= t && t < (cone_height - vo_dot_axis) / d_dot_axis)
 			return (1);
 	}
-	else if (b < 0)
+	else if (d_dot_axis < 0)
 	{
-		if (-a / b >= t && t > (cone_height - a) / b)
+		if (-vo_dot_axis / d_dot_axis >= t && t > (cone_height - vo_dot_axis) / d_dot_axis)
 			return (1);
 	}
 	else
 	{
-		if (0 <= a && a < cone_height)
+		if (0 <= vo_dot_axis && vo_dot_axis < cone_height)
 			return (1);
 	}
 	return (0);
