@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 00:12:04 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 18:08:51 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ typedef struct	s_ray
 	t_vec3		dir;
 }	t_ray;
 
+typedef struct	s_color
+{
+	float	r;
+	float	g;
+	float	b;
+}	t_color;
+
 typedef struct	s_float_range
 {
 	float	min;
@@ -83,7 +90,8 @@ typedef struct	s_light
 {
 	t_light_type	type;
 	float			intens;
-	int				color;
+	t_color			color;
+	t_color			color_intens;
 	t_point3		pos;
 	struct s_light	*next;
 }	t_light;
@@ -163,7 +171,7 @@ typedef struct s_obj
 {
 	t_obj_type		type;
 	t_obj_data		data;
-	int				color;
+	t_color			color;
 	int				specular;
 	struct s_obj	*next;
 }	t_obj;
@@ -257,8 +265,9 @@ void			intersect_ray_cone_cap(t_inter_vars *vars);
 int				compute_circle_intersection(t_ray *ray, t_circle *circle, float *t);
 
 // compute_lighting.c
-float			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);
-int				apply_lighting(int color, float lighting);
+t_color			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);
+void			add_light_intensity(t_color *intens, float factor, t_color *light_color);
+int				apply_lighting(t_color *color, t_color *lighting);
 
 // get_normal_vector.c
 t_vec3			get_normal_vector(t_point3 p, t_closest_hit *hit);
@@ -313,10 +322,10 @@ int				set_cone(char **line, t_obj *cone);
 // parse_types.c
 int				parse_3dpoint(char *str, t_point3 *point);
 int				parse_3dvector(char *str, t_vec3 *vector);
-int				parse_color(char *str, int *color);
+int				parse_color(char *str, t_color *color);
 
 // parse_utils.c
-int				get_color(int r, int g, int b);
+// int				get_color(int r, int g, int b);
 void			free_lists(char **lists);
 float			ft_atof(char *str);
 int				ft_strslen(char **strs);

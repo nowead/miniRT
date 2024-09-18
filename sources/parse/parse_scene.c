@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/18 15:00:52 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 17:36:27 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void	print_parsed_vars(t_vars *vars)
 		if (lights->type == POINT_LIGHT)
 			printf("light pos: %g %g %g\n", lights->pos.x, lights->pos.y, lights->pos.z);
 		printf("light intens: %g\n", lights->intens);
-		printf("light color: %d %d %d\n", (lights->color >> 16) & 0xFF, (lights->color >> 8) & 0xFF, lights->color & 0xFF);		
+		printf("light color: %g %g %g\n", lights->color.r, lights->color.g, lights->color.b);
 		printf("\n");
 		lights = lights->next;
 	}
@@ -144,7 +144,7 @@ void	print_parsed_vars(t_vars *vars)
 		{
 			printf("plane pos: %g %g %g\n", obj->data.plane.pos.x, obj->data.plane.pos.y, obj->data.plane.pos.z);
 			printf("plane dir: %g %g %g\n", obj->data.plane.normal.x, obj->data.plane.normal.y, obj->data.plane.normal.z);
-			printf("plane color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
+			printf("plane color: %g %g %g\n", obj->color.r, obj->color.g, obj->color.b);
 			printf("\n");
 		}
 		else if (obj->type == SPHERE)
@@ -152,7 +152,7 @@ void	print_parsed_vars(t_vars *vars)
 			printf("sphere pos: %g %g %g\n", obj->data.sphere.center.x, obj->data.sphere.center.y, obj->data.sphere.center.z);
 			printf("sphere rad: %g\n", obj->data.sphere.radius);
 			printf("sphere specular: %d\n", obj->specular);
-			printf("sphere color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
+			printf("sphere color: %g %g %g\n", obj->color.r, obj->color.g, obj->color.b);
 			printf("\n");
 		}
 		else if (obj->type == CYLINDER)
@@ -161,7 +161,7 @@ void	print_parsed_vars(t_vars *vars)
 			printf("cylinder dir: %g %g %g\n", obj->data.cylinder.side.axis.x, obj->data.cylinder.side.axis.y, obj->data.cylinder.side.axis.z);
 			printf("cylinder rad: %g\n", obj->data.cylinder.side.radius);
 			printf("cylinder height: %g\n", obj->data.cylinder.side.height);
-			printf("cylinder color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
+			printf("cylinder color: %g %g %g\n", obj->color.r, obj->color.g, obj->color.b);
 			printf("\n");
 		}
 		else if (obj->type == CONE)
@@ -170,7 +170,7 @@ void	print_parsed_vars(t_vars *vars)
 			printf("cone dir: %g %g %g\n", obj->data.cone.side.axis.x, obj->data.cone.side.axis.y, obj->data.cone.side.axis.z);
 			printf("cone rad: %g\n", obj->data.cone.side.radius);
 			printf("cone height: %g\n", obj->data.cone.side.height);
-			printf("cone color: %d %d %d\n", (obj->color >> 16) & 0xFF, (obj->color >> 8) & 0xFF, obj->color & 0xFF);
+			printf("cone color: %g %g %g\n", obj->color.r, obj->color.g, obj->color.b);
 			printf("\n");
 		}
 		obj = obj->next;

@@ -1,4 +1,3 @@
-- bottom cap of cone
 - check parsing error
 
 - light color

@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:38:06 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/16 20:26:08 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 17:37:24 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,16 @@ int	parse_3dvector(char *line, t_vec3 *obj_vec)
 	return (0);
 }
 
-int	parse_color(char *line, int *obj_color)
+int	parse_color(char *line, t_color *obj_color)
 {
 	char	**color;
 
 	color = ft_split(line, ',');
 	if (check_color(color))
 		return (1);
-	*obj_color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+	obj_color->r = ft_atoi(color[0]);
+	obj_color->g = ft_atoi(color[1]);
+	obj_color->b = ft_atoi(color[2]);
 	free_lists(color);
 	return (0);
 }
