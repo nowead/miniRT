@@ -6,18 +6,18 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:50:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/18 17:33:46 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 19:16:14 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// int get_color(int r, int g, int b)
-// {
-// 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-// 		return (1);
-// 	return (r << 16 | g << 8 | b);
-// }
+int get_color(int r, int g, int b)
+{
+	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+		return (1);
+	return (r << 16 | g << 8 | b);
+}
 
 float ft_atof(char *str)
 {

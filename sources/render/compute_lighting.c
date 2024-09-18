@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 18:15:11 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 19:18:47 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,15 @@ void	add_light_intensity(t_color *intens, float factor, t_color *color_intens)
 	intens->b += factor * color_intens->b;
 }
 
-int apply_lighting(t_color *color, t_color *lighting)
+int apply_lighting(t_color color, t_color *lighting)
 {
     int r;
 	int	g;
 	int	b;
 
-	r = (int)(color->r * lighting->r);
-	g = (int)(color->g * lighting->g);
-	b = (int)(color->b * lighting->b);
+	r = (int)(color.r * lighting->r);
+	g = (int)(color.g * lighting->g);
+	b = (int)(color.b * lighting->b);
 	if (r > 255)
 		r = 255;
 	if (g > 255)

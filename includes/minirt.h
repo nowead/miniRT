@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 19:04:36 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 19:18:33 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,7 @@ void			render_scene(t_vars *vars);
 void			init_camera_and_viewport(t_camera *camera, t_img *img);
 t_vec3			canvas_to_viewport(int x, int y, t_img *img, t_camera *camera);
 int				trace_ray(t_scene *scene, t_vec3 ray_dir);
+t_color			int_to_t_color(int int_color);
 
 // closest_intersection.c
 t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene);
@@ -279,7 +280,7 @@ int				compute_circle_intersection(t_ray *ray, t_circle *circle, float *t);
 // compute_lighting.c
 t_color			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);
 void			add_light_intensity(t_color *intens, float factor, t_color *light_color);
-int				apply_lighting(t_color *color, t_color *lighting);
+int				apply_lighting(t_color color, t_color *lighting);
 
 // get_normal_vector.c
 t_vec3			get_normal_vector(t_point3 p, t_closest_hit *hit);
@@ -339,7 +340,7 @@ int				parse_color(char *str, t_color *color);
 int				parse_checkerboard(char *str, t_checkerboard *checkerboard);
 
 // parse_utils.c
-// int				get_color(int r, int g, int b);
+int				get_color(int r, int g, int b);
 void			free_lists(char **lists);
 float			ft_atof(char *str);
 int				ft_strslen(char **strs);

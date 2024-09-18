@@ -13,9 +13,6 @@
 
 int parse_camera(char **line, t_vars *vars)
 {
-	char **coord;
-	char **vector;
-
 	if (ft_strslen(line) != 4)
 		return (1);
 	if (parse_3dpoint(line[1], &vars->scene.camera.pos))

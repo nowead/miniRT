@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 19:11:12 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 19:52:47 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,17 @@ void	p_to_uv(t_point3 p, t_obj *obj)
 	}
 	else if (obj->type == CYLINDER)
 	{
-		op = subtract_3dpoints(p, obj->data.cylinder.center);
+		op = subtract_3dpoints(p, obj->data.cylinder.side.center);
 		obj->checkerboard.u = 0.5 - atan2(op.x, op.z) / (2 * M_PI);
 		obj->checkerboard.v = fmod(op.y, 1);
 	}
 	else if (obj->type == CONE)
 	{
-		op = subtract_3dpoints(p, obj->data.cone.vertex);
+		op = subtract_3dpoints(p, obj->data.cone.side.vertex);
 		obj->checkerboard.u = 0.5 - atan2(op.x, op.z) / (2 * M_PI);
-		obj->checkerboard.v = fmod(op.y, 1);
+		obj->checkerboard.v = fmod(-op.y, 1);
+		printf("u: %f, v: %f\n", obj->checkerboard.u, obj->checkerboard.v);
+
 	}
 }
 
@@ -116,12 +118,22 @@ int	uv_mapping(t_obj *obj, t_sub_obj sub_obj)
 	return (checkerboard_color);
 }
 
-int	get_p_color(t_point3 p, t_closest_hit closest_hit)
+t_color	get_p_color(t_point3 p, t_closest_hit *closest_hit)
 {
-	if (!closest_hit.obj->checkerboard.checkerboard_on)
-		return (closest_hit.obj->color);
-	p_to_uv(p, closest_hit.obj);
-	return (uv_mapping(closest_hit.obj, closest_hit.sub_obj));
+	if (!closest_hit->obj->checkerboard.checkerboard_on)
+		return (closest_hit->obj->color);
+	p_to_uv(p, closest_hit->obj);
+	return (int_to_t_color(uv_mapping(closest_hit->obj, closest_hit->sub_obj)));
+}
+
+t_color int_to_t_color(int int_color)
+{
+	t_color color;
+
+	color.r = (int_color >> 16) & 0xFF;
+	color.g = (int_color >> 8) & 0xFF;
+	color.b = int_color & 0xFF;
+	return (color);
 }
 
 int	trace_ray(t_scene *scene, t_vec3 ray_dir)
