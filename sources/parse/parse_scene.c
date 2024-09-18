@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/18 00:17:37 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:00:52 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	print_parsed_vars(t_vars *vars)
 	printf("camera fov: %d\n\n", camera->fov);
 	
 	printf("num_of_lights: %d\n", count_num_of_lights(lights));
-	printf("num_of_obj: %d\n\n", count_num_of_lights(obj));
+	printf("num_of_obj: %d\n\n", count_num_of_obj(obj));
 	
 	while (lights)
 	{
