@@ -18,16 +18,10 @@ int parse_camera(char **line, t_vars *vars)
 
 	if (ft_strslen(line) != 4)
 		return (1);
-	coord = ft_split(line[1], ',');
-	if (check_coord(coord))
+	if (parse_3dpoint(line[1], &vars->scene.camera.pos))
 		return (1);
-	vars->scene.camera.pos = (t_point3){ft_atof(coord[0]), ft_atof(coord[1]), ft_atof(coord[2])};
-	free_lists(coord);
-	vector = ft_split(line[2], ',');
-	if (check_vector(vector))
+	if (parse_3dvector(line[2], &vars->scene.camera.dir))
 		return (1);
-	vars->scene.camera.dir = (t_vec3){ft_atof(vector[0]), ft_atof(vector[1]), ft_atof(vector[2])};
-	free_lists(vector);
 	if (check_float_str(line[3]))
 		return (1);
 	vars->scene.camera.fov = ft_atof(line[3]);

@@ -11,6 +11,8 @@
 		"string_view": "c",
 		"utility": "c",
 		"iosfwd": "c",
-		"iterator": "c"
+		"iterator": "c",
+		"algorithm": "c",
+		"tuple": "c"
 	}
 }

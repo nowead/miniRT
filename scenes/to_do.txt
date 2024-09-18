@@ -1,0 +1,5 @@
+- check parsing error
+
+- light color
+- checkerboard
+- bump map texture

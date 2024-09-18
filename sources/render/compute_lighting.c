@@ -6,31 +6,32 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/14 18:04:08 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/18 18:15:11 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-float	compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene)
+t_color	compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene)
 {
 	t_light			*light;
 	t_closest_hit	closest_hit;
 	t_vec3			n;
 	t_vec3			l;
 	t_vec3			r;
-	float			intens;
+	t_color			intens;
+	float			factor;
 	float			n_dot_l;
 	float			r_dot_v;
 	float			t_max;
 
 	n = get_normal_vector(p, hit);
-    intens = 0.0;
+    intens = (t_color){0.0, 0.0, 0.0};
 	light = scene->lights;
     while (light)
     {
         if (light->type == AMBIENT_LIGHT)
-        	intens += light->intens;
+        	add_light_intensity(&intens, light->intens, &light->color_intens);
         else
         {
             if (light->type == POINT_LIGHT)
@@ -43,37 +44,53 @@ float	compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene)
 			{
 				// apply diffuse reflection
 				n_dot_l = dot(n, l);
-				if (n_dot_l > 0) 
-					intens += light->intens * n_dot_l / length(l);
+				if (n_dot_l > 0)
+				{		
+					factor = light->intens * n_dot_l / length(l);
+					add_light_intensity(&intens, factor, &light->color_intens);
+				}
 				// apply specular reflection
-				r = subtract_3dvectors(scale_vector(n, 2 * dot(n, l)), l);
-				r_dot_v = dot(r, v);
-				if (r_dot_v > 0)
-					intens += light->intens * pow(r_dot_v / (length(r) * length(v)), hit->obj->specular);
+				if (hit->obj->specular > 0)
+				{
+					r = subtract_3dvectors(scale_vector(n, 2 * dot(n, l)), l);
+					r_dot_v = dot(r, v);
+					if (r_dot_v > 0)
+					{
+						factor = light->intens * pow(r_dot_v / (length(r) * length(v)), hit->obj->specular);
+						add_light_intensity(&intens, factor, &light->color_intens);
+					}
+				}
 			}
 		}
 		light = light->next;
     }
+	intens.r = fminf(intens.r, 1.0f);
+	intens.g = fminf(intens.g, 1.0f);
+	intens.b = fminf(intens.b, 1.0f);
     return (intens);
 }
 
-int apply_lighting(int color, float lighting)
+void	add_light_intensity(t_color *intens, float factor, t_color *color_intens)
+{
+	intens->r += factor * color_intens->r;
+	intens->g += factor * color_intens->g;
+	intens->b += factor * color_intens->b;
+}
+
+int apply_lighting(t_color *color, t_color *lighting)
 {
     int r;
 	int	g;
 	int	b;
 
-    r = (color >> 16) & 0xFF;
-    g = (color >> 8) & 0xFF;
-    b = color & 0xFF;
-    r = (int)(r * lighting);
-    g = (int)(g * lighting);
-    b = (int)(b * lighting);
+	r = (int)(color->r * lighting->r);
+	g = (int)(color->g * lighting->g);
+	b = (int)(color->b * lighting->b);
 	if (r > 255)
 		r = 255;
 	if (g > 255)
 		g = 255;
 	if (b > 255)
 		b = 255;
-    return ((r << 16) | (g << 8) | b);
+	return ((r << 16) | (g << 8) | b);
 }

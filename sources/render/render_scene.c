@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 15:28:56 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/18 19:11:12 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	trace_ray(t_scene *scene, t_vec3 ray_dir)
 {
 	t_point3		p;
 	t_closest_hit	closest_hit;
-	float			lighting;
+	t_color			lighting;
 
 	closest_hit = closest_intersection((t_ray){scene->camera.pos, ray_dir}, \
 	(t_float_range){0, FLT_MAX}, scene);
@@ -137,28 +137,5 @@ int	trace_ray(t_scene *scene, t_vec3 ray_dir)
 	p = add_vector_to_point(scene->camera.pos, \
 	scale_vector(ray_dir, closest_hit.t));
 	lighting = compute_lighting(p, scale_vector(ray_dir, -1), &closest_hit, scene);
-    return (apply_lighting(get_p_color(p, closest_hit), lighting));
-}
-
-t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene)
-{
-	t_closest_hit	closest_hit;
-	t_obj			*obj;
-
-	closest_hit.t = t_range.max;
-    closest_hit.obj = NULL;
-	obj = scene->obj;
-    while (obj)
-    {
-		if (obj->type == SPHERE)
-        	intersect_ray_sphere(&ray, obj, t_range, &closest_hit);
-		else if (obj->type == PLANE)
-			intersect_ray_plane(&ray, obj, t_range, &closest_hit);
-		else if (obj->type == CYLINDER)
-			intersect_ray_cylinder(&ray, obj, t_range, &closest_hit);
-		else if (obj->type == CONE)
-			intersect_ray_cone(&ray, obj, t_range, &closest_hit);
-		obj = obj->next;
-	}
-	return (closest_hit);
+    return (apply_lighting(get_p_color(p, &closest_hit), &lighting));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 17:02:34 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/18 19:04:36 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ typedef struct	s_ray
 	t_vec3		dir;
 }	t_ray;
 
+typedef struct	s_color
+{
+	float	r;
+	float	g;
+	float	b;
+}	t_color;
+
 typedef struct	s_float_range
 {
 	float	min;
@@ -83,10 +90,17 @@ typedef struct	s_light
 {
 	t_light_type	type;
 	float			intens;
-	int				color;
+	t_color			color;
+	t_color			color_intens;
 	t_point3		pos;
 	struct s_light	*next;
 }	t_light;
+
+typedef struct	s_sphere
+{
+	t_point3	center;
+	float		radius;
+}	t_sphere;
 
 typedef struct	s_plane
 {
@@ -94,45 +108,41 @@ typedef struct	s_plane
 	t_vec3		normal;
 }	t_plane;
 
-typedef struct s_cylinder
+typedef struct s_circle
+{
+	t_point3	center;
+	t_vec3		normal;
+	float		radius;
+}	t_circle;
+
+typedef struct s_cy_side
 {
 	t_point3	center;
 	t_vec3		axis;
 	float		radius;
 	float		height;
+}	t_cy_side;
+
+typedef struct s_cylinder
+{
+	t_cy_side	side;
+	t_circle	top_cap;
+	t_circle	bottom_cap;
 }	t_cylinder;
 
-typedef struct s_cylinder_vars {
-    t_vec3			D;
-    t_vec3			V;
-    t_vec3			CO;
-    float			r;
-    float			h;    
-    float			D_dot_V;
-    float			CO_dot_V;
-    t_vec3			D_perp;
-    t_vec3			CO_perp;
-    float			a;
-    float			b;
-    float			c;
-	t_float_range 	t_range;
-	t_vec3			bottom_center;
-	t_vec3			top_center;
-} t_cylinder_vars;
-
-typedef struct s_cone
+typedef struct s_co_side
 {
 	t_point3	vertex;
 	t_vec3		axis;
 	float		radius;
 	float		height;
-}	t_cone;
+}	t_co_side;
 
-typedef struct	s_sphere
+typedef struct s_cone
 {
-	t_point3	center;
-	float		radius;
-}	t_sphere;
+	t_co_side	side;
+	t_circle	bottom_cap;
+}	t_cone;
 
 typedef enum e_obj_type
 {
@@ -172,7 +182,7 @@ typedef struct s_obj
 {
 	t_obj_type		type;
 	t_obj_data		data;
-	int				color;
+	t_color			color;
 	int				specular;
 	t_checkerboard	checkerboard;
 	struct s_obj	*next;
@@ -182,9 +192,7 @@ typedef struct s_scene
 {
 	t_camera	camera;
 	t_light		*lights;
-	int			num_of_lights;
 	t_obj		*obj;
-	int			num_of_obj;
 }	t_scene;
 
 typedef	struct	s_closest_hit
@@ -193,6 +201,14 @@ typedef	struct	s_closest_hit
 	t_sub_obj	sub_obj;
 	float		t;
 }	t_closest_hit;
+
+typedef struct s_inter_vars
+{
+	t_ray			*ray;
+	t_obj			*obj;
+	t_float_range	*t_range;
+	t_closest_hit	*closest_hit;
+}	t_inter_vars;
 
 typedef struct s_win
 {
@@ -223,31 +239,47 @@ typedef struct s_vars
 // minirt.c
 void			error_exit(char *err_msg, int perror_flag);
 void			init_vars(t_vars *vars);
-// void			init_scene(t_scene *scene);
 
 // render_scene.c
 void			render_scene(t_vars *vars);
 void			init_camera_and_viewport(t_camera *camera, t_img *img);
 t_vec3			canvas_to_viewport(int x, int y, t_img *img, t_camera *camera);
 int				trace_ray(t_scene *scene, t_vec3 ray_dir);
-t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene);
 
-// intersect_ray_obj.c
-void			intersect_ray_sphere(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
-void			intersect_ray_plane(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
-void			intersect_ray_cone(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
-int				is_p_within_cone_height(float a_, float b_, float t, t_cone *cone);
+// closest_intersection.c
+t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene);
+int				solve_quadratic_equation(float coeff[3], float t[2]);
+void			update_closest_hit(float t, t_sub_obj sub_obj, t_inter_vars *vars);
+
+// intersect_ray_sphere.c
+void			intersect_ray_sphere(t_inter_vars vars);
+void			compute_sphere_quadratic_coefficients(t_ray *ray, t_sphere *sphere, float coeff[3]);
+
+// intersect_ray_plane.c
+void			intersect_ray_plane(t_inter_vars vars);
+int				compute_plane_intersection(t_ray *ray, t_plane *plane, float *t);
 
 // intersect_ray_cylinder.c
-void			intersect_ray_cylinder(t_ray *ray, t_obj *obj, t_float_range t_range, t_closest_hit *closest_hit);
-void			get_cylinder_vars(t_ray *ray, t_obj *obj, t_float_range t_range, t_cylinder_vars *vars);
-int				solve_quadratic(t_cylinder_vars *vars, float *t1, float *t2);
-void			check_side_hit(float t, t_cylinder_vars *vars, t_closest_hit *closest_hit, t_obj *obj);
-void			check_cap_intersection(t_ray *ray, t_cylinder_vars *vars, t_vec3 cap_center, int cap_orientation, t_float_range t_range, t_closest_hit *closest_hit, t_obj *obj);
+void			intersect_ray_cylinder(t_inter_vars vars);
+void			intersect_ray_cylinder_side(t_inter_vars *vars);
+void			compute_cylinder_side_quadratic_coefficients(t_inter_vars *vars, float coeff[3], t_vec3 *co, float term[2]);
+int				is_p_within_cylinder_height(float co_dot_axis, float d_dot_axis, float t, float h);
+void			intersect_ray_cylinder_cap(t_inter_vars *vars, t_sub_obj sub_obj);
+
+// intersect_ray_cone.c
+void			intersect_ray_cone(t_inter_vars vars);
+void			intersect_ray_cone_side(t_inter_vars *vars);
+void			compute_cone_side_quadratic_coefficients(t_inter_vars *vars, float coeff[3], t_vec3 vo, float term[2]);
+int				is_p_within_cone_height(float vo_dot_axis, float d_dot_axis, float t, float cone_height);
+void			intersect_ray_cone_cap(t_inter_vars *vars);
+
+// compute_circle_intersection.c
+int				compute_circle_intersection(t_ray *ray, t_circle *circle, float *t);
 
 // compute_lighting.c
-float			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);
-int				apply_lighting(int color, float lighting);
+t_color			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);
+void			add_light_intensity(t_color *intens, float factor, t_color *light_color);
+int				apply_lighting(t_color *color, t_color *lighting);
 
 // get_normal_vector.c
 t_vec3			get_normal_vector(t_point3 p, t_closest_hit *hit);
@@ -302,11 +334,12 @@ int				set_cone(char **line, t_obj *cone);
 // parse_types.c
 int				parse_3dpoint(char *str, t_point3 *point);
 int				parse_3dvector(char *str, t_vec3 *vector);
-int				parse_color(char *str, int *color);
+int				parse_color(char *str, t_color *color);
+
 int				parse_checkerboard(char *str, t_checkerboard *checkerboard);
 
 // parse_utils.c
-int				get_color(int r, int g, int b);
+// int				get_color(int r, int g, int b);
 void			free_lists(char **lists);
 float			ft_atof(char *str);
 int				ft_strslen(char **strs);
