@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/19 13:56:55 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/19 14:07:57 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ int main(int argc, char **argv)
     return (EXIT_SUCCESS);
 }
 
-void	error_return(char *err_msg, int perror_flag)
+int	error_return(char *err_msg, int perror_flag)
 {
 	if (perror_flag)
         perror(err_msg);
 	else
         ft_putendl_fd(err_msg, STDERR_FILENO);
-	return (EXIT_FAILURE);
+	return (1);
 }
 
 void	error_exit(char *err_msg, int perror_flag)

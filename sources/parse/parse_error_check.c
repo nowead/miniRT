@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_error_check.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 14:30:16 by mindaewon         #+#    #+#             */
-/*   Updated: 2024/09/15 19:03:42 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/19 15:14:41 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	check_coord(char **coord)
 {
-	int			i;
+	int	i;
 	
 	if (!coord)
-		return (1);
+		return (error_return("Error\nInvalid coordinate", PERROR_ON));
 	i = 0;
 	while (i < 3)
 	{
@@ -30,11 +30,11 @@ int	check_coord(char **coord)
 
 int check_vector(char **vector)
 {
-	int			i;
+	int		i;
 	t_vec3	vec;
 	
 	if (!vector)
-		return (1);
+		return (error_return("Error\nInvalid vector", PERROR_ON));
 	i = 0;
 	while (i < 3)
 	{
@@ -46,7 +46,7 @@ int check_vector(char **vector)
 	vec.y = ft_atof(vector[1]);
 	vec.z = ft_atof(vector[2]);
 	if (vec.x < -1 || vec.x > 1 || vec.y < -1 || vec.y > 1 || vec.z < -1 || vec.z > 1)
-		return (1);
+		return (error_return("Error\nVector must be between -1 and 1", PERROR_OFF));
 	// if (length(vec) != 1)
 	// 	return (1);
 	return (0);
@@ -54,11 +54,13 @@ int check_vector(char **vector)
 
 int check_color(char **color)
 {
-	int r;
-	int g;
-	int b;
-	int i;
+	int	r;
+	int	g;
+	int	b;
+	int	i;
 
+	if (!color)
+		return (error_return("Error\nInvalid color", PERROR_ON));
 	i = 0;
 	while (i < 3)
 	{
@@ -70,29 +72,31 @@ int check_color(char **color)
 	g = ft_atoi(color[1]);
 	b = ft_atoi(color[2]);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		return (1);
+		return (error_return("Error\nColor must be between 0 and 255", PERROR_OFF));
 	return (0);
 }
 
 int check_decimal_str(char *str)
 {
-	int i;
+	int	i;
 
+	if (!str)
+		return (error_return("Error\nInvalid decimal number", PERROR_OFF));
 	i = 0;
 	while (ft_isdigit(str[i]))
 		i++;
 	if (i == 0 || str[i] != '\0')
-		return (1);
+		return (error_return("Error\nInvalid decimal number", PERROR_OFF));
 	return (0);
 }
 
 int	check_float_str(char *str)
 {
-	int i;
-	int dot;
+	int	i;
+	int	dot;
 
 	if (!str)
-		return (1);
+		return (error_return("Error\nInvalid float number", PERROR_OFF));
 	i = 0;
 	dot = 0;
 	if (str[i] == '-')
@@ -104,6 +108,6 @@ int	check_float_str(char *str)
 		i++;
 	}
 	if (i == 0 || dot > 1 || str[i] != '\0')
-		return (1);
+		return (error_return("Error\nInvalid float number", PERROR_OFF));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/19 13:56:45 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/19 16:40:16 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ typedef struct s_vars
 }	t_vars;
 
 // minirt.c
-void			error_return(char *err_msg, int perror_flag);
+int				error_return(char *err_msg, int perror_flag);
 void			error_exit(char *err_msg, int perror_flag);
 void			init_vars(t_vars *vars);
 
@@ -315,13 +315,11 @@ int				parse_rt_file(char *argv, t_vars *vars);
 int				parse_lines_from_rt_file(int fd, t_vars *vars);
 void			clear_scene(t_vars *vars);
 
-//parse_rt_file.c
+//parse_scene_element.c
 int				parse_scene_element(char **line, t_vars *vars);
+int				parse_camera(char **line, t_vars *vars);;
 int				parse_light(char **line, t_vars *vars, int (*set_light)(char **line, t_light *light));
 int				parse_object(char **line,t_vars *vars, int (*set_obj)(char **line, t_obj *obj));
-
-// parse_camera.c
-int				parse_camera(char **line, t_vars *vars);
 
 // parse_light.c
 int				set_amb_light(char **line, t_light *lights);
@@ -331,13 +329,14 @@ int				set_point_light(char **line, t_light *lights);
 int				set_sphere(char **line, t_obj *sphere);
 int				set_plane(char **line, t_obj *plane);
 int				set_cylinder(char **line, t_obj *cylinder);
+void			set_cylinder_cap(t_cylinder *cylinder);
 int				set_cone(char **line, t_obj *cone);
+void			set_cone_cap(t_cone *cone);
 
 // parse_types.c
 int				parse_3dpoint(char *str, t_point3 *point);
 int				parse_3dvector(char *str, t_vec3 *vector);
 int				parse_color(char *str, t_color *color);
-
 int				parse_checkerboard(char *str, t_checkerboard *checkerboard);
 
 // parse_utils.c
