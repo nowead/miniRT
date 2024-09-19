@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 19:18:33 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/19 13:56:45 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,6 +237,7 @@ typedef struct s_vars
 }	t_vars;
 
 // minirt.c
+void			error_return(char *err_msg, int perror_flag);
 void			error_exit(char *err_msg, int perror_flag);
 void			init_vars(t_vars *vars);
 
