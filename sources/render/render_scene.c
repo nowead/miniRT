@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/19 18:13:52 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/19 20:50:18 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	p_to_uv(t_point3 p, t_obj *obj, t_sub_obj sub_obj)
 		obj->checkerboard.v = fmod(op.y, 1);
 		if (sub_obj == TOP_CAP || sub_obj == BOTTOM_CAP)
 		{
-			obj->checkerboard.u = (atan2(op.z, op.x) + M_PI) / (2 * M_PI); // U 좌표 (각도)
+			obj->checkerboard.u = 0.5 - atan2(op.x, op.z) / (2 * M_PI); // U 좌표 (각도)
 			obj->checkerboard.v = sqrt(op.x * op.x + op.z * op.z); // V 좌표 (반지름에 따라)
 		}
 	}
@@ -116,9 +116,9 @@ void	p_to_uv(t_point3 p, t_obj *obj, t_sub_obj sub_obj)
 		op = world_to_local(p, obj->data.cone.side.axis, obj->data.cone.side.vertex);
 		obj->checkerboard.u = 0.5 - atan2(op.x, op.z) / (2 * M_PI);
 		obj->checkerboard.v = fmod(-op.y, 1);
-		if (sub_obj == TOP_CAP || sub_obj == BOTTOM_CAP)
+		if (sub_obj == BOTTOM_CAP)
 		{
-			obj->checkerboard.u = (atan2(op.z, op.x) + M_PI) / (2 * M_PI); // U 좌표 (각도)
+			obj->checkerboard.u = 0.5 - atan2(op.x, op.z) / (2 * M_PI); // U 좌표 (각도)
 			obj->checkerboard.v = sqrt(op.x * op.x + op.z * op.z); // V 좌표 (반지름에 따라)
 		}
 	}
@@ -136,13 +136,6 @@ int	uv_mapping(t_obj *obj)
 		checkerboard_color = obj->checkerboard.color1;
 	else
 		checkerboard_color = obj->checkerboard.color2;
-	// if (obj->type == CYLINDER && (sub_obj == TOP_CAP || sub_obj == BOTTOM_CAP))
-	// {
-	// 	if ((u + v) % 2 == 0)
-	// 		checkerboard_color = obj->checkerboard.color2;
-	// 	else
-	// 		checkerboard_color = obj->checkerboard.color1;
-	// }
 	return (checkerboard_color);
 }
 
