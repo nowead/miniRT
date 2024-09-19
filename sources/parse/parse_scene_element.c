@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:14:10 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 00:11:48 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/19 15:04:36 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,22 @@ int	parse_scene_element(char **line, t_vars *vars)
 		ft_putendl_fd(line[0], STDERR_FILENO);
 		err_flag = 1;
 	}
-	if (err_flag)
+	return (err_flag);
+}
+
+int parse_camera(char **line, t_vars *vars)
+{
+	if (ft_strslen(line) != 4)
+		return (error_return("Error\nCamera format: C [pos] [dir] [fov]", PERROR_OFF));
+	if (parse_3dpoint(line[1], &vars->scene.camera.pos))
 		return (1);
+	if (parse_3dvector(line[2], &vars->scene.camera.dir))
+		return (1);
+	if (check_float_str(line[3]))
+		return (1);
+	vars->scene.camera.fov = ft_atof(line[3]);
+	if (vars->scene.camera.fov < 0 || vars->scene.camera.fov > 180)
+		error_return("Error\nFOV must be between 0 and 180", PERROR_OFF);
 	return (0);
 }
 
@@ -50,7 +64,7 @@ int (*set_light)(char **line, t_light *light))
 
 	light = (t_light *)ft_calloc(1, sizeof(t_light));
 	if (!light)
-		return (1);
+		return (error_return("Error\nMalloc failed", PERROR_ON));
 	if (set_light(line, light))
 		return (1);
 
@@ -74,7 +88,7 @@ int (*set_obj)(char **line, t_obj *obj))
 
 	obj = (t_obj *)ft_calloc(1, sizeof(t_obj));
 	if (!obj)
-		return (1);
+		return (error_return("Error\nMalloc failed", PERROR_ON));
 	if (set_obj(line, obj))
 		return (1);
 

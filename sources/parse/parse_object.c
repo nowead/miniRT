@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_object.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/19 14:20:11 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/19 18:31:30 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,20 +68,32 @@ int	set_cylinder(char **line, t_obj *obj)
     side->radius = ft_atof(line[3]) / 2;
     side->height = ft_atof(line[4]);
 	obj->specular = ft_atof(line[5]);
-	cylinder->top_cap.radius = side->radius;
-	cylinder->bottom_cap.radius = side->radius;
-	cylinder->top_cap.center = add_vector_to_point(side->center, scale_vector(side->axis, side->height));
-	cylinder->top_cap.normal = side->axis;
-	cylinder->bottom_cap.center = side->center;
-	cylinder->bottom_cap.normal = scale_vector(side->axis, -1);
+	set_cylinder_cap(cylinder);
 	if (line[6] && line[6][0] == 'c')
-		parse_checkerboard(line[6], &obj->checkerboard);
-	else
 	{
-		if (parse_color(line[6], &obj->color))
-			return (1);	
+		if (parse_checkerboard(line[6], &obj->checkerboard))
+			return (1);
 	}
+	else if (parse_color(line[6], &obj->color))
+		return (1);	
 	return (0);
+}
+
+void	set_cylinder_cap(t_cylinder *cylinder)
+{
+	t_cy_side	*side;
+	t_circle	*top_cap;
+	t_circle	*bottom_cap;
+
+	side = &cylinder->side;
+	top_cap = &cylinder->top_cap;
+	bottom_cap = &cylinder->bottom_cap;
+	top_cap->radius = side->radius;
+	bottom_cap->radius = side->radius;
+	top_cap->center = add_vector_to_point(side->center, scale_vector(side->axis, side->height));
+	top_cap->normal = side->axis;
+	bottom_cap->center = side->center;
+	bottom_cap->normal = scale_vector(side->axis, -1);
 }
 
 int	set_cone(char **line, t_obj *obj)
@@ -101,15 +113,25 @@ int	set_cone(char **line, t_obj *obj)
 	side->radius = ft_atof(line[3]) / 2;
 	side->height = ft_atof(line[4]);
 	obj->specular = ft_atof(line[5]);
-	cone->bottom_cap.radius = side->radius;
-	cone->bottom_cap.center = add_vector_to_point(side->vertex, scale_vector(side->axis, side->height));
-	cone->bottom_cap.normal = side->axis;
+	set_cone_cap(cone);
 	if (line[6] && line[6][0] == 'c')
-		parse_checkerboard(line[6], &obj->checkerboard);
-	else
 	{
-		if (parse_color(line[6], &obj->color))
+		if (parse_checkerboard(line[6], &obj->checkerboard))
 			return (1);
 	}
+	else if (parse_color(line[6], &obj->color))
+			return (1);
 	return (0);
+}
+
+void	set_cone_cap(t_cone *cone)
+{
+	t_co_side	*side;
+	t_circle	*bottom_cap;
+
+	side = &cone->side;
+	bottom_cap = &cone->bottom_cap;
+	bottom_cap->radius = side->radius;
+	bottom_cap->center = add_vector_to_point(side->vertex, scale_vector(side->axis, side->height));
+	bottom_cap->normal = side->axis;
 }

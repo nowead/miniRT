@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/18 19:08:46 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/19 16:42:51 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void	parse_scene(int argc, char **argv, t_vars *vars)
 	if (parse_argv(argc, argv))
 		error_exit("Usage: ./minirt [file.rt]", PERROR_OFF);
 	if (parse_rt_file(argv[1], vars))
-		error_exit("Error", PERROR_OFF);
+	{
+		clear_scene(vars);
+		exit(EXIT_FAILURE);
+	}
 	print_parsed_vars(vars);
 }
 
@@ -44,19 +47,18 @@ int	parse_rt_file(char *argv, t_vars *vars)
 
 	file = ft_strjoin("scenes/", argv);
 	if (!file)
-		error_exit("malloc failed", PERROR_ON);
+		error_return("malloc failed", PERROR_ON);
 	fd = open(file, O_RDWR);;
 	if (fd == -1)
-		error_exit("open failed", PERROR_ON);
+		error_return("open failed", PERROR_ON);
 	free(file);
     if (parse_lines_from_rt_file(fd, vars))
 	{
-		clear_scene(vars);
 		close(fd);
 		return (1);
 	}
 	if (close(fd))
-		error_exit("close failed", PERROR_ON);
+		error_return("close failed", PERROR_ON);
 	return (0);
 }
 
