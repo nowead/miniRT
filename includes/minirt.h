@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/19 18:16:43 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/19 20:20:14 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,6 @@
 
 # define PERROR_ON 1
 # define PERROR_OFF 0
-
-# define CLOSE_WINDOW 17
-# define PRESS_KEY 2
-# define ESC_KEY 53
-
-# define W_KEY 13
-# define A_KEY 0
-# define S_KEY 1
-# define D_KEY 2
-
-# define LEFT_KEY 123
-# define RIGHT_KEY 124
-# define DOWN_KEY 125
-# define UP_KEY 126
 
 # define BACKGROUND_COLOR 0xFFFFFF
 
@@ -300,6 +286,7 @@ t_vec3			get_cone_normal(t_point3 p, t_closest_hit *hit);
 
 // my_mlx_pixel_put.c
 void			my_mlx_pixel_put(int x, int y, int color, t_img *img);
+void			my_mlx_clear_window(t_vars *vars);
 
 // setup_event_hooks.c
 void			setup_event_hooks(t_vars *vars);
