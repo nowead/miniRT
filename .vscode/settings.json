@@ -15,6 +15,7 @@
 		"algorithm": "c",
 		"tuple": "c",
 		"ios": "c",
-		"istream": "c"
+		"istream": "c",
+		"functional": "c"
 	}
 }

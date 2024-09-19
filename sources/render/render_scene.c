@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 19:52:47 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/19 18:13:52 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,27 @@ t_vec3	canvas_to_viewport(int x, int y, t_img *img, t_camera *camera)
 	return (subtract_3dpoints(p, camera->pos));
 }
 
-void	p_to_uv(t_point3 p, t_obj *obj)
+t_vec3 world_to_local(t_vec3 p, t_vec3 cylinder_axis, t_point3 cylinder_center)
+{
+	t_vec3	local_op;
+	t_vec3	dir;
+	t_vec3	op;
+	t_vec3	op_perp;
+	t_vec3	arbitrary_vector;
+
+	dir = unit_vector(cylinder_axis);
+	op = subtract_3dpoints(p, cylinder_center);
+	local_op.y = dot(op, dir);
+	op_perp = subtract_3dpoints(op, scale_vector(dir, local_op.y));
+	arbitrary_vector = (t_vec3){1, 0, 0};
+	if (fabs(dot(dir, arbitrary_vector)) > 0.99)
+		arbitrary_vector = (t_vec3){0, 1, 0};
+	local_op.x = dot(op_perp,unit_vector(cross(dir, arbitrary_vector)));
+	local_op.z = dot(op_perp, cross(dir, unit_vector(cross(dir, arbitrary_vector))));
+	return (local_op);
+}
+
+void	p_to_uv(t_point3 p, t_obj *obj, t_sub_obj sub_obj)
 {
 	t_vec3	op;
 
@@ -82,21 +102,29 @@ void	p_to_uv(t_point3 p, t_obj *obj)
 	}
 	else if (obj->type == CYLINDER)
 	{
-		op = subtract_3dpoints(p, obj->data.cylinder.side.center);
+		op = world_to_local(p, obj->data.cylinder.side.axis, obj->data.cylinder.side.center);
 		obj->checkerboard.u = 0.5 - atan2(op.x, op.z) / (2 * M_PI);
 		obj->checkerboard.v = fmod(op.y, 1);
+		if (sub_obj == TOP_CAP || sub_obj == BOTTOM_CAP)
+		{
+			obj->checkerboard.u = (atan2(op.z, op.x) + M_PI) / (2 * M_PI); // U 좌표 (각도)
+			obj->checkerboard.v = sqrt(op.x * op.x + op.z * op.z); // V 좌표 (반지름에 따라)
+		}
 	}
 	else if (obj->type == CONE)
 	{
-		op = subtract_3dpoints(p, obj->data.cone.side.vertex);
+		op = world_to_local(p, obj->data.cone.side.axis, obj->data.cone.side.vertex);
 		obj->checkerboard.u = 0.5 - atan2(op.x, op.z) / (2 * M_PI);
 		obj->checkerboard.v = fmod(-op.y, 1);
-		printf("u: %f, v: %f\n", obj->checkerboard.u, obj->checkerboard.v);
-
+		if (sub_obj == TOP_CAP || sub_obj == BOTTOM_CAP)
+		{
+			obj->checkerboard.u = (atan2(op.z, op.x) + M_PI) / (2 * M_PI); // U 좌표 (각도)
+			obj->checkerboard.v = sqrt(op.x * op.x + op.z * op.z); // V 좌표 (반지름에 따라)
+		}
 	}
 }
 
-int	uv_mapping(t_obj *obj, t_sub_obj sub_obj)
+int	uv_mapping(t_obj *obj)
 {
 	int		u;
 	int		v;
@@ -108,13 +136,13 @@ int	uv_mapping(t_obj *obj, t_sub_obj sub_obj)
 		checkerboard_color = obj->checkerboard.color1;
 	else
 		checkerboard_color = obj->checkerboard.color2;
-	if (sub_obj == TOP_CAP || sub_obj == BOTTOM_CAP)
-	{
-		if ((u + v) % 2 == 0)
-			checkerboard_color = obj->checkerboard.color2;
-		else
-			checkerboard_color = obj->checkerboard.color1;
-	}
+	// if (obj->type == CYLINDER && (sub_obj == TOP_CAP || sub_obj == BOTTOM_CAP))
+	// {
+	// 	if ((u + v) % 2 == 0)
+	// 		checkerboard_color = obj->checkerboard.color2;
+	// 	else
+	// 		checkerboard_color = obj->checkerboard.color1;
+	// }
 	return (checkerboard_color);
 }
 
@@ -122,8 +150,8 @@ t_color	get_p_color(t_point3 p, t_closest_hit *closest_hit)
 {
 	if (!closest_hit->obj->checkerboard.checkerboard_on)
 		return (closest_hit->obj->color);
-	p_to_uv(p, closest_hit->obj);
-	return (int_to_t_color(uv_mapping(closest_hit->obj, closest_hit->sub_obj)));
+	p_to_uv(p, closest_hit->obj, closest_hit->sub_obj);
+	return (int_to_t_color(uv_mapping(closest_hit->obj)));
 }
 
 t_color int_to_t_color(int int_color)
