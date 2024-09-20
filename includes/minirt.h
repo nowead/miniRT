@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/19 20:20:14 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/20 14:51:07 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,6 +292,11 @@ void			my_mlx_clear_window(t_vars *vars);
 void			setup_event_hooks(t_vars *vars);
 int				key_hook(int keycode, void *param);
 int				exit_no_error(void);
+void			key_hook_rotate_camera(int keycode, t_vars *vars);
+void			key_hook_translate_camera(int keycode, t_vars *vars);
+void			draw_next_frame(t_vars *vars);
+void			rotate_vector(t_vec3 *v, t_vec3 axis, float angle);
+void			move_camera(t_camera *camera, int direction, float distance);
 
 // vector_operations.c
 t_vec3			subtract_3dpoints(t_point3 p1, t_point3 p2);
