@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_object.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/19 18:31:30 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/20 20:02:10 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,12 @@ int	set_plane(char **line, t_obj *plane)
 	if (check_float_str(line[3]))
 		return (1);
 	plane->specular = ft_atof(line[3]);
-	if (line[4] && line[4][0] == 'c')
-		parse_checkerboard(line[4], &plane->checkerboard);
+	if (line[4] && line[4][0] == 'c' && \
+	parse_checkerboard(line[4], &plane->checkerboard))
+		return (1);
+	else if (line[4] && line[4][0] == 'b' \
+	&& parse_bumpmap(line[4], &plane->bumpmap))
+		return (1);
 	else
 	{
 		if (parse_color(line[4], &plane->color))

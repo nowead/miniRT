@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/19 18:16:43 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/20 20:06:34 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,13 @@ typedef struct s_checkerboard
 	int		height;
 }	t_checkerboard;
 
+typedef struct s_bumpmap
+{
+	int		bumpmap_on;
+	int		width;
+	int		height;
+}	t_bumpmap;
+
 typedef struct s_obj
 {
 	t_obj_type		type;
@@ -195,6 +202,7 @@ typedef struct s_obj
 	t_color			color;
 	int				specular;
 	t_checkerboard	checkerboard;
+	t_bumpmap		bumpmap;
 	struct s_obj	*next;
 }	t_obj;
 
@@ -348,6 +356,7 @@ int				parse_3dpoint(char *str, t_point3 *point);
 int				parse_3dvector(char *str, t_vec3 *vector);
 int				parse_color(char *str, t_color *color);
 int				parse_checkerboard(char *str, t_checkerboard *checkerboard);
+int				parse_bumpmap(char *str, t_bump_map *bumpmap);
 
 // parse_utils.c
 int				get_color(int r, int g, int b);
