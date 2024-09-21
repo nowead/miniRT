@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 16:34:57 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/21 15:53:12 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/21 20:24:54 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int		is_sep(int c, char const *charset);
 static size_t	ft_wordcount(char const *s, char const *charset);
 static int		ft_wordlen(char const *s, char const *charset, char **strs);
-static int		ft_wordcpy(char const *s, char *start, char **strs);
+static int		ft_wordcpy(char const *s, char const *start, char **strs);
 
 char	**ft_split(char const *s, char const *charset)
 {
@@ -80,7 +80,7 @@ static size_t	ft_wordcount(char const *s, char const *charset)
 
 static int	ft_wordlen(char const *s, char const *charset, char **strs)
 {
-	char	*start;
+	char const	*start;
 
 	start = NULL;
 	while (*s)
@@ -101,7 +101,7 @@ static int	ft_wordlen(char const *s, char const *charset, char **strs)
 	return (0);
 }
 
-static int	ft_wordcpy(char const *s, char *start, char **strs)
+static int	ft_wordcpy(char const *s, char const *start, char **strs)
 {
 	*strs = (char *)malloc(sizeof(char) * (s - start + 1));
 	if (*strs == NULL)

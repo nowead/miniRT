@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:14:10 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/19 15:04:36 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/21 20:38:31 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int (*set_light)(char **line, t_light *light))
 }
 
 int	parse_object(char **line,t_vars *vars, \
-int (*set_obj)(char **line, t_obj *obj))
+int (*set_obj)(char **line, t_obj *obj, void *mlx))
 {
 	t_obj	*obj;
 	t_obj	*curr;
@@ -89,7 +89,7 @@ int (*set_obj)(char **line, t_obj *obj))
 	obj = (t_obj *)ft_calloc(1, sizeof(t_obj));
 	if (!obj)
 		return (error_return("Error\nMalloc failed", PERROR_ON));
-	if (set_obj(line, obj))
+	if (set_obj(line, obj, vars->mlx))
 		return (1);
 
 	curr = vars->scene.obj;

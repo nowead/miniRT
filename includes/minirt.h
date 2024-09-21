@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/20 20:26:19 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/21 21:41:05 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,28 @@
 
 # define FLT_MAX 3.402823466e+38F
 
+typedef struct s_win
+{
+	void	*ptr;
+	int		width;
+	int		height;
+}	t_win;
+
+typedef struct s_img
+{
+	void	*ptr;
+	char	*data;
+	int		bits_per_pixel;
+	int		size_line;
+	int		endian;
+	int		width;
+	int		height;
+}	t_img;
+
 typedef struct	s_point2
 {
-	int	x;
-	int	y;
+	float	x;
+	float	y;
 }	t_point2;
 
 typedef struct	s_vec3
@@ -163,13 +181,17 @@ typedef union u_obj_data
 	t_cone		cone;
 } t_obj_data;
 
+typedef enum s_texture_type
+{
+	COLOR,
+	CHECKERBOARD,
+	IMAGE
+}	t_texture_type;
+
 typedef struct s_checkerboard
 {
-	int		checkerboard_on;
-	int		color1;
-	int		color2;
-	float	u;
-	float	v;
+	t_color	color1;
+	t_color	color2;
 	int		width;
 	int		height;
 }	t_checkerboard;
@@ -185,9 +207,11 @@ typedef struct s_obj
 {
 	t_obj_type		type;
 	t_obj_data		data;
-	t_color			color;
 	int				specular;
+	t_texture_type	texture_type;
+	t_color			color;
 	t_checkerboard	checkerboard;
+	t_img			*image;
 	t_bumpmap		bumpmap;
 	struct s_obj	*next;
 }	t_obj;
@@ -214,24 +238,6 @@ typedef struct s_inter_vars
 	t_closest_hit	*closest_hit;
 }	t_inter_vars;
 
-typedef struct s_win
-{
-	void	*ptr;
-	int		width;
-	int		height;
-}	t_win;
-
-typedef struct s_img
-{
-	void	*ptr;
-	char	*data;
-	int		bits_per_pixel;
-	int		size_line;
-	int		endian;
-	int		width;
-	int		height;
-}	t_img;
-
 typedef struct s_vars
 {
 	void		*mlx;
@@ -250,6 +256,13 @@ void			render_scene(t_vars *vars);
 void			init_camera_and_viewport(t_camera *camera, t_img *img);
 t_vec3			canvas_to_viewport(int x, int y, t_img *img, t_camera *camera);
 int				trace_ray(t_scene *scene, t_vec3 ray_dir);
+t_color			int_to_t_color(int int_color);
+
+// get_surface_color.c
+t_color			get_surface_color(t_point3 p, t_closest_hit *closest_hit);
+t_point2		p_to_uv(t_point3 p, t_obj *obj, t_sub_obj sub_obj);
+t_color			map_checkerboard(t_obj *obj, t_point2 texture_point);
+t_vec3			world_to_local(t_vec3 p, t_vec3 cylinder_axis, t_point3 cylinder_center);
 t_color			int_to_t_color(int int_color);
 
 // closest_intersection.c
@@ -329,26 +342,30 @@ void			clear_scene(t_vars *vars);
 int				parse_scene_element(char **line, t_vars *vars);
 int				parse_camera(char **line, t_vars *vars);;
 int				parse_light(char **line, t_vars *vars, int (*set_light)(char **line, t_light *light));
-int				parse_object(char **line,t_vars *vars, int (*set_obj)(char **line, t_obj *obj));
+int				parse_object(char **line,t_vars *vars, int (*set_obj)(char **line, t_obj *obj, void *mlx));
 
 // parse_light.c
 int				set_amb_light(char **line, t_light *lights);
 int				set_point_light(char **line, t_light *lights);
 
 // parse_object.c
-int				set_sphere(char **line, t_obj *sphere);
-int				set_plane(char **line, t_obj *plane);
-int				set_cylinder(char **line, t_obj *cylinder);
+int				set_sphere(char **line, t_obj *sphere, void *mlx);
+int				set_plane(char **line, t_obj *plane, void *mlx);
+int				set_cylinder(char **line, t_obj *cylinder, void *mlx);
 void			set_cylinder_cap(t_cylinder *cylinder);
-int				set_cone(char **line, t_obj *cone);
+int				set_cone(char **line, t_obj *cone, void *mlx);
 void			set_cone_cap(t_cone *cone);
 
 // parse_types.c
-int				parse_3dpoint(char *str, t_point3 *point);
-int				parse_3dvector(char *str, t_vec3 *vector);
-int				parse_color(char *str, t_color *color);
-int				parse_checkerboard(char *str, t_checkerboard *checkerboard);
-int				parse_bumpmap(char *str, t_bump_map *bumpmap);
+int				parse_3dpoint(char *line, t_point3 *point);
+int				parse_3dvector(char *line, t_vec3 *vector);
+int				parse_color(char *line, t_color *obj_color);
+
+// parse_texture.c
+int				parse_color_or_texture(char *line, t_obj *obj, void *mlx);
+int				parse_image_texture(char *line, t_obj *obj, void *mlx);
+int				parse_checkerboard(char *line, t_obj *obj);
+// int			parse_bumpmap(char *str, t_bump_map *bumpmap);
 
 // parse_utils.c
 int				get_color(int r, int g, int b);
