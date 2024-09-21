@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/19 16:42:51 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/21 15:53:59 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	parse_lines_from_rt_file(int fd, t_vars *vars)
 			free(temp);
 			continue ;
 		}
-		line = ft_split(truncate_end_nl(temp), ' ');
+		line = ft_split(truncate_end_nl(temp), " 	");
 		if (!line)
 			err_flag = 1;
 		if (!err_flag)

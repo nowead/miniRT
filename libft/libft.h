@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 11:23:52 by seonseo           #+#    #+#             */
-/*   Updated: 2024/08/25 22:01:53 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/21 15:53:36 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		ft_putchar_fd(char c, int fd);
 void		ft_putendl_fd(char *s, int fd);
 void		ft_putnbr_fd(int n, int fd);
 void		ft_putstr_fd(char *s, int fd);
-char		**ft_split(char const *s, char const c);
+char		**ft_split(char const *s, char const *charset);
 char		*ft_strchr(const char *s, int c);
 long		ft_strtol(const char *str, char **endptr, int base);
 char		*ft_strdup(const char *s1);

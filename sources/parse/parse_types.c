@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_types.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:38:06 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/20 20:02:08 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/21 15:55:02 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	parse_3dpoint(char *line, t_point3 *obj_point)
 
 	if (!line)
 		error_return("Error\nInvalid point", PERROR_ON);
-	coord = ft_split(line, ',');
+	coord = ft_split(line, ",");
 	if (check_coord(coord))
 	{
 		free_lists(coord);
@@ -35,7 +35,7 @@ int	parse_3dvector(char *line, t_vec3 *obj_vec)
 
 	if (!line)
 		error_return("Error\nInvalid vector", PERROR_ON);
-	vector = ft_split(line, ',');
+	vector = ft_split(line, ",");
 	if (check_vector(vector))
 	{
 		free_lists(vector);
@@ -52,7 +52,7 @@ int	parse_color(char *line, t_color *obj_color)
 
 	if (!line)
 		error_return("Error\nInvalid color", PERROR_ON);
-	color = ft_split(line, ',');
+	color = ft_split(line, ",");
 	if (check_color(color))
 	{
 		free_lists(color);
@@ -74,17 +74,17 @@ int parse_checkerboard(char *line, t_checkerboard *obj_checkerboard)
 
 	obj_checkerboard->checkerboard_on = 1;
 
-	checkerboard = ft_split(line, '/');
+	checkerboard = ft_split(line, "/");
 	if (ft_strslen(checkerboard) != 4)
 		return (1);
 	
-	color1 = ft_split(checkerboard[1], ',');
+	color1 = ft_split(checkerboard[1], ",");
 	if (check_color(color1))
 	{
 		free_lists(checkerboard);
 		return (1);
 	}
-	color2 = ft_split(checkerboard[2], ',');
+	color2 = ft_split(checkerboard[2], ",");
 	if (check_color(color2))
 	{
 		free_lists(color1);
@@ -96,7 +96,7 @@ int parse_checkerboard(char *line, t_checkerboard *obj_checkerboard)
 	free_lists(color1);
 	free_lists(color2);
 
-	uv = ft_split(checkerboard[3], ',');
+	uv = ft_split(checkerboard[3], ",");
 	if (!uv)
 	{
 		free_lists(checkerboard);
@@ -126,11 +126,11 @@ int	parse_bumpmap(char *line, t_bumpmap *obj_bumpmap)
 
 	obj_bumpmap->bumpmap_on = 1;
 
-	bumpmap = ft_split(line, '/');
+	bumpmap = ft_split(line, "/");
 	if (ft_strslen(bumpmap) != 4)
 		return (1);
 	
-	color = ft_split(bumpmap[1], ',');
+	color = ft_split(bumpmap[1], ",");
 	if (check_color(color))
 	{
 		free_lists(bumpmap);
@@ -139,7 +139,7 @@ int	parse_bumpmap(char *line, t_bumpmap *obj_bumpmap)
 	obj_bumpmap->color = get_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
 	free_lists(color);
 
-	uv = ft_split(bumpmap[2], ',');
+	uv = ft_split(bumpmap[2], ",");
 	if (!uv)
 	{
 		free_lists(bumpmap);
