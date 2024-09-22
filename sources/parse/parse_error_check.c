@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_error_check.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 14:30:16 by mindaewon         #+#    #+#             */
-/*   Updated: 2024/09/19 15:14:41 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/22 19:50:24 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ int check_vector(char **vector)
 	vec.z = ft_atof(vector[2]);
 	if (vec.x < -1 || vec.x > 1 || vec.y < -1 || vec.y > 1 || vec.z < -1 || vec.z > 1)
 		return (error_return("Error\nVector must be between -1 and 1", PERROR_OFF));
-	// if (length(vec) != 1)
-	// 	return (1);
 	return (0);
 }
+	// if (length(vec) != 1)
+	// 	return (error_return("Error\nVector must be normalized", PERROR_OFF));
 
 int check_color(char **color)
 {
@@ -94,6 +94,7 @@ int	check_float_str(char *str)
 {
 	int	i;
 	int	dot;
+	int	diff;
 
 	if (!str)
 		return (error_return("Error\nInvalid float number", PERROR_OFF));
@@ -101,13 +102,17 @@ int	check_float_str(char *str)
 	dot = 0;
 	if (str[i] == '-')
 		i++;
+	diff = i;
 	while (ft_isdigit(str[i]) || str[i] == '.')
 	{
 		if (str[i] == '.')
+		{
 			dot++;
+			diff = i + 1;			
+		}
 		i++;
 	}
-	if (i == 0 || dot > 1 || str[i] != '\0')
+	if (diff == i || i == 0 || dot > 1 || str[i] != '\0')
 		return (error_return("Error\nInvalid float number", PERROR_OFF));
 	return (0);
 }

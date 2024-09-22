@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_texture.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 20:57:18 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/22 19:59:00 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/22 20:30:33 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	parse_xpm_file_to_image(char *line, t_img *img, void *mlx)
 {
 	char	*filename;
 
-	filename = ft_strjoin("./scenes/", line);
+	filename = ft_strjoin("./textures/", line);
 	if (!filename)
 		return (error_return("Error\nft_strjoin error", PERROR_ON));
 	img->ptr = mlx_xpm_file_to_image(mlx, filename, &img->width, &img->height);
