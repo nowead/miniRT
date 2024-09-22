@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_normal_vector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 15:47:24 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/22 19:31:36 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/22 21:14:29 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,54 @@ t_vec3	get_sphere_normal(t_point3 p, t_closest_hit *hit)
 {
 	t_obj		*obj;
 	t_point2	texture_point;
+	t_vec3		geo_normal;
+	t_vec3		bumpmap_normal;
 
 	obj = hit->obj;
+		geo_normal = unit_vector(subtract_3dpoints(p, obj->data.sphere.center));
 	if (!obj->bumpmap.ptr)
-		return (unit_vector(subtract_3dpoints(p, hit->obj->data.sphere.center)));
+		return (geo_normal);
 	texture_point = convert_to_texture_space(p, hit->obj, hit->sub_obj);
-	return (get_bumpmap_normal(&obj->bumpmap, texture_point));
+	bumpmap_normal = get_bumpmap_normal(&obj->bumpmap, texture_point);
+	return (unit_vector(add_3dvectors(geo_normal, bumpmap_normal)));
 }
 
 t_vec3	get_bumpmap_normal(t_img *bumpmap, t_point2 texture_point)
 {
-	t_color	color;
-	t_vec3	n;
-	float	x;
-	float	y;
+	t_vec3	bumpmap_normal;
+	float	height_L;
+	float	height_R;
+	float	height_U;
+	float	height_D;
+	int		x;
+	int		y;
+	int		color;
 
-	x = texture_point.x * bumpmap->width;
-	y = texture_point.y * bumpmap->height;
-	color = get_image_color(bumpmap, (t_point2){x, y});
-	n.x = 2 * color.r - 1;
-	n.y = 2 * color.g - 1;
-	n.z = 2 * color.b - 1;
-	return (unit_vector(n));
+	x = (int)(texture_point.x * bumpmap->width);
+	y = (int)(texture_point.y * bumpmap->height);
+	color = my_mlx_get_pixel_color(bumpmap, x, y);
+	
+	if (x == 0)
+		height_L = my_mlx_get_pixel_color(bumpmap, x, y);
+	else
+		height_L = my_mlx_get_pixel_color(bumpmap, x - 1, y);
+	if (x == bumpmap->width - 1)
+		height_R = my_mlx_get_pixel_color(bumpmap, x, y);
+	else
+		height_R = my_mlx_get_pixel_color(bumpmap, x + 1, y);
+	if (y == 0)
+		height_U = my_mlx_get_pixel_color(bumpmap, x, y);
+	else
+		height_U = my_mlx_get_pixel_color(bumpmap, x, y - 1);
+	if (y == bumpmap->height - 1)
+		height_D = my_mlx_get_pixel_color(bumpmap, x, y);
+	else
+		height_D = my_mlx_get_pixel_color(bumpmap, x, y + 1);
+
+	bumpmap_normal.x = (height_L - height_R);
+	bumpmap_normal.z = (height_D - height_U);
+	bumpmap_normal.y = 1;
+	return (unit_vector(bumpmap_normal));
 }
 
 t_vec3	get_cylinder_normal(t_point3 p, t_closest_hit *hit)
