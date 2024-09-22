@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 21:06:06 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/22 14:07:13 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/22 17:27:51 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_color	get_surface_color(t_point3 p, t_closest_hit *closest_hit)
 
 t_point2	convert_to_texture_space(t_point3 p, t_obj *obj, t_sub_obj sub_obj)
 {
-	t_point2	texture_point; 
+	t_point2	texture_point;
 	t_vec3		cp;
 
 	texture_point = (t_point2){};
@@ -115,9 +115,9 @@ t_color	get_image_color(t_obj *obj, t_point2 texture_point)
 	int		x;
 	int		y;
 
-	img = obj->image;
+	img = &obj->image;
 	x = (int)(texture_point.x * img->width);
-	y = (int)(texture_point.x * img->height);
+	y = (int)(texture_point.y * img->height);
 	return (int_to_t_color(my_mlx_get_pixel_color(img, x, y)));
 }
 

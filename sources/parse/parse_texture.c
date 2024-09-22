@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 20:57:18 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/21 21:30:44 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/22 17:41:58 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	parse_color_or_texture(char *line, t_obj *obj, void *mlx)
 
 int	parse_image_texture(char *line, t_obj *obj, void *mlx)
 {
-	t_img	**img;
+	t_img	*img;
 	char	*filename;
 	char	**texture_info;
 
@@ -60,18 +60,18 @@ int	parse_image_texture(char *line, t_obj *obj, void *mlx)
 		free_lists(texture_info);
 		return (error_return("Error\nft_strjoin error", PERROR_ON));
 	}
-	(*img)->ptr = mlx_xpm_file_to_image(mlx, filename, &(*img)->width, &(*img)->height);
+	img->ptr = mlx_xpm_file_to_image(mlx, filename, &img->width, &img->height);
 	free(filename);
-	if (!(*img)->ptr)
+	if (!img->ptr)
 	{
 		free_lists(texture_info);
 		return (error_return("Error\nFailed to load texture image", PERROR_OFF));
 	}
-	(*img)->data = mlx_get_data_addr((*img)->ptr, &(*img)->bits_per_pixel, &(*img)->size_line, &(*img)->endian);
-	if (!(*img)->data)
+	img->data = mlx_get_data_addr(img->ptr, &img->bits_per_pixel, &img->size_line, &img->endian);
+	if (!img->data)
 	{
 		free_lists(texture_info);
-		mlx_destroy_image(mlx, (*img)->ptr);
+		mlx_destroy_image(mlx, img->ptr);
 		return (error_return("Error\nFailed to get image data", PERROR_OFF));
 	}
 	free_lists(texture_info);
@@ -113,8 +113,8 @@ int parse_checkerboard(char *line, t_obj *obj)
 			ft_putendl_fd("Error\nInvalid checkerboard size", STDERR_FILENO);
 		return (1);
 	}
-	obj_checkerboard->width = ft_atoi(uv[0]);
-	obj_checkerboard->height = ft_atoi(uv[1]);
+	obj_checkerboard->columns = ft_atoi(uv[0]);
+	obj_checkerboard->rows = ft_atoi(uv[1]);
 	free_lists(uv);
 	free_lists(checkerboard);
 	return (0);

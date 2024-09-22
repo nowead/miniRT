@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/22 13:57:40 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/22 17:36:30 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define PERROR_ON 1
 # define PERROR_OFF 0
 
-# define BACKGROUND_COLOR 0xFFFFFF
+# define BACKGROUND_COLOR 0x000000
 
 # define FLT_MAX 3.402823466e+38F
 
@@ -211,7 +211,7 @@ typedef struct s_obj
 	t_texture_type	texture_type;
 	t_color			color;
 	t_checkerboard	checkerboard;
-	t_img			*image;
+	t_img			image;
 	t_bumpmap		bumpmap;
 	struct s_obj	*next;
 }	t_obj;
@@ -260,9 +260,10 @@ t_color			int_to_t_color(int int_color);
 
 // get_surface_color.c
 t_color			get_surface_color(t_point3 p, t_closest_hit *closest_hit);
-t_point2		p_to_uv(t_point3 p, t_obj *obj, t_sub_obj sub_obj);
-t_color			map_checkerboard(t_obj *obj, t_point2 texture_point);
-t_vec3			world_to_local(t_vec3 p, t_vec3 cylinder_axis, t_point3 cylinder_center);
+t_point2		convert_to_texture_space(t_point3 p, t_obj *obj, t_sub_obj sub_obj);
+t_vec3			world_to_local(t_vec3 p, t_vec3 axis, t_point3 center);
+t_color			get_checkerboard_color(t_obj *obj, t_point2 texture_point);
+t_color			get_image_color(t_obj *obj, t_point2 texture_point);
 t_color			int_to_t_color(int int_color);
 
 // closest_intersection.c
