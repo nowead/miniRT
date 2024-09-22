@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/22 17:36:30 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/22 19:43:50 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ typedef struct s_obj
 	t_color			color;
 	t_checkerboard	checkerboard;
 	t_img			image;
-	t_bumpmap		bumpmap;
+	t_img			bumpmap;
 	struct s_obj	*next;
 }	t_obj;
 
@@ -262,8 +262,8 @@ t_color			int_to_t_color(int int_color);
 t_color			get_surface_color(t_point3 p, t_closest_hit *closest_hit);
 t_point2		convert_to_texture_space(t_point3 p, t_obj *obj, t_sub_obj sub_obj);
 t_vec3			world_to_local(t_vec3 p, t_vec3 axis, t_point3 center);
-t_color			get_checkerboard_color(t_obj *obj, t_point2 texture_point);
-t_color			get_image_color(t_obj *obj, t_point2 texture_point);
+t_color			get_checkerboard_color(t_checkerboard *checkerboard, t_point2 texture_point);
+t_color			get_image_color(t_img *img, t_point2 texture_point);
 t_color			int_to_t_color(int int_color);
 
 // closest_intersection.c
@@ -303,8 +303,10 @@ int				apply_lighting(t_color color, t_color *lighting);
 
 // get_normal_vector.c
 t_vec3			get_normal_vector(t_point3 p, t_closest_hit *hit);
+t_vec3			get_sphere_normal(t_point3 p, t_closest_hit *hit);
 t_vec3			get_cylinder_normal(t_point3 p, t_closest_hit *hit);
 t_vec3			get_cone_normal(t_point3 p, t_closest_hit *hit);
+t_vec3			get_bumpmap_normal(t_img *bumpmap, t_point2 texture_point);
 
 // my_mlx_pixel_put.c
 void			my_mlx_pixel_put(int x, int y, int color, t_img *img);
@@ -365,9 +367,9 @@ int				parse_color(char *line, t_color *obj_color);
 
 // parse_texture.c
 int				parse_color_or_texture(char *line, t_obj *obj, void *mlx);
-int				parse_image_texture(char *line, t_obj *obj, void *mlx);
-int				parse_checkerboard(char *line, t_obj *obj);
-// int			parse_bumpmap(char *str, t_bump_map *bumpmap);
+int				parse_checkerboard(char *line, t_checkerboard *obj_checkerboard);
+int				parse_texture_image(char *line, t_img *img, void *mlx);
+int				parse_xpm_file_to_image(char *line, t_img *img, void *mlx);
 
 // parse_utils.c
 int				get_color(int r, int g, int b);

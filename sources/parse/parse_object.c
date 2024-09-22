@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 16:01:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/21 20:39:09 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/22 19:38:03 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	set_sphere(char **line, t_obj *obj, void *mlx)
 	obj->specular = ft_atof(line[3]);
 	if (parse_color_or_texture(line[4], obj, mlx))
 		return (1);
+	if (line[5] && parse_xpm_file_to_image(line[5], &obj->bumpmap, mlx))
+		return (1);
 	return (0);
 }
 
@@ -37,6 +39,8 @@ int	set_plane(char **line, t_obj *obj, void *mlx)
 		return (1);
 	obj->specular = ft_atof(line[3]);
 	if (parse_color_or_texture(line[4], obj, mlx))
+		return (1);
+	if (line[5] && parse_xpm_file_to_image(line[5], &obj->bumpmap, mlx))
 		return (1);
 	return (0);
 }
@@ -60,6 +64,8 @@ int	set_cylinder(char **line, t_obj *obj, void *mlx)
 	obj->specular = ft_atof(line[5]);
 	set_cylinder_cap(cylinder);
 	if (parse_color_or_texture(line[6], obj, mlx))
+		return (1);
+	if (line[7] && parse_xpm_file_to_image(line[7], &obj->bumpmap, mlx))
 		return (1);
 	return (0);
 }
@@ -100,6 +106,8 @@ int	set_cone(char **line, t_obj *obj, void *mlx)
 	obj->specular = ft_atof(line[5]);
 	set_cone_cap(cone);
 	if (parse_color_or_texture(line[6], obj, mlx))
+		return (1);
+	if (line[7] && parse_xpm_file_to_image(line[7], &obj->bumpmap, mlx))
 		return (1);
 	return (0);
 }

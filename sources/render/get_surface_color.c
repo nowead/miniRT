@@ -6,23 +6,25 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 21:06:06 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/22 17:27:51 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/22 19:28:05 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_color	get_surface_color(t_point3 p, t_closest_hit *closest_hit)
+t_color	get_surface_color(t_point3 p, t_closest_hit *hit)
 {
+	t_obj		*obj;
 	t_point2	texture_point;
 
-	if (closest_hit->obj->texture_type == COLOR)
-		return (closest_hit->obj->color);
-	texture_point = convert_to_texture_space(p, closest_hit->obj, closest_hit->sub_obj);
-	if (closest_hit->obj->texture_type == CHECKERBOARD)	
-		return (get_checkerboard_color(closest_hit->obj, texture_point));
+	obj = hit->obj;
+	if (obj->texture_type == COLOR)
+		return (obj->color);
+	texture_point = convert_to_texture_space(p, obj, hit->sub_obj);
+	if (obj->texture_type == CHECKERBOARD)	
+		return (get_checkerboard_color(&obj->checkerboard, texture_point));
 	else
-		return (get_image_color(closest_hit->obj, texture_point));
+		return (get_image_color(&obj->image, texture_point));
 }
 
 t_point2	convert_to_texture_space(t_point3 p, t_obj *obj, t_sub_obj sub_obj)
@@ -94,28 +96,26 @@ t_vec3 world_to_local(t_vec3 p, t_vec3 axis, t_point3 center)
 	return (local_cp);
 }
 
-t_color	get_checkerboard_color(t_obj *obj, t_point2 texture_point)
+t_color	get_checkerboard_color(t_checkerboard *checkerboard, t_point2 texture_point)
 {
 	int		u;
 	int		v;
 	t_color	checkerboard_color;
 
-	u = floor(texture_point.x * obj->checkerboard.columns);
-	v = floor(texture_point.y * obj->checkerboard.rows);
+	u = floor(texture_point.x * checkerboard->columns);
+	v = floor(texture_point.y * checkerboard->rows);
 	if ((u + v) % 2 == 0)
-		checkerboard_color = obj->checkerboard.color1;
+		checkerboard_color = checkerboard->color1;
 	else
-		checkerboard_color = obj->checkerboard.color2;
+		checkerboard_color = checkerboard->color2;
 	return (checkerboard_color);
 }
 
-t_color	get_image_color(t_obj *obj, t_point2 texture_point)
+t_color	get_image_color(t_img *img, t_point2 texture_point)
 {
-	t_img	*img;
 	int		x;
 	int		y;
 
-	img = &obj->image;
 	x = (int)(texture_point.x * img->width);
 	y = (int)(texture_point.y * img->height);
 	return (int_to_t_color(my_mlx_get_pixel_color(img, x, y)));
