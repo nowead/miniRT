@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/21 21:41:05 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/22 13:57:40 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,8 +192,8 @@ typedef struct s_checkerboard
 {
 	t_color	color1;
 	t_color	color2;
-	int		width;
-	int		height;
+	int		columns;
+	int		rows;
 }	t_checkerboard;
 
 typedef struct s_bumpmap
@@ -308,6 +308,7 @@ t_vec3			get_cone_normal(t_point3 p, t_closest_hit *hit);
 // my_mlx_pixel_put.c
 void			my_mlx_pixel_put(int x, int y, int color, t_img *img);
 void			my_mlx_clear_window(t_vars *vars);
+int				my_mlx_get_pixel_color(t_img *img, int x, int y);
 
 // setup_event_hooks.c
 void			setup_event_hooks(t_vars *vars);

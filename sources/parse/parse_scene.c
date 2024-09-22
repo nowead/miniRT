@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/21 21:35:29 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/22 13:28:06 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,8 @@ void	print_checkerboard(t_obj *obj)
 {
 	printf("checkerboard color1: %g %g %g\n", obj->checkerboard.color1.r, obj->checkerboard.color1.g, obj->checkerboard.color1.b);
 	printf("checkerboard color2: %g %g %g\n", obj->checkerboard.color2.r, obj->checkerboard.color2.g, obj->checkerboard.color2.b);
-	printf("checkerboard width: %d\n", obj->checkerboard.width);
-	printf("checkerboard height: %d\n", obj->checkerboard.height);
+	printf("checkerboard width: %d\n", obj->checkerboard.columns);
+	printf("checkerboard height: %d\n", obj->checkerboard.rows);
 }
 
 void	print_parsed_vars(t_vars *vars)
