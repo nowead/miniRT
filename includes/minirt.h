@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/22 19:43:50 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/23 13:53:01 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define PERROR_ON 1
 # define PERROR_OFF 0
 
-# define BACKGROUND_COLOR 0x000000
+# define BACKGROUND_COLOR 0xFFFFFF
 
 # define FLT_MAX 3.402823466e+38F
 
