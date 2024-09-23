@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:26:26 by damin             #+#    #+#             */
-/*   Updated: 2024/09/18 19:36:07 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/23 16:53:22 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void compute_cylinder_side_quadratic_coefficients(t_inter_vars *vars, float coef
 	t_vec3		co_perp;
 
 	cylinder = &vars->obj->data.cylinder.side;
-    d_perp = subtract_3dvectors(vars->ray->dir, scale_vector(cylinder->axis, term[D_DOT_AXIS]));
-    co_perp = subtract_3dvectors(*co, scale_vector(cylinder->axis, term[CO_DOT_AXIS]));
+    d_perp = subtract_vectors(vars->ray->dir, scale_vector(cylinder->axis, term[D_DOT_AXIS]));
+    co_perp = subtract_vectors(*co, scale_vector(cylinder->axis, term[CO_DOT_AXIS]));
     coeff[0] = dot(d_perp, d_perp);
     coeff[1] = 2 * dot(d_perp, co_perp);
     coeff[2] = dot(co_perp, co_perp) - (cylinder->radius * cylinder->radius);

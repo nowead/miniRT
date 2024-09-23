@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_normal_vector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 15:47:24 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/23 14:21:48 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/23 18:30:36 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,23 @@ t_vec3	get_normal_vector(t_point3 p, t_closest_hit *hit)
 	return (n);
 }
 
+
+float get_bump_map_height(t_img *bumpmap, float x, float y)
+{
+	return (my_mlx_get_pixel_color(bumpmap, x, y) & 0xFF);
+}
+
 t_vec3	get_sphere_normal(t_point3 p, t_closest_hit *hit)
 {
 	t_obj		*obj;
 	t_point2	texture_point;
 	t_vec3		geo_normal;
 	t_vec3		bumpmap_normal;
+	t_vec3		u;
+	t_vec3		v;
+	t_vec3		u_comp;
+	t_vec3		v_comp;
+	t_vec3		result;
 
 	obj = hit->obj;
 		geo_normal = unit_vector(subtract_3dpoints(p, obj->data.sphere.center));
@@ -40,57 +51,15 @@ t_vec3	get_sphere_normal(t_point3 p, t_closest_hit *hit)
 		return (geo_normal);
 	texture_point = convert_to_texture_space(p, hit->obj, hit->sub_obj);
 	bumpmap_normal = get_bumpmap_normal(&obj->bumpmap, texture_point);
-	return (unit_vector(add_3dvectors(geo_normal, bumpmap_normal)));
+	u = unit_vector(cross((t_vec3){0,1,0}, geo_normal));
+	v = cross(geo_normal, u);
+	u_comp = scale_vector(u, bumpmap_normal.x);
+	v_comp = scale_vector(v, bumpmap_normal.y);
+	result = geo_normal;
+	result = add_3dvectors(result, u_comp);
+	result = add_3dvectors(result, v_comp);
+	return (unit_vector(result));
 }
-
-float get_grayscale(t_img *bumpmap, float x, float y)
-{
-	int color;
-	int	r;
-	int g;
-	int b;
-	
-	color = my_mlx_get_pixel_color(bumpmap, x, y);
-	r = (color >> 16) & 0xFF;
-    g = (color >> 8) & 0xFF;
-    b = color & 0xFF;
-	// printf("r: %d, g: %d, b: %d\n", r, g, b);
-	return (r);
-}
-
-// t_vec3	get_bumpmap_normal(t_img *bumpmap, t_point2 texture_point)
-// {
-// 	t_vec3	bumpmap_normal;
-// 	float	height_L;
-// 	float	height_R;
-// 	float	height_U;
-// 	float	height_D;
-// 	int		x;
-// 	int		y;
-
-// 	x = (int)(texture_point.x * bumpmap->width);
-// 	y = (int)(texture_point.y * bumpmap->height);
-// 	if (x == 0)
-// 		height_L = get_grayscale(bumpmap, x, y) - 0.5;
-// 	else
-// 		height_L = get_grayscale(bumpmap, x - 1, y) - 0.5;
-// 	if (x == bumpmap->width - 1)
-// 		height_R = get_grayscale(bumpmap, x, y) - 0.5;
-// 	else
-// 		height_R = get_grayscale(bumpmap, x + 1, y) - 0.5;
-// 	if (y == 0)
-// 		height_U = get_grayscale(bumpmap, x, y) - 0.5;
-// 	else
-// 		height_U = get_grayscale(bumpmap, x, y - 1) - 0.5;
-// 	if (y == bumpmap->height - 1)
-// 		height_D = get_grayscale(bumpmap, x, y) - 0.5;
-// 	else
-// 		height_D = get_grayscale(bumpmap, x, y + 1) - 0.5;
-// 	bumpmap_normal.x = (height_L - height_R)/2;
-// 	bumpmap_normal.y = (height_D - height_U)/2;
-// 	bumpmap_normal.z = 0.1;
-// 	return (unit_vector(bumpmap_normal));
-// }
 
 t_vec3	get_bumpmap_normal(t_img *bumpmap, t_point2 texture_point)
 {
@@ -102,27 +71,27 @@ t_vec3	get_bumpmap_normal(t_img *bumpmap, t_point2 texture_point)
 	int		x;
 	int		y;
 
-	x = (int)(texture_point.x * bumpmap->width);
-	y = (int)(texture_point.y * bumpmap->height);
+	x = (int)(texture_point.x * bumpmap->width - 1);
+	y = (int)(texture_point.y * bumpmap->height - 1);
 	if (x == 0)
-		height_L = get_grayscale(bumpmap, x, y) - 0.5;
+		height_L = get_bump_map_height(bumpmap, bumpmap->width - 1, y);
 	else
-		height_L = get_grayscale(bumpmap, x - 1, y) - 0.5;
+		height_L = get_bump_map_height(bumpmap, x - 1, y);
 	if (x == bumpmap->width - 1)
-		height_R = get_grayscale(bumpmap, x, y) - 0.5;
+		height_R = get_bump_map_height(bumpmap, 0, y);
 	else
-		height_R = get_grayscale(bumpmap, x + 1, y) - 0.5;
+		height_R = get_bump_map_height(bumpmap, x + 1, y);
 	if (y == 0)
-		height_U = get_grayscale(bumpmap, x, y) - 0.5;
+		height_U = get_bump_map_height(bumpmap, x, y);
 	else
-		height_U = get_grayscale(bumpmap, x, y - 1) - 0.5;
+		height_U = get_bump_map_height(bumpmap, x, y - 1);
 	if (y == bumpmap->height - 1)
-		height_D = get_grayscale(bumpmap, x, y) - 0.5;
+		height_D = get_bump_map_height(bumpmap, x, y);
 	else
-		height_D = get_grayscale(bumpmap, x, y + 1) - 0.5;
-	bumpmap_normal.x = (height_L - height_R)/2;
-	bumpmap_normal.y = (height_D - height_U)/2;
-	bumpmap_normal.z = 0.1;
+		height_D = get_bump_map_height(bumpmap, x, y + 1);
+	bumpmap_normal.x = (height_L - height_R) / 10;
+	bumpmap_normal.y = (height_D - height_U) / 10;
+	bumpmap_normal.z = 1;
 	return (unit_vector(bumpmap_normal));
 }
 

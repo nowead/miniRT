@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/18 19:18:47 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/23 16:53:22 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_color	compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scen
 				// apply specular reflection
 				if (hit->obj->specular > 0)
 				{
-					r = subtract_3dvectors(scale_vector(n, 2 * dot(n, l)), l);
+					r = subtract_vectors(scale_vector(n, 2 * dot(n, l)), l);
 					r_dot_v = dot(r, v);
 					if (r_dot_v > 0)
 					{

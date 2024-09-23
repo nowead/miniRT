@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:41:16 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/10 18:50:13 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/23 17:43:04 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ float	length(t_vec3 v)
 	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
-t_vec3	subtract_3dvectors(t_vec3 v1, t_vec3 v2)
+t_vec3	subtract_vectors(t_vec3 v1, t_vec3 v2)
 {
 	return ((t_vec3){v1.x - v2.x, v1.y - v2.y, v1.z - v2.z});
 }

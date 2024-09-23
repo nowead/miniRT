@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/23 13:53:01 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/23 17:38:09 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define PERROR_ON 1
 # define PERROR_OFF 0
 
-# define BACKGROUND_COLOR 0xFFFFFF
+# define BACKGROUND_COLOR 0x000000
 
 # define FLT_MAX 3.402823466e+38F
 
@@ -196,13 +196,6 @@ typedef struct s_checkerboard
 	int		rows;
 }	t_checkerboard;
 
-typedef struct s_bumpmap
-{
-	int		bumpmap_on;
-	int		width;
-	int		height;
-}	t_bumpmap;
-
 typedef struct s_obj
 {
 	t_obj_type		type;
@@ -306,7 +299,9 @@ t_vec3			get_normal_vector(t_point3 p, t_closest_hit *hit);
 t_vec3			get_sphere_normal(t_point3 p, t_closest_hit *hit);
 t_vec3			get_cylinder_normal(t_point3 p, t_closest_hit *hit);
 t_vec3			get_cone_normal(t_point3 p, t_closest_hit *hit);
+
 t_vec3			get_bumpmap_normal(t_img *bumpmap, t_point2 texture_point);
+float			get_bump_map_height(t_img *bumpmap, float x, float y);
 
 // my_mlx_pixel_put.c
 void			my_mlx_pixel_put(int x, int y, int color, t_img *img);
@@ -330,7 +325,7 @@ t_vec3			cross(t_vec3 v1, t_vec3 v2);
 t_vec3			scale_vector(t_vec3 v, float s);
 t_point3		add_vector_to_point(t_point3 p, t_vec3 v);
 float			length(t_vec3 v);
-t_vec3			subtract_3dvectors(t_vec3 v1, t_vec3 v2);
+t_vec3			subtract_vectors(t_vec3 v1, t_vec3 v2);
 t_vec3			add_3dvectors(t_vec3 v1, t_vec3 v2);
 float			cosine_between_vectors(t_vec3 v1, t_vec3 v2);
 t_vec3			unit_vector(t_vec3 v);
