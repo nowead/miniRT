@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 21:06:06 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/22 19:28:05 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/23 20:55:40 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_point2	convert_to_texture_space(t_point3 p, t_obj *obj, t_sub_obj sub_obj)
 	{
 		cp = subtract_3dpoints(p, obj->data.sphere.center);
 		texture_point.x = 0.5 - atan2(cp.x, cp.z) / (2 * M_PI);
-		texture_point.y = 1 - acos(cp.y / obj->data.sphere.radius) / M_PI;
+		texture_point.y = acos(cp.y / obj->data.sphere.radius) / M_PI;
 	}
 	else if (obj->type == PLANE)
 	{

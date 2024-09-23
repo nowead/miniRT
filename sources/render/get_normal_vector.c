@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 15:47:24 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/23 18:30:36 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/23 21:04:53 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ t_vec3	get_bumpmap_normal(t_img *bumpmap, t_point2 texture_point)
 		height_D = get_bump_map_height(bumpmap, x, y);
 	else
 		height_D = get_bump_map_height(bumpmap, x, y + 1);
-	bumpmap_normal.x = (height_L - height_R) / 10;
-	bumpmap_normal.y = (height_D - height_U) / 10;
+	bumpmap_normal.x = (height_R - height_L) / 20;
+	bumpmap_normal.y = (height_U - height_D) / 20;
 	bumpmap_normal.z = 1;
 	return (unit_vector(bumpmap_normal));
 }
