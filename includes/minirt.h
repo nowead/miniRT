@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/23 17:38:09 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/24 16:21:11 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,10 +297,14 @@ int				apply_lighting(t_color color, t_color *lighting);
 // get_normal_vector.c
 t_vec3			get_normal_vector(t_point3 p, t_closest_hit *hit);
 t_vec3			get_sphere_normal(t_point3 p, t_closest_hit *hit);
+t_vec3			get_plane_normal(t_point3 p, t_closest_hit *hit);
 t_vec3			get_cylinder_normal(t_point3 p, t_closest_hit *hit);
 t_vec3			get_cone_normal(t_point3 p, t_closest_hit *hit);
 
-t_vec3			get_bumpmap_normal(t_img *bumpmap, t_point2 texture_point);
+// apply_bump_map.c
+t_vec3			apply_bump_map_texture(t_img *bumpmap, t_point2 texture_point, \
+t_vec3 *geo_normal);
+void			get_surrounding_pixel_height(t_img *bumpmap, int x, int y, float height[4]);
 float			get_bump_map_height(t_img *bumpmap, float x, float y);
 
 // my_mlx_pixel_put.c

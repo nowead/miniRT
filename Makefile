@@ -1,22 +1,23 @@
 NAME			=	miniRT
 
 CC				=	cc
-CFLAGS			=	-Wall -Wextra -Werror -g
+CFLAGS			=	-Wall -Wextra -Werror -O3
 RM = rm -f
 
-INCLDS			=	$(addprefix includes/, minirt.h)
+INCLUDES		=	$(addprefix includes/, minirt.h)
 PARSE_DIR		=	parse/
 RENDER_DIR		=	render/
-SRC				=	$(addprefix sources/, minirt.c setup_event_hooks.c my_mlx_pixel_put.c\
+SRC				=	$(addprefix sources/, minirt.c setup_event_hooks.c my_mlx_functions.c	manipulate_camera.c\
 $(addprefix $(PARSE_DIR),	parse_scene.c		parse_utils.c			parse_object.c		parse_light.c\
 							parse_types.c		parse_error_check.c	parse_scene_element.c	parse_texture.c)\
-$(addprefix $(RENDER_DIR),	compute_lighting.c	intersect_ray_plane.c	render_scene.c		vector_operations.c\
-						   	intersect_ray_cylinder.c	intersect_ray_cone.c	get_normal_vector.c\
+$(addprefix $(RENDER_DIR),	compute_lighting.c	intersect_ray_plane.c	render_scene.c		vector_operations1.c\
+						   	vector_operations2.c	intersect_ray_cylinder.c	intersect_ray_cone.c	get_normal_vector.c\
 							closest_intersection.c		intersect_ray_sphere.c	compute_circle_intersection.c\
-							get_surface_color.c))
+							get_surface_color.c		apply_bump_map.c))
 OBJ				=	$(patsubst %.c, %.o, $(SRC))
 
 MLX				=	libmlx.dylib
+# MLX				=	libmlx.a
 MLX_DIR			=	mlx/
 MLX_HEADER		=	$(MLX_DIR)mlx.h
 MLX_FLAGS		=	-Lmlx -lmlx -framework OpenGL -framework AppKit
@@ -31,7 +32,7 @@ ft_substr.c		ft_calloc.c     ft_isprint.c    ft_memmove.c    ft_putstr_fd.c  ft_
 ft_tolower.c	ft_isalnum.c    ft_itoa.c       ft_memset.c     ft_split.c      ft_strlcat.c    ft_strnstr.c\
 ft_toupper.c	ft_strlncpy.c	ft_strlncat.c	ft_strtol.c		ft_strtol1.c\
 get_next_line.c					get_next_line_utils.c)
-LIBFt_scene		=	$(patsubst %.c, %.o, $(LIBFT_SRC))
+LIBFT_SCENE		=	$(patsubst %.c, %.o, $(LIBFT_SRC))
 LIBFT_HEADER	=	$(addprefix $(LIBFT_DIR), libft.h get_next_line.h)
 LIBFT_FLAGS		=	-Llibft -lft
 
@@ -50,7 +51,7 @@ $(MLX_DIR)$(MLX):
 $(LIBFT): $(LIBFT_SRC) $(LIBFT_HEADER)
 	@make -C $(LIBFT_DIR)
 
-%.o: %.c $(INCLDS) $(MLX_HEADER) $(LIBFT_HEADER)
+%.o: %.c $(INCLUDES) $(MLX_HEADER) $(LIBFT_HEADER)
 	@$(CC) $(CFLAGS) -Imlx -Ilibft -Iincludes -c $< -o $@
 
 clean:

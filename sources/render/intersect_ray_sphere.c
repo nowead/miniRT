@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:03:37 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/16 17:42:13 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/24 16:54:03 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,19 @@ void	intersect_ray_sphere(t_inter_vars vars)
 	float		coeff[3];
 	float		t[2];
 
-	compute_sphere_quadratic_coefficients(vars.ray, &vars.obj->data.sphere, coeff);
+	compute_sphere_quadratic_coefficients(vars.ray, \
+	&vars.obj->data.sphere, coeff);
 	if (solve_quadratic_equation(coeff, t))
 	{
 		update_closest_hit(t[0], 0, &vars);
 		if (t[0] != t[1])
 			update_closest_hit(t[1], 0, &vars);
 	}
-    return ;
+	return ;
 }
 
-void	compute_sphere_quadratic_coefficients(t_ray *ray, t_sphere *sphere, float coeff[3])
+void	compute_sphere_quadratic_coefficients(t_ray *ray, \
+t_sphere *sphere, float coeff[3])
 {
 	t_vec3		co;
 	t_vec3		d;
