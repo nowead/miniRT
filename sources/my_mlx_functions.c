@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   my_mlx_pixel_put.c                                 :+:      :+:    :+:   */
+/*   my_mlx_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 16:44:33 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/22 17:12:47 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/24 14:31:31 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	my_mlx_pixel_put(int x, int y, int color, t_img *img)
 	}
 }
 
-static void convert_point(int point[2], t_img *img)
+static void	convert_point(int point[2], t_img *img)
 {
 	point[0] = (img->width / 2) + point[0];
 	point[1] = (img->height / 2) - point[1];
