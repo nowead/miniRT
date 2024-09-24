@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 16:32:33 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/24 18:36:57 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define PERROR_ON 1
 # define PERROR_OFF 0
 
-# define BACKGROUND_COLOR 0x000000
+# define BACKGROUND_COLOR 0xFFFFFF
 
 # define FLT_MAX 3.402823466e+38F
 
@@ -351,10 +351,10 @@ int				set_point_light(char **line, t_light *lights);
 int				set_sphere(char **line, t_obj *sphere, void *mlx);
 int				set_plane(char **line, t_obj *plane, void *mlx);
 int				set_cylinder(char **line, t_obj *cylinder, void *mlx);
+int				set_cone(char **line, t_obj *cone, void *mlx);
 
 // parse_object_cap.c
 void			set_cylinder_cap(t_cylinder *cylinder);
-int				set_cone(char **line, t_obj *cone, void *mlx);
 void			set_cone_cap(t_cone *cone);
 
 // parse_types.c
