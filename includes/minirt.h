@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/23 17:38:09 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/24 16:32:33 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,6 +351,8 @@ int				set_point_light(char **line, t_light *lights);
 int				set_sphere(char **line, t_obj *sphere, void *mlx);
 int				set_plane(char **line, t_obj *plane, void *mlx);
 int				set_cylinder(char **line, t_obj *cylinder, void *mlx);
+
+// parse_object_cap.c
 void			set_cylinder_cap(t_cylinder *cylinder);
 int				set_cone(char **line, t_obj *cone, void *mlx);
 void			set_cone_cap(t_cone *cone);
@@ -362,7 +364,9 @@ int				parse_color(char *line, t_color *obj_color);
 
 // parse_texture.c
 int				parse_color_or_texture(char *line, t_obj *obj, void *mlx);
-int				parse_checkerboard(char *line, t_checkerboard *obj_checkerboard);
+int				parse_uv(char **checkerboard, t_checkerboard *obj_checkerboard);
+int				parse_checkerboard(char *line, \
+t_checkerboard *obj_checkerboard);
 int				parse_texture_image(char *line, t_img *img, void *mlx);
 int				parse_xpm_file_to_image(char *line, t_img *img, void *mlx);
 

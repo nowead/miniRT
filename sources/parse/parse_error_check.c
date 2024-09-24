@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 14:30:16 by mindaewon         #+#    #+#             */
-/*   Updated: 2024/09/22 19:50:24 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/24 17:43:47 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	check_coord(char **coord)
 {
 	int	i;
-	
+
 	if (!coord)
 		return (error_return("Error\nInvalid coordinate", PERROR_ON));
 	i = 0;
@@ -28,11 +28,11 @@ int	check_coord(char **coord)
 	return (0);
 }
 
-int check_vector(char **vector)
+int	check_vector(char **vector)
 {
 	int		i;
 	t_vec3	vec;
-	
+
 	if (!vector)
 		return (error_return("Error\nInvalid vector", PERROR_ON));
 	i = 0;
@@ -45,14 +45,16 @@ int check_vector(char **vector)
 	vec.x = ft_atof(vector[0]);
 	vec.y = ft_atof(vector[1]);
 	vec.z = ft_atof(vector[2]);
-	if (vec.x < -1 || vec.x > 1 || vec.y < -1 || vec.y > 1 || vec.z < -1 || vec.z > 1)
-		return (error_return("Error\nVector must be between -1 and 1", PERROR_OFF));
+	if (vec.x < -1 || vec.x > 1 || vec.y < -1 || \
+	vec.y > 1 || vec.z < -1 || vec.z > 1)
+		return (error_return("Error\nVector must be between -1 and 1", \
+		PERROR_OFF));
 	return (0);
 }
 	// if (length(vec) != 1)
 	// 	return (error_return("Error\nVector must be normalized", PERROR_OFF));
 
-int check_color(char **color)
+int	check_color(char **color)
 {
 	int	r;
 	int	g;
@@ -72,11 +74,12 @@ int check_color(char **color)
 	g = ft_atoi(color[1]);
 	b = ft_atoi(color[2]);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		return (error_return("Error\nColor must be between 0 and 255", PERROR_OFF));
+		return (error_return("Error\nColor must be between 0 and 255", \
+		PERROR_OFF));
 	return (0);
 }
 
-int check_decimal_str(char *str)
+int	check_decimal_str(char *str)
 {
 	int	i;
 
@@ -108,7 +111,7 @@ int	check_float_str(char *str)
 		if (str[i] == '.')
 		{
 			dot++;
-			diff = i + 1;			
+			diff = i + 1;
 		}
 		i++;
 	}
