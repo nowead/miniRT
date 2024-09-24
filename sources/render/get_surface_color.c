@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 21:06:06 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 18:17:43 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/24 19:08:16 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ t_point2	convert_to_texture_space(t_point3 p, t_obj *obj, t_sub_obj sub_obj)
 		if (sub_obj == SIDE)
 		{
 			texture_point.x = 0.5 - atan2(cp.x, cp.z) / (2 * M_PI);
-			texture_point.y = fmod(-cp.y, 1);
+			texture_point.y = fmod(cp.y, 1);
 		}
 		else if (sub_obj == BOTTOM_CAP)
 		{
 			texture_point.x = 0.5 - atan2(cp.x, cp.z) / (2 * M_PI); // U 좌표 (각도)
-			texture_point.y = sqrt(cp.x * cp.x + cp.z * cp.z); // V 좌표 (반지름에 따라)
+			texture_point.y = 1 - sqrt(cp.x * cp.x + cp.z * cp.z); // V 좌표 (반지름에 따라)
 		}
 	}
 	return (texture_point);
