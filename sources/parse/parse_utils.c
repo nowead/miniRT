@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:50:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/24 14:43:56 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/25 16:56:55 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ float	ft_atof(char *str)
 		result = result * 10 + str[i++] - '0';
 	if (str[i] == '.')
 		i++;
-	while (ft_isdigit(str[i]))
+	while (ft_isdigit(str[i]) && divisor < 1000000)
 	{
 		result = result * 10 + str[i++] - '0';
 		divisor *= 10;

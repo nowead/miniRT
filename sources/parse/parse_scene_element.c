@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:14:10 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 14:38:08 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/25 17:14:02 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	parse_scene_element(char **line, t_vars *vars)
 		err_flag = parse_object(line, vars, set_cone);
 	else
 	{
-		ft_putstr_fd("Error: No such identifier", STDERR_FILENO);
+		ft_putstr_fd("Error: No such identifier: ", STDERR_FILENO);
 		ft_putendl_fd(line[0], STDERR_FILENO);
 		err_flag = 1;
 	}
@@ -49,11 +49,13 @@ int	parse_camera(char **line, t_vars *vars)
 		return (1);
 	if (parse_3dvector(line[2], &vars->scene.camera.dir))
 		return (1);
-	if (check_float_str(line[3]))
+	if (check_decimal_str(line[3]))
 		return (1);
-	vars->scene.camera.fov = ft_atof(line[3]);
-	if (vars->scene.camera.fov < 0 || vars->scene.camera.fov > 180)
-		error_return("Error\nFOV must be between 0 and 180", PERROR_OFF);
+	vars->scene.camera.fov = ft_atoi(line[3]);
+	if (ft_strlen(line[3]) > 3 || \
+	vars->scene.camera.fov < 0 || vars->scene.camera.fov > 180)
+		return (error_return("Error\nFOV must be between 0 and 180", \
+		PERROR_OFF));
 	return (0);
 }
 
