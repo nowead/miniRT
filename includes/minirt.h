@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 14:33:25 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:47:52 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,41 +47,41 @@ typedef struct s_img
 	int		height;
 }	t_img;
 
-typedef struct	s_point2
+typedef struct s_point2
 {
 	float	x;
 	float	y;
 }	t_point2;
 
-typedef struct	s_vec3
+typedef struct s_vec3
 {
 	float	x;
 	float	y;
 	float	z;
 }	t_vec3;
 
-typedef t_vec3 t_point3;
+typedef t_vec3	t_point3;
 
-typedef struct	s_ray
+typedef struct s_ray
 {
 	t_point3	origin;
 	t_vec3		dir;
 }	t_ray;
 
-typedef struct	s_color
+typedef struct s_color
 {
 	float	r;
 	float	g;
 	float	b;
 }	t_color;
 
-typedef struct	s_float_range
+typedef struct s_float_range
 {
 	float	min;
 	float	max;
 }	t_float_range;
 
-typedef struct	s_camera
+typedef struct s_camera
 {
 	t_point3	pos;
 	t_vec3		dir;
@@ -100,7 +100,7 @@ typedef enum e_light_type
 	POINT_LIGHT
 }	t_light_type;
 
-typedef struct	s_light
+typedef struct s_light
 {
 	t_light_type	type;
 	float			intens;
@@ -110,13 +110,13 @@ typedef struct	s_light
 	struct s_light	*next;
 }	t_light;
 
-typedef struct	s_sphere
+typedef struct s_sphere
 {
 	t_point3	center;
 	float		radius;
 }	t_sphere;
 
-typedef struct	s_plane
+typedef struct s_plane
 {
 	t_point3	pos;
 	t_vec3		normal;
@@ -175,11 +175,11 @@ typedef enum e_sub_obj
 
 typedef union u_obj_data
 {
-    t_sphere	sphere;
-    t_plane		plane;
-    t_cylinder	cylinder;
+	t_sphere	sphere;
+	t_plane		plane;
+	t_cylinder	cylinder;
 	t_cone		cone;
-} t_obj_data;
+}	t_obj_data;
 
 typedef enum s_texture_type
 {
@@ -216,7 +216,7 @@ typedef struct s_scene
 	t_obj		*obj;
 }	t_scene;
 
-typedef	struct	s_closest_hit
+typedef struct s_closest_hit
 {
 	t_obj		*obj;
 	t_sub_obj	sub_obj;
@@ -254,50 +254,65 @@ t_color			int_to_t_color(int int_color);
 // get_surface_color.c
 t_color			get_surface_color(t_point3 p, t_closest_hit *closest_hit);
 t_vec3			world_to_local(t_vec3 p, t_vec3 axis, t_point3 center);
-t_color			get_checkerboard_color(t_checkerboard *checkerboard, t_point2 texture_point);
+t_color			get_checkerboard_color(t_checkerboard *checkerboard, \
+t_point2 texture_point);
 t_color			get_image_color(t_img *img, t_point2 texture_point);
 t_color			int_to_t_color(int int_color);
 
 // // convert_to_texture_space.c
-t_point2		convert_to_texture_space(t_point3 p, t_obj *obj, t_sub_obj sub_obj);
+t_point2		convert_to_texture_space(t_point3 p, t_obj *obj, \
+t_sub_obj sub_obj);
 t_point2		convert_sphere_point(t_point3 p, t_obj *obj);
 t_point2		convert_plane_point(t_point3 p, t_obj *obj);
-t_point2		convert_cylinder_point(t_point3 p, t_obj *obj, t_sub_obj sub_obj);
+t_point2		convert_cylinder_point(t_point3 p, t_obj *obj, \
+t_sub_obj sub_obj);
 t_point2		convert_cone_point(t_point3 p, t_obj *obj, t_sub_obj sub_obj);
 
 // closest_intersection.c
-t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene);
+t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, \
+t_scene *scene);
 int				solve_quadratic_equation(float coeff[3], float t[2]);
-void			update_closest_hit(float t, t_sub_obj sub_obj, t_inter_vars *vars);
+void			update_closest_hit(float t, t_sub_obj sub_obj, \
+t_inter_vars *vars);
 
 // intersect_ray_sphere.c
 void			intersect_ray_sphere(t_inter_vars vars);
-void			compute_sphere_quadratic_coefficients(t_ray *ray, t_sphere *sphere, float coeff[3]);
+void			compute_sphere_quadratic_coefficients(t_ray *ray, \
+t_sphere *sphere, float coeff[3]);
 
 // intersect_ray_plane.c
 void			intersect_ray_plane(t_inter_vars vars);
-int				compute_plane_intersection(t_ray *ray, t_plane *plane, float *t);
+int				compute_plane_intersection(t_ray *ray, \
+t_plane *plane, float *t);
 
 // intersect_ray_cylinder.c
 void			intersect_ray_cylinder(t_inter_vars vars);
 void			intersect_ray_cylinder_side(t_inter_vars *vars);
-void			compute_cylinder_side_quadratic_coefficients(t_inter_vars *vars, float coeff[3], t_vec3 *co, float term[2]);
-int				is_p_within_cylinder_height(float co_dot_axis, float d_dot_axis, float t, float h);
-void			intersect_ray_cylinder_cap(t_inter_vars *vars, t_sub_obj sub_obj);
+void			compute_cylinder_side_quadratic_coefficients(t_inter_vars \
+*vars, float coeff[3], t_vec3 *co, float term[2]);
+int				is_p_within_cylinder_height(float co_dot_axis, \
+float d_dot_axis, float t, float h);
+void			intersect_ray_cylinder_cap(t_inter_vars *vars, \
+t_sub_obj sub_obj);
 
 // intersect_ray_cone.c
 void			intersect_ray_cone(t_inter_vars vars);
 void			intersect_ray_cone_side(t_inter_vars *vars);
-void			compute_cone_side_quadratic_coefficients(t_inter_vars *vars, float coeff[3], t_vec3 vo, float term[2]);
-int				is_p_within_cone_height(float vo_dot_axis, float d_dot_axis, float t, float cone_height);
+void			compute_cone_side_quadratic_coefficients(t_inter_vars *vars, \
+float coeff[3], t_vec3 vo, float term[2]);
+int				is_p_within_cone_height(float vo_dot_axis, float d_dot_axis, \
+float t, float cone_height);
 void			intersect_ray_cone_cap(t_inter_vars *vars);
 
 // compute_circle_intersection.c
-int				compute_circle_intersection(t_ray *ray, t_circle *circle, float *t);
+int				compute_circle_intersection(t_ray *ray, \
+t_circle *circle, float *t);
 
 // compute_lighting.c
-t_color			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);
-void			add_light_intensity(t_color *intens, float factor, t_color *light_color);
+t_color			compute_lighting(t_point3 p, t_vec3 v, \
+t_closest_hit *hit, t_scene *scene);
+void			add_light_intensity(t_color *intens, \
+float factor, t_color *light_color);
 void			apply_diffuse_and_specular_lighting(t_closest_hit *hit, \
 t_light *light, t_color *intens, t_vec3 vec[3]);
 t_color			clamp_light_intens(t_color intens);
@@ -313,7 +328,8 @@ t_vec3			get_cone_normal(t_point3 p, t_closest_hit *hit);
 // apply_bump_map.c
 t_vec3			apply_bump_map_texture(t_img *bumpmap, t_point2 texture_point, \
 t_vec3 *geo_normal);
-void			get_surrounding_pixel_height(t_img *bumpmap, int x, int y, float height[4]);
+void			get_surrounding_pixel_height(t_img *bumpmap, \
+int x, int y, float height[4]);
 float			get_bump_map_height(t_img *bumpmap, float x, float y);
 
 // my_mlx_pixel_put.c
@@ -355,7 +371,8 @@ int				parse_scene_element(char **line, t_vars *vars);
 int				parse_camera(char **line, t_vars *vars);;
 int				parse_light(char **line, t_vars *vars, \
 int (*set_light)(char **line, t_light *light));
-int				parse_object(char **line,t_vars *vars, int (*set_obj)(char **line, t_obj *obj, void *mlx));
+int				parse_object(char **line, t_vars *vars, \
+int (*set_obj)(char **line, t_obj *obj, void *mlx));
 
 // parse_light.c
 int				set_amb_light(char **line, t_light *lights);
