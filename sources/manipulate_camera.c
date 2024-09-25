@@ -6,23 +6,11 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 13:59:18 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 14:25:36 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 21:43:16 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-#define W_KEY 13
-#define A_KEY 0
-#define S_KEY 1
-#define D_KEY 2
-#define Q_KEY 12
-#define E_KEY 14
-
-#define LEFT_KEY 123
-#define RIGHT_KEY 124
-#define DOWN_KEY 125
-#define UP_KEY 126
 
 #define TRANSLATE_FOWARD 0
 #define TRANSLATE_BACKWARD 1

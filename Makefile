@@ -7,7 +7,7 @@ RM = rm -f
 INCLUDES		=	$(addprefix includes/, minirt.h)
 PARSE_DIR		=	parse/
 RENDER_DIR		=	render/
-SRC				=	$(addprefix sources/, minirt.c setup_event_hooks.c my_mlx_functions.c	manipulate_camera.c\
+SRC				=	$(addprefix sources/, minirt.c setup_event_hooks.c my_mlx_functions.c	manipulate_camera.c	manipulate_object.c\
 $(addprefix $(PARSE_DIR),	parse_scene.c		parse_utils.c			parse_object.c		parse_object_cap.c	parse_light.c\
 							parse_types.c		parse_error_check.c	parse_scene_element.c	parse_texture.c)\
 $(addprefix $(RENDER_DIR),	compute_lighting.c	intersect_ray_plane.c	render_scene.c		vector_operations1.c\

@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 16:31:33 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 21:49:44 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,21 @@ void	init_vars(t_vars *vars)
 	&vars->img.bits_per_pixel, &vars->img.size_line, &vars->img.endian);
 	if (!vars->img.data)
 		error_exit("mlx_get_data_addr error", PERROR_OFF);
+}
+
+void	init_select(t_vars *vars)
+{
+	t_select_obj	*select;
+	t_scene			*scene;
+
+	select = &vars->select;
+	scene = &vars->scene;
+	select->camera = &scene->camera;
+	select->obj = scene->obj;
+	select->light = scene->lights;
+	select->curr_obj = scene->obj;
+	select->curr_light = scene->lights;
+	select->type = CAMERA;
 }
 
 void	draw_next_frame(t_vars *vars)

@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 16:33:54 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 21:44:59 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,18 @@
 
 # define PERROR_ON 1
 # define PERROR_OFF 0
+
+#define W_KEY 13
+#define A_KEY 0
+#define S_KEY 1
+#define D_KEY 2
+#define Q_KEY 12
+#define E_KEY 14
+
+#define LEFT_KEY 123
+#define RIGHT_KEY 124
+#define DOWN_KEY 125
+#define UP_KEY 126
 
 # define BACKGROUND_COLOR 0xFFFFFF
 
@@ -235,12 +247,30 @@ typedef struct s_inter_vars
 	t_closest_hit	*closest_hit;
 }	t_inter_vars;
 
+typedef enum e_select_type
+{
+	CAMERA,
+	OBJECT,
+	LIGHT
+}	t_select_type;
+
+typedef struct s_select_obj
+{
+	t_select_type	type;
+	t_camera		*camera;
+	t_obj			*obj;
+	t_light			*light;
+	t_obj			*curr_obj;
+	t_light			*curr_light;
+}	t_select_obj;
+
 typedef struct s_vars
 {
-	void		*mlx;
-	t_win		win;
-	t_img		img;
-	t_scene		scene;
+	void			*mlx;
+	t_win			win;
+	t_img			img;
+	t_scene			scene;
+	t_select_obj	select;
 }	t_vars;
 
 // minirt.c
@@ -248,6 +278,7 @@ void			init_vars(t_vars *vars);
 void			draw_next_frame(t_vars *vars);
 int				error_return(char *err_msg, int perror_flag);
 void			error_exit(char *err_msg, int perror_flag);
+void			init_select(t_vars *vars);
 
 // render_scene.c
 void			render_scene(t_vars *vars);
@@ -344,14 +375,21 @@ int				my_mlx_get_pixel_color(t_img *img, int x, int y);
 
 // setup_event_hooks.c
 void			setup_event_hooks(t_vars *vars);
-int				key_hook(int keycode, void *param);
 int				exit_no_error(void);
+int				key_hook(int keycode, void *param);
+int				key_hook_select_object(int keycode, t_vars *vars);
 
 // manipulate_camera.c
 void			key_hook_rotate_camera(int keycode, t_vars *vars);
 void			key_hook_translate_camera(int keycode, t_vars *vars);
 void			rotate_vector(t_vec3 *v, t_vec3 axis, float angle);
 void			move_camera(t_camera *camera, int direction, float distance);
+
+// manipulate_object.c
+void			key_hook_rotate_object(int keycode, t_vars *vars);
+void			key_hook_translate_object(int keycode, t_vars *vars);
+void			translate_point(t_point3 *pos, t_vec3 direction, float distance);
+void			key_hook_translate_light(int keycode, t_vars *vars);
 
 // vector_operations.c
 t_vec3			subtract_3dpoints(t_point3 p1, t_point3 p2);
