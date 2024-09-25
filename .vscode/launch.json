@@ -9,7 +9,7 @@
 			"request": "launch",
 			"name": "minirt",
 			"program": "${workspaceFolder}/minirt",
-			"args": ["test.rt"],
+			"args": ["test3.rt"],
 			"cwd": "${workspaceFolder}",
 		}
 	]

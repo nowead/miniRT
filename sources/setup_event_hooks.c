@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 21:22:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 14:58:26 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/25 15:59:28 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ void	draw_next_frame(t_vars *vars)
 	render_scene(vars);
 	mlx_sync(MLX_SYNC_IMAGE_WRITABLE, vars->img.ptr);
 	mlx_put_image_to_window(vars->mlx, vars->win.ptr, vars->img.ptr, 0, 0);
-	mlx_sync(MLX_SYNC_WIN_CMD_COMPLETED, vars->img.ptr);
+	mlx_sync(MLX_SYNC_WIN_CMD_COMPLETED, vars->win.ptr);
 }
