@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_types.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:38:06 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/21 20:57:50 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/24 14:42:42 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	parse_3dpoint(char *line, t_point3 *obj_point)
 		free_lists(coord);
 		return (1);
 	}
-	*obj_point = (t_point3){ft_atof(coord[0]), ft_atof(coord[1]), ft_atof(coord[2])};
+	*obj_point = (t_point3){ft_atof(coord[0]), \
+	ft_atof(coord[1]), ft_atof(coord[2])};
 	free_lists(coord);
 	return (0);
 }
@@ -41,7 +42,8 @@ int	parse_3dvector(char *line, t_vec3 *obj_vec)
 		free_lists(vector);
 		return (1);
 	}
-	*obj_vec = unit_vector((t_vec3){ft_atof(vector[0]), ft_atof(vector[1]), ft_atof(vector[2])});
+	*obj_vec = unit_vector((t_vec3){ft_atof(vector[0]), \
+	ft_atof(vector[1]), ft_atof(vector[2])});
 	free_lists(vector);
 	return (0);
 }

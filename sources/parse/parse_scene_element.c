@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene_element.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:14:10 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/21 20:38:31 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/24 14:38:08 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	parse_scene_element(char **line, t_vars *vars)
 
 	err_flag = 0;
 	if (ft_strncmp(line[0], "C", 2) == 0)
-		err_flag = parse_camera(line ,vars);
+		err_flag = parse_camera(line, vars);
 	else if (ft_strncmp(line[0], "A", 2) == 0)
 		err_flag = parse_light(line, vars, set_amb_light);
 	else if (ft_strncmp(line[0], "L", 2) == 0)
@@ -40,10 +40,11 @@ int	parse_scene_element(char **line, t_vars *vars)
 	return (err_flag);
 }
 
-int parse_camera(char **line, t_vars *vars)
+int	parse_camera(char **line, t_vars *vars)
 {
 	if (ft_strslen(line) != 4)
-		return (error_return("Error\nCamera format: C [pos] [dir] [fov]", PERROR_OFF));
+		return (error_return("Error\nCamera format: C [pos] [dir] [fov]", \
+		PERROR_OFF));
 	if (parse_3dpoint(line[1], &vars->scene.camera.pos))
 		return (1);
 	if (parse_3dvector(line[2], &vars->scene.camera.dir))
@@ -59,15 +60,14 @@ int parse_camera(char **line, t_vars *vars)
 int	parse_light(char **line, t_vars *vars, \
 int (*set_light)(char **line, t_light *light))
 {
-	t_light *curr;
-	t_light *light;
+	t_light	*curr;
+	t_light	*light;
 
 	light = (t_light *)ft_calloc(1, sizeof(t_light));
 	if (!light)
 		return (error_return("Error\nMalloc failed", PERROR_ON));
 	if (set_light(line, light))
 		return (1);
-
 	curr = vars->scene.lights;
 	if (curr == NULL)
 		vars->scene.lights = light;
@@ -80,7 +80,7 @@ int (*set_light)(char **line, t_light *light))
 	return (0);
 }
 
-int	parse_object(char **line,t_vars *vars, \
+int	parse_object(char **line, t_vars *vars, \
 int (*set_obj)(char **line, t_obj *obj, void *mlx))
 {
 	t_obj	*obj;
@@ -91,7 +91,6 @@ int (*set_obj)(char **line, t_obj *obj, void *mlx))
 		return (error_return("Error\nMalloc failed", PERROR_ON));
 	if (set_obj(line, obj, vars->mlx))
 		return (1);
-
 	curr = vars->scene.obj;
 	if (curr == NULL)
 		vars->scene.obj = obj;

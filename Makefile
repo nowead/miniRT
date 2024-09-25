@@ -8,12 +8,12 @@ INCLUDES		=	$(addprefix includes/, minirt.h)
 PARSE_DIR		=	parse/
 RENDER_DIR		=	render/
 SRC				=	$(addprefix sources/, minirt.c setup_event_hooks.c my_mlx_functions.c	manipulate_camera.c\
-$(addprefix $(PARSE_DIR),	parse_scene.c		parse_utils.c			parse_object.c		parse_light.c\
+$(addprefix $(PARSE_DIR),	parse_scene.c		parse_utils.c			parse_object.c		parse_object_cap.c	parse_light.c\
 							parse_types.c		parse_error_check.c	parse_scene_element.c	parse_texture.c)\
 $(addprefix $(RENDER_DIR),	compute_lighting.c	intersect_ray_plane.c	render_scene.c		vector_operations1.c\
 						   	vector_operations2.c	intersect_ray_cylinder.c	intersect_ray_cone.c	get_normal_vector.c\
 							closest_intersection.c		intersect_ray_sphere.c	compute_circle_intersection.c\
-							get_surface_color.c		apply_bump_map.c))
+							get_surface_color.c		apply_bump_map.c	convert_to_texture_space.c))
 OBJ				=	$(patsubst %.c, %.o, $(SRC))
 
 MLX				=	libmlx.dylib

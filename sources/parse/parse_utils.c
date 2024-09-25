@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:50:06 by damin             #+#    #+#             */
-/*   Updated: 2024/09/18 19:16:14 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/24 14:43:56 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int get_color(int r, int g, int b)
+int	get_color(int r, int g, int b)
 {
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 		return (1);
 	return (r << 16 | g << 8 | b);
 }
 
-float ft_atof(char *str)
+float	ft_atof(char *str)
 {
 	float	result;
 	int		sign;
@@ -49,7 +49,7 @@ float ft_atof(char *str)
 
 int	ft_strslen(char **strs)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (strs[i])
@@ -57,20 +57,21 @@ int	ft_strslen(char **strs)
 	return (i);
 }
 
-void free_lists(char **lists)
+void	free_lists(char **lists)
 {
-    char **temp = lists;
+	char	**temp;
 
-    if (lists == NULL)
-        return;
-    while (*temp)
-        free(*temp++);
-    free(lists);
+	temp = lists;
+	if (lists == NULL)
+		return ;
+	while (*temp)
+		free(*temp++);
+	free(lists);
 }
 
 char	*truncate_end_nl(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
