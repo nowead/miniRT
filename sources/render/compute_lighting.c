@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 20:39:48 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 17:12:51 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:29:30 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,19 @@
 #define N 0
 #define L 1
 #define R 2
+#define V 3
 
 t_color	compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, \
 t_scene *scene)
 {
 	t_light			*light;
 	t_closest_hit	closest_hit;
-	
-	t_vec3			n;
-	t_vec3			l;
-	t_vec3			r;
-	
+	t_vec3			vec[4];
 	t_color			intens;
-	
-	float			factor;
-	
-	float			n_dot_l;
-	float			r_dot_v;
 
-	n = get_normal_vector(p, hit);
-	intens = (t_color){0.0, 0.0, 0.0};
+	vec[N] = get_normal_vector(p, hit);
+	vec[V] = v;
+	intens = (t_color){0, 0, 0};
 	light = scene->lights;
 	while (light)
 	{
@@ -43,36 +36,47 @@ t_scene *scene)
 		else
 		{
 			if (light->type == POINT_LIGHT)
-				l = subtract_3dpoints(light->pos, p);
-			closest_hit = closest_intersection((t_ray){p, l}, \
+				vec[L] = subtract_3dpoints(light->pos, p);
+			closest_hit = closest_intersection((t_ray){p, vec[L]}, \
 			(t_float_range){0.001, 1}, scene);
 			if (!closest_hit.obj)
-			{
-
-				n_dot_l = dot(n, l);
-				if (n_dot_l > 0)
-				{
-					factor = light->intens * n_dot_l / length(l);
-					add_light_intensity(&intens, factor, &light->color_intens);
-				}
-
-				if (hit->obj->specular > 0)
-				{
-					r = subtract_vectors(scale_vector(n, 2 * dot(n, l)), l);
-					r_dot_v = dot(r, v);
-					if (r_dot_v > 0)
-					{
-						factor = light->intens * pow(r_dot_v / \
-						(length(r) * length(v)), hit->obj->specular);
-						add_light_intensity(&intens, factor, \
-						&light->color_intens);
-					}
-				}
-
-			}
+				apply_diffuse_and_specular_lighting(hit, light, &intens, vec);
 		}
 		light = light->next;
 	}
+	return (clamp_light_intens(intens));
+}
+
+void	apply_diffuse_and_specular_lighting(t_closest_hit *hit, \
+t_light *light, t_color *intens, t_vec3 vec[3])
+{
+	float	n_dot_l;
+	float	r_dot_v;
+	float	factor;
+
+	n_dot_l = dot(vec[N], vec[L]);
+	if (n_dot_l > 0)
+	{
+		factor = light->intens * n_dot_l / length(vec[L]);
+		add_light_intensity(intens, factor, &light->color_intens);
+	}
+	if (hit->obj->specular > 0)
+	{
+		vec[R] = subtract_vectors(scale_vector(vec[N], \
+		2 * dot(vec[N], vec[L])), vec[L]);
+		r_dot_v = dot(vec[R], vec[V]);
+		if (r_dot_v > 0)
+		{
+			factor = light->intens * pow(r_dot_v / \
+			(length(vec[R]) * length(vec[V])), hit->obj->specular);
+			add_light_intensity(intens, factor, \
+			&light->color_intens);
+		}
+	}
+}
+
+t_color	clamp_light_intens(t_color intens)
+{
 	intens.r = fminf(intens.r, 1.0f);
 	intens.g = fminf(intens.g, 1.0f);
 	intens.b = fminf(intens.b, 1.0f);

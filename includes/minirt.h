@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 14:13:03 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/25 14:33:25 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,6 +298,9 @@ int				compute_circle_intersection(t_ray *ray, t_circle *circle, float *t);
 // compute_lighting.c
 t_color			compute_lighting(t_point3 p, t_vec3 v, t_closest_hit *hit, t_scene *scene);
 void			add_light_intensity(t_color *intens, float factor, t_color *light_color);
+void			apply_diffuse_and_specular_lighting(t_closest_hit *hit, \
+t_light *light, t_color *intens, t_vec3 vec[3]);
+t_color			clamp_light_intens(t_color intens);
 int				apply_lighting(t_color color, t_color *lighting);
 
 // get_normal_vector.c
