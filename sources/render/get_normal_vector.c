@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 15:47:24 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 13:41:08 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 13:46:19 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ t_vec3	get_normal_vector(t_point3 p, t_closest_hit *hit)
 	if (hit->obj->type == SPHERE)
 		n = get_sphere_normal(p, hit);
 	else if (hit->obj->type == PLANE)
-		n = get_plane_normal(p, hit);
 		n = get_plane_normal(p, hit);
 	else if (hit->obj->type == CYLINDER)
 		n = get_cylinder_normal(p, hit);
@@ -40,21 +39,6 @@ t_vec3	get_sphere_normal(t_point3 p, t_closest_hit *hit)
 	if (!obj->bumpmap.ptr)
 		return (geo_normal);
 	texture_point = convert_to_texture_space(p, hit->obj, hit->sub_obj);
-	return (apply_bump_map_texture(&obj->bumpmap, texture_point, &geo_normal));
-}
-
-t_vec3	get_plane_normal(t_point3 p, t_closest_hit *hit)
-{
-	t_obj		*obj;
-	t_vec3		geo_normal;
-	t_point2	texture_point;
-
-	obj = hit->obj;
-	geo_normal = hit->obj->data.plane.normal;
-	if (!obj->bumpmap.ptr)
-		return (geo_normal);
-	texture_point = convert_to_texture_space(p, hit->obj, hit->sub_obj);
-	return (apply_bump_map_texture(&obj->bumpmap, texture_point, &geo_normal));
 	return (apply_bump_map_texture(&obj->bumpmap, texture_point, &geo_normal));
 }
 

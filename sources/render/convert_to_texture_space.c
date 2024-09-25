@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 21:47:01 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 21:53:51 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 13:51:17 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_point2	convert_to_texture_space(t_point3 p, t_obj *obj, t_sub_obj sub_obj)
 {
 	t_point2	texture_point;
-	t_vec3		cp;
 
 	texture_point = (t_point2){};
 	if (obj->type == SPHERE)
@@ -63,7 +62,7 @@ t_point2	convert_cylinder_point(t_point3 p, t_obj *obj, t_sub_obj sub_obj)
 		texture_point.x = 0.5 - atan2(cp.x, cp.z) / (2 * M_PI);
 		texture_point.y = fmod(cp.y, 1);
 	}
-	else if (sub_obj == TOP_CAP || sub_obj == BOTTOM_CAP)
+	else
 	{
 		texture_point.x = 0.5 - atan2(cp.x, cp.z) / (2 * M_PI);
 		texture_point.y = sqrt(cp.x * cp.x + cp.z * cp.z);
@@ -83,7 +82,7 @@ t_point2	convert_cone_point(t_point3 p, t_obj *obj, t_sub_obj sub_obj)
 		texture_point.x = 0.5 - atan2(cp.x, cp.z) / (2 * M_PI);
 		texture_point.y = fmod(cp.y, 1);
 	}
-	else if (sub_obj == BOTTOM_CAP)
+	else
 	{
 		texture_point.x = 0.5 - atan2(cp.x, cp.z) / (2 * M_PI);
 		texture_point.y = 1 - sqrt(cp.x * cp.x + cp.z * cp.z);

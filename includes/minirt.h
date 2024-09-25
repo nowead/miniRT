@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 13:41:23 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 13:50:01 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,11 +253,17 @@ t_color			int_to_t_color(int int_color);
 
 // get_surface_color.c
 t_color			get_surface_color(t_point3 p, t_closest_hit *closest_hit);
-t_point2		convert_to_texture_space(t_point3 p, t_obj *obj, t_sub_obj sub_obj);
 t_vec3			world_to_local(t_vec3 p, t_vec3 axis, t_point3 center);
 t_color			get_checkerboard_color(t_checkerboard *checkerboard, t_point2 texture_point);
 t_color			get_image_color(t_img *img, t_point2 texture_point);
 t_color			int_to_t_color(int int_color);
+
+// // convert_to_texture_space.c
+t_point2		convert_to_texture_space(t_point3 p, t_obj *obj, t_sub_obj sub_obj);
+t_point2		convert_sphere_point(t_point3 p, t_obj *obj);
+t_point2		convert_plane_point(t_point3 p, t_obj *obj);
+t_point2		convert_cylinder_point(t_point3 p, t_obj *obj, t_sub_obj sub_obj);
+t_point2		convert_cone_point(t_point3 p, t_obj *obj, t_sub_obj sub_obj);
 
 // closest_intersection.c
 t_closest_hit	closest_intersection(t_ray ray, t_float_range t_range, t_scene *scene);
