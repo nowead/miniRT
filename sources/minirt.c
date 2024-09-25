@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 15:44:29 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/25 16:31:33 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,15 @@ void	init_vars(t_vars *vars)
 	&vars->img.bits_per_pixel, &vars->img.size_line, &vars->img.endian);
 	if (!vars->img.data)
 		error_exit("mlx_get_data_addr error", PERROR_OFF);
+}
+
+void	draw_next_frame(t_vars *vars)
+{
+	my_mlx_clear_window(vars);
+	render_scene(vars);
+	mlx_sync(MLX_SYNC_IMAGE_WRITABLE, vars->img.ptr);
+	mlx_put_image_to_window(vars->mlx, vars->win.ptr, vars->img.ptr, 0, 0);
+	mlx_sync(MLX_SYNC_WIN_CMD_COMPLETED, vars->win.ptr);
 }
 
 int	error_return(char *err_msg, int perror_flag)

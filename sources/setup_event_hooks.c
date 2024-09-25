@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_event_hooks.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 21:22:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 15:59:28 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/25 16:31:23 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,4 @@ int	key_hook(int keycode, void *param)
 	key_hook_translate_camera(keycode, vars);
 	draw_next_frame(vars);
 	return (0);
-}
-
-void	draw_next_frame(t_vars *vars)
-{
-	my_mlx_clear_window(vars);
-	render_scene(vars);
-	mlx_sync(MLX_SYNC_IMAGE_WRITABLE, vars->img.ptr);
-	mlx_put_image_to_window(vars->mlx, vars->win.ptr, vars->img.ptr, 0, 0);
-	mlx_sync(MLX_SYNC_WIN_CMD_COMPLETED, vars->win.ptr);
 }

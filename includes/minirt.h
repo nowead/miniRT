@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 14:56:11 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/25 16:33:54 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,9 +244,10 @@ typedef struct s_vars
 }	t_vars;
 
 // minirt.c
+void			init_vars(t_vars *vars);
+void			draw_next_frame(t_vars *vars);
 int				error_return(char *err_msg, int perror_flag);
 void			error_exit(char *err_msg, int perror_flag);
-void			init_vars(t_vars *vars);
 
 // render_scene.c
 void			render_scene(t_vars *vars);
@@ -345,9 +346,10 @@ int				my_mlx_get_pixel_color(t_img *img, int x, int y);
 void			setup_event_hooks(t_vars *vars);
 int				key_hook(int keycode, void *param);
 int				exit_no_error(void);
+
+// manipulate_camera.c
 void			key_hook_rotate_camera(int keycode, t_vars *vars);
 void			key_hook_translate_camera(int keycode, t_vars *vars);
-void			draw_next_frame(t_vars *vars);
 void			rotate_vector(t_vec3 *v, t_vec3 axis, float angle);
 void			move_camera(t_camera *camera, int direction, float distance);
 
