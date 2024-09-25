@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:13:56 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 16:30:43 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 19:26:16 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ t_vec3 *geo_normal)
 	point[X] = (int)(texture_point.x * bumpmap->width - 1);
 	point[Y] = (int)(texture_point.y * bumpmap->height - 1);
 	get_surrounding_pixel_height(bumpmap, point[X], point[Y], height);
-	offset[X] = (height[RIGHT] - height[LEFT]) / 20;
-	offset[Y] = (height[UP] - height[DOWN]) / 20;
+	offset[X] = (height[RIGHT] - height[LEFT]) / 200;
+	offset[Y] = (height[UP] - height[DOWN]) / 200;
 	vec[U] = unit_vector(cross((t_vec3){0, 1, 0}, *geo_normal));
 	vec[V] = cross(*geo_normal, vec[U]);
 	component[U] = scale_vector(vec[U], offset[X]);

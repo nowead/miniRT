@@ -1,8 +1,8 @@
 A	0.0														255,255,255
 
 C	-7,0,0			1,0,0			53
-L	-7,0,0											1.0		255,250,235
+L	-500,0,0											1.0		255,250,225
 
 
-sp	0,0,-2							2				0		t/earth_texture.xpm	earth_bump.xpm
-sp	0,0,2							2				0		t/moon_texture.xpm	moon_bump.xpm
+sp	0,0,-2							2				0		t/earthmap.xpm		earthbump.xpm	
+sp	0,0,20							2				0		t/moonmap.xpm		moonbump.xpm
