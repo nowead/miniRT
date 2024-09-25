@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 20:57:18 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 16:33:12 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/25 20:15:25 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	parse_uv(char **checkerboard, t_checkerboard *obj_checkerboard)
 		return (error_return("Error\nInvalid checkerboard size", PERROR_ON));
 	}
 	if (ft_strslen(uv) != 2 || check_decimal_str(uv[0]) || \
-	check_decimal_str(uv[1]))
+	check_decimal_str(uv[1]) || ft_strlen(uv[0]) > 5 || ft_strlen(uv[1]) > 5)
 	{
 		free_lists(uv);
 		free_lists(checkerboard);
