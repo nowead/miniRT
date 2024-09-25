@@ -6,16 +6,11 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/09/24 17:43:11 by damin            ###   ########.fr       */
+/*   Updated: 2024/09/25 14:18:51 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-// void	print_checkerboard(t_obj *obj);
-// void	print_parsed_vars(t_vars *vars);
-// int		count_num_of_lights(t_light *lights);
-// int		count_num_of_obj(t_obj *obj);
 
 void	parse_scene(int argc, char **argv, t_vars *vars)
 {
@@ -27,7 +22,6 @@ void	parse_scene(int argc, char **argv, t_vars *vars)
 		exit(EXIT_FAILURE);
 	}
 }
-	// print_parsed_vars(vars);
 
 int	parse_argv(int argc, char **argv)
 {
@@ -114,12 +108,21 @@ void	clear_scene(t_vars *vars)
 	}
 }
 
+// void	print_checkerboard(t_obj *obj);
+// void	print_parsed_vars(t_vars *vars);
+// int		count_num_of_lights(t_light *lights);
+// int		count_num_of_obj(t_obj *obj);
+
 // void	print_checkerboard(t_obj *obj)
 // {
-// 	printf("checkerboard color1: %g %g %g\n", obj->checkerboard.color1.r, obj->checkerboard.color1.g, obj->checkerboard.color1.b);
-// 	printf("checkerboard color2: %g %g %g\n", obj->checkerboard.color2.r, obj->checkerboard.color2.g, obj->checkerboard.color2.b);
-// 	printf("checkerboard width: %d\n", obj->checkerboard.columns);
-// 	printf("checkerboard height: %d\n", obj->checkerboard.rows);
+	// printf("checkerboard color1: %g %g %g\n", 
+	// obj->checkerboard.color1.r, obj->checkerboard.color1.g, 
+	// obj->checkerboard.color1.b);
+	// printf("checkerboard color2: %g %g %g\n", 
+	// obj->checkerboard.color2.r, obj->checkerboard.color2.g, 
+	// obj->checkerboard.color2.b);
+	// printf("checkerboard width: %d\n", obj->checkerboard.columns);
+	// printf("checkerboard height: %d\n", obj->checkerboard.rows);
 // }
 
 // void	print_parsed_vars(t_vars *vars)
@@ -132,8 +135,10 @@ void	clear_scene(t_vars *vars)
 // 	lights = vars->scene.lights;
 // 	obj = vars->scene.obj;
 // 	printf("\n\n");
-// 	printf("camera pos: %g %g %g\n", camera->pos.x, camera->pos.y, camera->pos.z);
-// 	printf("camera dir: %g %g %g\n", camera->dir.x, camera->dir.y, camera->dir.z);
+// 	printf("camera pos: %g %g %g\n", 
+// camera->pos.x, camera->pos.y, camera->pos.z);
+// 	printf("camera dir: %g %g %g\n", 
+// camera->dir.x, camera->dir.y, camera->dir.z);
 // 	printf("camera fov: %d\n\n", camera->fov);
 // 	printf("num_of_lights: %d\n", count_num_of_lights(lights));
 // 	printf("num_of_obj: %d\n\n", count_num_of_obj(obj));
@@ -141,9 +146,11 @@ void	clear_scene(t_vars *vars)
 // 	{
 // 		printf("type of light: %d\n", lights->type);
 // 		if (lights->type == POINT_LIGHT)
-// 			printf("light pos: %g %g %g\n", lights->pos.x, lights->pos.y, lights->pos.z);
+// 			printf("light pos: %g %g %g\n", 
+// lights->pos.x, lights->pos.y, lights->pos.z);
 // 		printf("light intens: %g\n", lights->intens);
-// 		printf("light color: %g %g %g\n", lights->color.r, lights->color.g, lights->color.b);
+// 		printf("light color: %g %g %g\n", 
+// lights->color.r, lights->color.g, lights->color.b);
 // 		printf("\n");
 // 		lights = lights->next;
 // 	}
@@ -151,44 +158,59 @@ void	clear_scene(t_vars *vars)
 // 	{
 // 		if (obj->type == PLANE)
 // 		{
-// 			printf("plane pos: %g %g %g\n", obj->data.plane.pos.x, obj->data.plane.pos.y, obj->data.plane.pos.z);
-// 			printf("plane dir: %g %g %g\n", obj->data.plane.normal.x, obj->data.plane.normal.y, obj->data.plane.normal.z);
+// 			printf("plane pos: %g %g %g\n", obj->data.plane.pos.x, 
+// obj->data.plane.pos.y, obj->data.plane.pos.z);
+// 			printf("plane dir: %g %g %g\n", obj->data.plane.normal.x, 
+// obj->data.plane.normal.y, obj->data.plane.normal.z);
 // 			if (obj->texture_type == CHECKERBOARD)
 // 				print_checkerboard(obj);
 // 			else
-// 				printf("plane color: %g %g %g\n", obj->color.r, obj->color.g, obj->color.b);
+// 				printf("plane color: %g %g %g\n", obj->color.r, 
+// obj->color.g, obj->color.b);
 // 			printf("\n");
 // 		}
 // 		else if (obj->type == SPHERE)
 // 		{
-// 			printf("sphere pos: %g %g %g\n", obj->data.sphere.center.x, obj->data.sphere.center.y, obj->data.sphere.center.z);
+// 			printf("sphere pos: %g %g %g\n", obj->data.sphere.center.x, 
+// obj->data.sphere.center.y, obj->data.sphere.center.z);
 // 			printf("sphere rad: %g\n", obj->data.sphere.radius);
 // 			printf("sphere specular: %d\n", obj->specular);
 // 			if (obj->texture_type == CHECKERBOARD)
 // 				print_checkerboard(obj);
 // 			else
-// 				printf("sphere color: %g %g %g\n", obj->color.r, obj->color.g, obj->color.b);
+// 				printf("sphere color: %g %g %g\n", 
+// obj->color.r, obj->color.g, obj->color.b);
 // 			printf("\n");
 // 		}
 // 		else if (obj->type == CYLINDER)
 // 		{
-// 			printf("cylinder pos: %g %g %g\n", obj->data.cylinder.side.center.x, obj->data.cylinder.side.center.y, obj->data.cylinder.side.center.z);
-// 			printf("cylinder dir: %g %g %g\n", obj->data.cylinder.side.axis.x, obj->data.cylinder.side.axis.y, obj->data.cylinder.side.axis.z);
+// 			printf("cylinder pos: %g %g %g\n", 
+// obj->data.cylinder.side.center.x, 
+// obj->data.cylinder.side.center.y, obj->data.cylinder.side.center.z);
+// 			printf("cylinder dir: %g %g %g\n", 
+// obj->data.cylinder.side.axis.x, 
+// obj->data.cylinder.side.axis.y, obj->data.cylinder.side.axis.z);
 // 			printf("cylinder rad: %g\n", obj->data.cylinder.side.radius);
 // 			printf("cylinder height: %g\n", obj->data.cylinder.side.height);
 // 			if (obj->texture_type == CHECKERBOARD)
 // 				print_checkerboard(obj);
 // 			else
-// 				printf("cylinder color: %g %g %g\n", obj->color.r, obj->color.g, obj->color.b);
+// 				printf("cylinder color: %g %g %g\n", /
+// obj->color.r, obj->color.g, obj->color.b);
 // 			printf("\n");
 // 		}
 // 		else if (obj->type == CONE)
 // 		{
-// 			printf("cone pos: %g %g %g\n", obj->data.cone.side.vertex.x, obj->data.cone.side.vertex.y, obj->data.cone.side.vertex.z);
-// 			printf("cone dir: %g %g %g\n", obj->data.cone.side.axis.x, obj->data.cone.side.axis.y, obj->data.cone.side.axis.z);
+// 			printf("cone pos: %g %g %g\n", 
+// obj->data.cone.side.vertex.x, obj->data.cone.side.vertex.y, 
+// obj->data.cone.side.vertex.z);
+// 			printf("cone dir: %g %g %g\n", 
+// obj->data.cone.side.axis.x, obj->data.cone.side.axis.y, 
+// obj->data.cone.side.axis.z);
 // 			printf("cone rad: %g\n", obj->data.cone.side.radius);
 // 			printf("cone height: %g\n", obj->data.cone.side.height);
-// 			printf("cone color: %g %g %g\n", obj->color.r, obj->color.g, obj->color.b);
+// 			printf("cone color: %g %g %g\n", 
+// obj->color.r, obj->color.g, obj->color.b);
 // 			printf("\n");
 // 		}
 // 		obj = obj->next;
