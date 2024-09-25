@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 15:47:24 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 16:44:58 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/24 21:56:54 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,15 @@ t_vec3	get_cylinder_normal(t_point3 p, t_closest_hit *hit)
 	{
 		cp = subtract_3dpoints(p, hit->obj->data.cylinder.side.center);
 		m = dot(cp, hit->obj->data.cylinder.side.axis);
-		q = add_vector_to_point(hit->obj->data.cylinder.side.center,\
-		 scale_vector(hit->obj->data.cylinder.side.axis, m));
+		q = add_vector_to_point(hit->obj->data.cylinder.side.center, \
+		scale_vector(hit->obj->data.cylinder.side.axis, m));
 		geo_normal = unit_vector(subtract_3dpoints(p, q));
 	}
 	if (!hit->obj->bumpmap.ptr)
 		return (geo_normal);
 	texture_point = convert_to_texture_space(p, hit->obj, hit->sub_obj);
-	return (apply_bump_map_texture(&hit->obj->bumpmap, texture_point, &geo_normal));
+	return (apply_bump_map_texture(&hit->obj->bumpmap, \
+	texture_point, &geo_normal));
 }
 
 t_vec3	get_cone_normal(t_point3 p, t_closest_hit *hit)
@@ -100,6 +101,6 @@ t_vec3	get_cone_normal(t_point3 p, t_closest_hit *hit)
 	if (!hit->obj->bumpmap.ptr)
 		return (geo_normal);
 	texture_point = convert_to_texture_space(p, hit->obj, hit->sub_obj);
-	return (apply_bump_map_texture(&hit->obj->bumpmap, texture_point, &geo_normal));
-	
+	return (apply_bump_map_texture(&hit->obj->bumpmap, \
+	texture_point, &geo_normal));
 }
