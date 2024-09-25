@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 14:30:14 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:33:25 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,7 +353,8 @@ void			clear_scene(t_vars *vars);
 //parse_scene_element.c
 int				parse_scene_element(char **line, t_vars *vars);
 int				parse_camera(char **line, t_vars *vars);;
-int				parse_light(char **line, t_vars *vars, int (*set_light)(char **line, t_light *light));
+int				parse_light(char **line, t_vars *vars, \
+int (*set_light)(char **line, t_light *light));
 int				parse_object(char **line,t_vars *vars, int (*set_obj)(char **line, t_obj *obj, void *mlx));
 
 // parse_light.c
