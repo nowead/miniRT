@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_event_hooks.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 21:22:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 14:01:16 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:58:26 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,7 @@ void	draw_next_frame(t_vars *vars)
 {
 	my_mlx_clear_window(vars);
 	render_scene(vars);
+	mlx_sync(MLX_SYNC_IMAGE_WRITABLE, vars->img.ptr);
 	mlx_put_image_to_window(vars->mlx, vars->win.ptr, vars->img.ptr, 0, 0);
+	mlx_sync(MLX_SYNC_WIN_CMD_COMPLETED, vars->img.ptr);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 14:47:52 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:56:11 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@
 # define BACKGROUND_COLOR 0xFFFFFF
 
 # define FLT_MAX 3.402823466e+38F
+
+# define MLX_SYNC_IMAGE_WRITABLE	1
+# define MLX_SYNC_WIN_FLUSH_CMD		2
+# define MLX_SYNC_WIN_CMD_COMPLETED	3
 
 typedef struct s_win
 {
