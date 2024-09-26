@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 21:44:59 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/26 16:03:05 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,20 @@
 # define PERROR_ON 1
 # define PERROR_OFF 0
 
-#define W_KEY 13
-#define A_KEY 0
-#define S_KEY 1
-#define D_KEY 2
-#define Q_KEY 12
-#define E_KEY 14
+# define W_KEY 13
+# define A_KEY 0
+# define S_KEY 1
+# define D_KEY 2
+# define Q_KEY 12
+# define E_KEY 14
 
-#define LEFT_KEY 123
-#define RIGHT_KEY 124
-#define DOWN_KEY 125
-#define UP_KEY 126
+# define LEFT_KEY 123
+# define RIGHT_KEY 124
+# define DOWN_KEY 125
+# define UP_KEY 126
+
+# define LEFT_ANGLE_BRACKET_KEY 43
+# define RIGHT_ANGLE_BRACKET_KEY 47
 
 # define BACKGROUND_COLOR 0xFFFFFF
 
@@ -254,7 +257,7 @@ typedef enum e_select_type
 	LIGHT
 }	t_select_type;
 
-typedef struct s_select_obj
+typedef struct s_select_scene_element
 {
 	t_select_type	type;
 	t_camera		*camera;
@@ -262,15 +265,15 @@ typedef struct s_select_obj
 	t_light			*light;
 	t_obj			*curr_obj;
 	t_light			*curr_light;
-}	t_select_obj;
+}	t_select_scene_element;
 
 typedef struct s_vars
 {
-	void			*mlx;
-	t_win			win;
-	t_img			img;
-	t_scene			scene;
-	t_select_obj	select;
+	void					*mlx;
+	t_win					win;
+	t_img					img;
+	t_scene					scene;
+	t_select_scene_element	select;
 }	t_vars;
 
 // minirt.c
@@ -387,8 +390,13 @@ void			move_camera(t_camera *camera, int direction, float distance);
 
 // manipulate_object.c
 void			key_hook_rotate_object(int keycode, t_vars *vars);
+t_vec3			*get_object_orientation_vector(t_obj *obj);
 void			key_hook_translate_object(int keycode, t_vars *vars);
-void			translate_point(t_point3 *pos, t_vec3 direction, float distance);
+t_point3		*get_object_translation_point(t_obj *obj);
+void			translate_point(t_point3 *pos, t_vec3 direction, \
+float distance);
+
+// manipulate_light.c
 void			key_hook_translate_light(int keycode, t_vars *vars);
 
 // vector_operations.c

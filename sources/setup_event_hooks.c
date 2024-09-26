@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 21:22:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 21:49:54 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/09/26 15:33:46 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,21 @@ void	setup_event_hooks(t_vars *vars)
 	mlx_hook(vars->win.ptr, PRESS_KEY, 0, key_hook, vars);
 }
 
+void	init_select(t_vars *vars)
+{
+	t_select_scene_element	*select;
+	t_scene					*scene;
+
+	select = &vars->select;
+	scene = &vars->scene;
+	select->camera = &scene->camera;
+	select->obj = scene->obj;
+	select->light = scene->lights;
+	select->curr_obj = scene->obj;
+	select->curr_light = scene->lights;
+	select->type = CAMERA;
+}
+
 int	exit_no_error(void)
 {
 	exit(EXIT_SUCCESS);
@@ -40,7 +55,6 @@ int	key_hook(int keycode, void *param)
 	vars = (t_vars *)param;
 	if (ESC_KEY == keycode)
 		exit(EXIT_SUCCESS);
-	
 	if (key_hook_select_object(keycode, vars))
 	{
 		if (vars->select.type == CAMERA)
@@ -62,7 +76,7 @@ int	key_hook(int keycode, void *param)
 
 int	key_hook_select_object(int keycode, t_vars *vars)
 {
-	t_select_obj	*select;
+	t_select_scene_element	*select;
 
 	select = &vars->select;
 	if (keycode == ONE_KEY)
