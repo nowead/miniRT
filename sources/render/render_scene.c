@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:58:12 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 16:54:48 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/10/01 14:07:46 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	init_camera_and_viewport(t_camera *camera, t_img *img)
 	w = unit_vector(camera->dir);
 	camera->u = unit_vector(cross((t_vec3){0, 1, 0}, w));
 	camera->v = cross(w, camera->u);
+	
 }
 
 t_vec3	canvas_to_viewport(int x, int y, t_img *img, t_camera *camera)

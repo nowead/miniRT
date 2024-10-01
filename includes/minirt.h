@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:07:25 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/26 16:03:05 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/10/01 14:55:24 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ typedef struct s_float_range
 
 typedef struct s_camera
 {
+	int			camera_flag;
 	t_point3	pos;
 	t_vec3		dir;
 	int			fov;
@@ -420,7 +421,8 @@ void			clear_scene(t_vars *vars);
 
 //parse_scene_element.c
 int				parse_scene_element(char **line, t_vars *vars);
-int				parse_camera(char **line, t_vars *vars);;
+int				parse_camera(char **line, t_vars *vars);
+int				is_there_amb(t_light *lights);
 int				parse_light(char **line, t_vars *vars, \
 int (*set_light)(char **line, t_light *light));
 int				parse_object(char **line, t_vars *vars, \
