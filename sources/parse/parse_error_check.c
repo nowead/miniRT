@@ -6,13 +6,14 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 14:30:16 by mindaewon         #+#    #+#             */
-/*   Updated: 2024/09/25 20:13:23 by damin            ###   ########.fr       */
+/*   Updated: 2024/10/01 13:59:30 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 #define MAX_INT_PART 16777215
+#define MAX_INT 2147483647
 
 int	check_coord(char **coord)
 {
@@ -83,14 +84,21 @@ int	check_color(char **color)
 
 int	check_decimal_str(char *str)
 {
-	int	i;
+	int		i;
+	double	n;
 
 	if (!str)
 		return (error_return("Error\nInvalid decimal number", PERROR_OFF));
 	i = 0;
-	while (ft_isdigit(str[i]))
+	if (str[i] == '-')
 		i++;
-	if (i == 0 || str[i] != '\0')
+	n = 0;
+	while (ft_isdigit(str[i]) && n <= MAX_INT)
+	{
+		n = n * 10 + (str[i] - '0');
+		i++;
+	}
+	if (i == 0 || str[i] != '\0' || n > MAX_INT)
 		return (error_return("Error\nInvalid decimal number", PERROR_OFF));
 	return (0);
 }
