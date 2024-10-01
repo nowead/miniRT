@@ -6,7 +6,7 @@
 /*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/10/01 13:41:14 by seonseo          ###   ########.fr       */
+/*   Updated: 2024/10/01 13:44:55 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	parse_argv(int argc, char **argv)
 	if (!argv[1])
 		return (1);
 	if (ft_strlen(argv[1]) < 3)
-		return (0);
+		return (1);
 	if (ft_strncmp(&argv[1][ft_strlen(argv[1]) - 3], ".rt", 4) == 0)
 		return (0);
 	return (1);
