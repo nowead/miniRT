@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 20:57:18 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 20:15:25 by damin            ###   ########.fr       */
+/*   Updated: 2024/10/01 14:35:01 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 int	parse_color_or_texture(char *line, t_obj *obj, void *mlx)
 {
 	if (!line)
-		return (1);
-	if (line[0] == 'c')
+		return (error_return("Error\nInvalid color or texture", PERROR_ON));
+	if (ft_strncmp(line, "c/", 2) == 0)
 	{
 		obj->texture_type = CHECKERBOARD;
 		if (parse_checkerboard(line, &obj->checkerboard))
 			return (1);
 	}
-	else if (line[0] == 't')
+	else if (ft_strncmp(line, "t/", 2) == 0)
 	{
 		obj->texture_type = IMAGE;
 		if (parse_texture_image(line, &obj->image, mlx))

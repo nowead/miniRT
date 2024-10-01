@@ -6,7 +6,7 @@
 /*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 20:38:06 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/24 14:42:42 by damin            ###   ########.fr       */
+/*   Updated: 2024/10/01 14:38:17 by damin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ int	parse_color(char *line, t_color *obj_color)
 		error_return("Error\nInvalid color", PERROR_ON);
 	color = ft_split(line, ",");
 	if (check_color(color))
+	{
+		free_lists(color);
+		return (1);
+	}
+	if (check_decimal_str(color[0]) || check_decimal_str(color[1]) \
+	|| check_decimal_str(color[2]))
 	{
 		free_lists(color);
 		return (1);
