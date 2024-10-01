@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene_element.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: damin <damin@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 17:14:10 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/25 17:14:02 by damin            ###   ########.fr       */
+/*   Updated: 2024/10/01 15:21:25 by seonseo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 int	parse_scene_element(char **line, t_vars *vars)
 {
-	int	err_flag;
+	t_scene	*scene;
+	int		err_flag;
 
+	scene = &vars->scene;
 	err_flag = 0;
-	if (ft_strncmp(line[0], "C", 2) == 0)
+	if (!scene->camera.camera_flag && ft_strncmp(line[0], "C", 2) == 0)
 		err_flag = parse_camera(line, vars);
-	else if (ft_strncmp(line[0], "A", 2) == 0)
+	else if (!is_there_amb(scene->lights) && ft_strncmp(line[0], "A", 2) == 0)
 		err_flag = parse_light(line, vars, set_amb_light);
 	else if (ft_strncmp(line[0], "L", 2) == 0)
 		err_flag = parse_light(line, vars, set_point_light);
@@ -32,11 +34,7 @@ int	parse_scene_element(char **line, t_vars *vars)
 	else if (ft_strncmp(line[0], "co", 3) == 0)
 		err_flag = parse_object(line, vars, set_cone);
 	else
-	{
-		ft_putstr_fd("Error: No such identifier: ", STDERR_FILENO);
-		ft_putendl_fd(line[0], STDERR_FILENO);
-		err_flag = 1;
-	}
+		return (error_return("Error: Invalid identifier", PERROR_OFF));
 	return (err_flag);
 }
 
@@ -45,6 +43,7 @@ int	parse_camera(char **line, t_vars *vars)
 	if (ft_strslen(line) != 4)
 		return (error_return("Error\nCamera format: C [pos] [dir] [fov]", \
 		PERROR_OFF));
+	vars->scene.camera.camera_flag = 1;
 	if (parse_3dpoint(line[1], &vars->scene.camera.pos))
 		return (1);
 	if (parse_3dvector(line[2], &vars->scene.camera.dir))
@@ -52,10 +51,28 @@ int	parse_camera(char **line, t_vars *vars)
 	if (check_decimal_str(line[3]))
 		return (1);
 	vars->scene.camera.fov = ft_atoi(line[3]);
+	if (vars->scene.camera.fov == 180)
+		vars->scene.camera.fov = 179;
 	if (ft_strlen(line[3]) > 3 || \
 	vars->scene.camera.fov < 0 || vars->scene.camera.fov > 180)
 		return (error_return("Error\nFOV must be between 0 and 180", \
 		PERROR_OFF));
+	return (0);
+}
+
+int	is_there_amb(t_light *lights)
+{
+	t_light	*curr;
+
+	if (!lights)
+		return (0);
+	curr = lights;
+	while (curr)
+	{
+		if (curr->type == AMBIENT_LIGHT)
+			return (1);
+		curr = curr -> next;
+	}
 	return (0);
 }
 
