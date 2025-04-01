@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:24:39 by damin             #+#    #+#             */
-/*   Updated: 2024/10/01 15:18:57 by seonseo          ###   ########.fr       */
+/*   Updated: 2025/04/01 17:05:42 by mindaewon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	parse_rt_file(char *argv, t_vars *vars)
 	char	*file;
 	int		fd;
 
-	file = ft_strjoin("scenes/", argv);
+	file = argv;
 	if (!file)
 		error_return("Error: Malloc failed", PERROR_ON);
 	fd = open(file, O_RDWR);
@@ -50,7 +50,6 @@ int	parse_rt_file(char *argv, t_vars *vars)
 		free(file);
 		return (error_return("Error: open failed", PERROR_ON));
 	}
-	free(file);
 	if (parse_lines_from_rt_file(fd, vars))
 	{
 		close(fd);
