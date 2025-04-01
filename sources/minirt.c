@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seonseo <seonseo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mindaewon <mindaewon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:06:11 by seonseo           #+#    #+#             */
-/*   Updated: 2024/09/26 16:16:01 by seonseo          ###   ########.fr       */
+/*   Updated: 2025/04/01 16:28:54 by mindaewon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,13 @@ void	draw_next_frame(t_vars *vars)
 {
 	my_mlx_clear_window(vars);
 	render_scene(vars);
+	#ifndef __APPLE__
 	mlx_sync(MLX_SYNC_IMAGE_WRITABLE, vars->img.ptr);
+	#endif
 	mlx_put_image_to_window(vars->mlx, vars->win.ptr, vars->img.ptr, 0, 0);
+	#ifndef __APPLE__
 	mlx_sync(MLX_SYNC_WIN_CMD_COMPLETED, vars->win.ptr);
+	#endif
 }
 
 int	error_return(char *err_msg, int perror_flag)
