@@ -26,10 +26,6 @@ miniRT는 42Seoul의 그래픽스 프로젝트로, 간단한 Ray Tracing 렌더�
 - 실시간 마우스/키보드 인터랙션
 - 다양한 장면 테스트 파일 제공 (`scenes/` 폴더 참고)
 
-<a href="https://github.com/user-attachments/assets/ed716d51-628e-4f88-bef0-e3c956fa99b3">
-  <img src="https://img.youtube.com/vi/dummy/0.jpg" width="600" alt="렌더링 데모 영상 보기" />
-</a>
-
 ## 📁 디렉토리 구조
 ```
 miniRT/
