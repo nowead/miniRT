@@ -1,5 +1,9 @@
 # miniRT
-
+<div style="display: flex; justify-content: center; gap: 16px;">
+  <img src="https://github.com/user-attachments/assets/00033fe7-b958-4528-b21f-28b425b40454" width="500" />
+  <img src="https://github.com/user-attachments/assets/b7b8ecf1-fd5c-4552-bcdf-830f3452d28c" width="500" />
+  <p><em>miniRT 렌더링 예시</em></p>
+</div>
 miniRT는 42Seoul의 그래픽스 프로젝트로, 간단한 Ray Tracing 렌더러를 구현하는 과제입니다. 본 프로젝트는 카메라, 광원, 기본적인 3D 객체(구, 평면, 원기둥, 원뿔 등)를 이용하여 장면을 해석하고 2D 이미지로 렌더링합니다.
 
 ## 🔧 기술 스택
@@ -22,9 +26,9 @@ miniRT는 42Seoul의 그래픽스 프로젝트로, 간단한 Ray Tracing 렌더�
 - 실시간 마우스/키보드 인터랙션
 - 다양한 장면 테스트 파일 제공 (`scenes/` 폴더 참고)
 
-<img width="1076" alt="스크린샷 2025-04-01 오후 6 38 50" src="https://github.com/user-attachments/assets/00033fe7-b958-4528-b21f-28b425b40454" />
-<img width="1074" alt="스크린샷 2025-04-01 오후 6 44 18" src="https://github.com/user-attachments/assets/b7b8ecf1-fd5c-4552-bcdf-830f3452d28c" />
-https://github.com/user-attachments/assets/54ffff21-8d9a-4e0f-8bc5-5721e403bbb2
+<a href="https://github.com/user-attachments/assets/ed716d51-628e-4f88-bef0-e3c956fa99b3">
+  <img src="https://img.youtube.com/vi/dummy/0.jpg" width="600" alt="렌더링 데모 영상 보기" />
+</a>
 
 ## 📁 디렉토리 구조
 ```
