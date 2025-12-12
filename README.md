@@ -6,7 +6,7 @@
 </div>
 miniRT는 42Seoul의 그래픽스 프로젝트로, 간단한 Ray Tracing 렌더러를 구현하는 과제입니다. 본 프로젝트는 카메라, 광원, 기본적인 3D 객체(구, 평면, 원기둥, 원뿔 등)를 이용하여 장면을 해석하고 2D 이미지로 렌더링합니다.
 
-## 🔧 기술 스택
+## 기술 스택
 
 - C (C99)
 - MiniLibX (macOS 및 Linux 지원)
@@ -16,7 +16,7 @@ miniRT는 42Seoul의 그래픽스 프로젝트로, 간단한 Ray Tracing 렌더�
 - Phong Reflection 모델
 - Bump Mapping 및 텍스처 매핑
 
-## 🖼️ 주요 기능
+## 주요 기능
 
 - `.rt` 포맷으로 작성된 장면 파일 파싱
 - 카메라 시점에서의 광선 추적
@@ -26,7 +26,7 @@ miniRT는 42Seoul의 그래픽스 프로젝트로, 간단한 Ray Tracing 렌더�
 - 실시간 마우스/키보드 인터랙션
 - 다양한 장면 테스트 파일 제공 (`scenes/` 폴더 참고)
 
-## 📁 디렉토리 구조
+## 디렉토리 구조
 ```
 miniRT/
 ├── includes/          # 헤더 파일
@@ -39,7 +39,7 @@ miniRT/
 ├── sources/           # 렌더링, 파싱, 이벤트 처리 등 핵심 로직
 ├── Makefile
 ```
-## 🚀 실행 방법
+## 실행 방법
 
 ```bash
 # Clone repository
@@ -53,7 +53,7 @@ make
 ./miniRT scenes/test.rt
 ```
 
-## 📝 .rt 파일 예시
+## .rt 파일 예시
 ```
 A 0.2 255,255,255
 C -50,0,20 0,0,1 70
@@ -69,7 +69,7 @@ sp: Sphere
 pl: Plane
 cy: Cylinder
 ```
-## 🎮 조작 방법 (Controls)
+## 조작 방법 (Controls)
 ```
 W / A / S / D : 카메라를 각각 앞 / 왼쪽 / 뒤 / 오른쪽으로 이동
 
@@ -79,7 +79,7 @@ Q / E : 카메라를 하강 / 상승
 
 ESC : 프로그램 종료
 ```
-👨‍💻 기여자
+기여자
 
 - 민대원 (42Seoul - damin)
 - 서성진 (42Seoul - seonseo)
